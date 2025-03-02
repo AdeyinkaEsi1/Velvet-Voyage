@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Flights - Horizon Travels{% endblock %}
+
+{% block content %}
+<h2>Available Flights</h2>
+<ul>
+    {% for flight in flights %}
+    <li>
+        {{ flight.flight_number }} - {{ flight.airline }} ({{ flight.departure }} → {{ flight.arrival }})
+        <a href="{{ url_for('booking.form', flight_id=flight.id) }}">Book Now</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

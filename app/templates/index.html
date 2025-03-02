@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Flights - Horizon Travels{% endblock %}
+
+{% block content %}
+<header class="header">
+    <div class="container header-container">
+        <a href="/" class="logo">
+            <img src="/placeholder.svg" alt="HT Travels Logo" class="logo-img">
+            <span class="logo-text">HT Travels</span>
+        </a>
+        <nav class="nav">
+            <ul class="nav-list">
+                <li><a href="#" class="nav-link active">Home</a></li>
+                <li><a href="#" class="nav-link">Flights</a></li>
+                <li><a href="#" class="nav-link">Hotels</a></li>
+                <li><a href="#" class="nav-link">Packages</a></li>
+                <li><a href="#" class="nav-link">About Us</a></li>
+                <li><a href="#" class="nav-link">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="header-actions">
+            <a href="#" class="btn btn-signin">Sign In</a>
+            <a href="#" class="btn btn-register">Register</a>
+            <button class="mobile-menu-toggle">
+                <span class="menu-icon"></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+        <h1 class="hero-title">Discover the World with HT Travels</h1>
+        <p class="hero-subtitle">Find and book the best deals on flights, hotels, and vacation packages</p>
+        <div class="hero-form">
+            <form id="flight-search-form">
+                <!-- Add form fields here -->
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+    <div class="container">
+        <h2 class="section-title">Why Choose HT Travels</h2>
+        <p class="section-subtitle">Experience the best travel service with our exclusive benefits and features</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <img src="/placeholder.svg" alt="Flight Icon">
+                </div>
+                <h3 class="feature-title">Best Flight Deals</h3>
+                <p class="feature-description">We partner with over 500 airlines to bring you the best prices on flights
+                    worldwide.</p>
+            </div>
+            <!-- Add more feature cards here -->
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container footer-grid">
+        <div class="footer-section">
+            <div class="footer-logo">
+                <img src="/placeholder.svg" alt="HT Travels Logo" class="footer-logo-img">
+                <span class="footer-logo-text">HT Travels</span>
+            </div>
+            <p class="footer-description">Your trusted partner for flights, hotels, and vacation packages worldwide.</p>
+            <div class="social-links">
+                <a href="#" class="social-link"><img src="/placeholder.svg" alt="Facebook"></a>
+                <a href="#" class="social-link"><img src="/placeholder.svg" alt="Instagram"></a>
+                <a href="#" class="social-link"><img src="/placeholder.svg" alt="Twitter"></a>
+                <a href="#" class="social-link"><img src="/placeholder.svg" alt="LinkedIn"></a>
+            </div>
+        </div>
+        <!-- Add more footer sections here -->
+        <div class="footer-bottom">
+            <p class="footer-copyright">© <span id="current-year"></span> HT Travels. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+{% endblock %}
