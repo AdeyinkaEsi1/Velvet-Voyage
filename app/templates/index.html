@@ -4,11 +4,12 @@
 
 {% block content %}
 
-<div class="container">
+<main>
     <header class="header">
         <div class="header-container">
             <a href="/" class="logo">
-                <img src="/app/static/images/placeholder.svg" alt="HT Travels Logo" class="logo-img">
+                <img src="{{ url_for('static', filename='images/placeholder.svg') }}" alt="HT Travels Logo"
+                    class="logo-img">
                 <span class="logo-text">HT Travels</span>
             </a>
             <nav class="nav">
@@ -159,7 +160,303 @@
         </div>
     </section>
 
-</div>
+    <!-- Popular Destinations Section -->
+    <section class="popular-destinations">
+        <div class="container">
+            <div class="section-header">
+                <h2>Popular Destinations</h2>
+                <p>Explore our most booked destinations and find your next adventure</p>
+            </div>
+            <div class="destinations-grid">
+
+                <!-- Destination Card -->
+                <div class="destination-card">
+                    <div class="destination-image">
+                        <img src="{{ url_for('static', filename='images/placeholder.svg') }}" alt="New York, USA">
+                        <div class="overlay">
+                            <h3>New York</h3>
+                            <p>USA</p>
+                            <span class="price">$678</span>
+                        </div>
+                    </div>
+                    <div class="destination-details">
+                        <span>Flights • Hotels • Activities</span>
+                        <a href="#">View Deals →</a>
+                    </div>
+                </div>
+
+                <div class="destination-card">
+                    <div class="destination-image">
+                        <img src="{{ url_for('static', filename='images/placeholder.svg') }}" alt="Paris, France">
+                        <div class="overlay">
+                            <h3>Paris</h3>
+                            <p>France</p>
+                            <span class="price">$440</span>
+                        </div>
+                    </div>
+                    <div class="destination-details">
+                        <span>Flights • Hotels • Activities</span>
+                        <a href="#">View Deals →</a>
+                    </div>
+                </div>
+
+                <div class="destination-card">
+                    <div class="destination-image">
+                        <img src="{{ url_for('static', filename='images/placeholder.svg') }}" alt="Tokyo, Japan">
+                        <div class="overlay">
+                            <h3>Tokyo</h3>
+                            <p>Japan</p>
+                            <span class="price">$430</span>
+                        </div>
+                    </div>
+                    <div class="destination-details">
+                        <span>Flights • Hotels • Activities</span>
+                        <a href="#">View Deals →</a>
+                    </div>
+                </div>
+
+                <div class="destination-card">
+                    <div class="destination-image">
+                        <img src="{{ url_for('static', filename='images/placeholder.svg') }}" alt="Dubai, UAE">
+                        <div class="overlay">
+                            <h3>Dubai</h3>
+                            <p>UAE</p>
+                            <span class="price">$550</span>
+                        </div>
+                    </div>
+                    <div class="destination-details">
+                        <span>Flights • Hotels • Activities</span>
+                        <a href="#">View Deals →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="view-all">
+                <a href="#" class="btn">View All Destinations</a>
+            </div>
+        </div>
+    </section>
+    <section class="special-offers">
+        <div class="container">
+            <div class="section-header">
+                <h2>Special Offers</h2>
+                <p>Take advantage of our limited-time deals and save on your next trip</p>
+            </div>
+            <div class="offers-grid">
+                <div class="offer-card">
+                    <div class="overlay"></div>
+                    <img src="{{ url_for('static', filename='images/placeholder.svg') }}" alt="Summer vacation offer">
+                    <div class="offer-details">
+                        <span class="badge">Limited Time</span>
+                        <h3>Summer Vacation Sale</h3>
+                        <p>Up to 30% off on selected destinations</p>
+                        <a href="#" class="btn">Book Now</a>
+                    </div>
+                </div>
+                <div class="offer-card">
+                    <div class="overlay"></div>
+                    <img src="{{ url_for('static', filename='images/placeholder.svg') }}" alt="Business class offer">
+                    <div class="offer-details">
+                        <span class="badge">Premium</span>
+                        <h3>Business Class Upgrade</h3>
+                        <p>Enjoy 25% off on business class flights</p>
+                        <a href="#" class="btn">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>What Our Customers Say</h2>
+                <p>Read testimonials from our satisfied customers around the world</p>
+            </div>
+
+            <div class="testimonials-grid">
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <img src="{{ url_for('static', filename='images/placeholder.svg') }}" alt="Sarah Johnson">
+                        <div>
+                            <h3>Sarah Johnson</h3>
+                            <p>New York, USA</p>
+                        </div>
+                    </div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"HT Travels made booking my family vacation so easy! The prices were
+                        better than any other site I checked, and customer service was excellent."</p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <img src="{{ url_for('static', filename='images/placeholder.svg') }}" alt="David Chen">
+                        <div>
+                            <h3>David Chen</h3>
+                            <p>Toronto, Canada</p>
+                        </div>
+                    </div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"I've been using HT Travels for all my business trips for the past
+                        year.
+                        Their platform is intuitive and they always find me the best connections."</p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <img src="{{ url_for('static', filename='images/placeholder.svg') }}" alt="Maria Garcia">
+                        <div>
+                            <h3>Maria Garcia</h3>
+                            <p>Barcelona, Spain</p>
+                        </div>
+                    </div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Great experience with HT Travels! The booking process was smooth
+                        and
+                        when my flight was delayed, their support team helped me rebook immediately."</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="mobile-app-section">
+        <div class="container">
+            <div class="mobile-app-wrapper">
+                <div class="mobile-app-content">
+                    <h2>Download Our Mobile App</h2>
+                    <p>Get exclusive mobile-only deals and manage your bookings on the go with our easy-to-use app.
+                    </p>
+
+                    <div class="app-buttons">
+                        <a href="#">
+                            <img src="{{ url_for('static', filename='images/placeholder.svg') }}"
+                                alt="Download on App Store">
+                        </a>
+                        <a href="#">
+                            <img src="{{ url_for('static', filename='images/placeholder.svg') }}"
+                                alt="Get it on Google Play">
+                        </a>
+                    </div>
+
+                    <div class="rating">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span>4.8/5 from over 10,000 reviews</span>
+                    </div>
+                </div>
+
+                <div class="mobile-app-image">
+                    <img src="{{ url_for('static', filename='images/placeholder.svg') }}" alt="HT Travels Mobile App">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Subscribe to Our Newsletter</h2>
+                <p>Stay updated with our latest offers, travel tips, and exclusive deals.</p>
+
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter your email address" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+
+                <p class="terms">
+                    By subscribing, you agree to our <a href="#">Privacy Policy</a> and <a href="#">Terms of
+                        Service</a>.
+                </p>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <!-- Company Info -->
+            <div class="footer-section">
+                <div class="logo">
+                    <img src="{{ url_for('static', filename='images/placeholder.svg') }}" alt="HT Travels Logo">
+                    <span>HT Travels</span>
+                </div>
+                <p>Your trusted partner for flights, hotels, and vacation packages worldwide.</p>
+                <div class="social-icons">
+                    <a href="#" class="icon facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="icon instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="icon twitter"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" class="icon linkedin"><i class="fa-brands fa-linkedin"></i></a>
+                </div>                
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Flights</a></li>
+                    <li><a href="#">Hotels</a></li>
+                    <li><a href="#">Vacation Packages</a></li>
+                    <li><a href="#">Travel Insurance</a></li>
+                </ul>
+            </div>
+
+            <!-- Support -->
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Booking Terms</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Refund Policy</a></li>
+                    <li><a href="#">COVID-19 Travel Info</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>123 Travel Street, Suite 100<br>New York, NY 10001</p>
+                <p>Phone: +1 (555) 123-4567</p>
+                <p>Email: info@httravels.com</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2025 HT Travels. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
 
 
 {% endblock %}
