@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Booking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <div class="w-full">
+        <!-- Tabs Navigation -->
+        <div class="mb-4 grid w-full grid-cols-3 bg-blue-50 text-center">
+            <button class="tab-btn active bg-blue-700 text-white py-2">Flights</button>
+            <button class="tab-btn py-2">Hotels</button>
+            <button class="tab-btn py-2">Packages</button>
+        </div>
+
+        <!-- Flights Tab Content -->
+        <div class="tab-content">
+            <div class="mb-4 flex space-x-4">
+                <label>
+                    <input type="radio" name="trip" value="roundtrip" checked> Round Trip
+                </label>
+                <label>
+                    <input type="radio" name="trip" value="oneway"> One Way
+                </label>
+                <label>
+                    <input type="radio" name="trip" value="multicity"> Multi-City
+                </label>
+            </div>
+
+            <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <input type="text" placeholder="From where?" class="border p-2 w-full">
+                <input type="text" placeholder="To where?" class="border p-2 w-full">
+                <input type="date" class="border p-2 w-full">
+                <input type="date" class="border p-2 w-full">
+            </div>
+
+            <div class="mt-4 grid gap-4 md:grid-cols-3">
+                <select class="border p-2 w-full">
+                    <option value="1">1 Adult</option>
+                    <option value="2">2 Adults</option>
+                    <option value="3">3 Adults</option>
+                    <option value="4">4 Adults</option>
+                </select>
+                <select class="border p-2 w-full">
+                    <option value="economy">Economy</option>
+                    <option value="premium">Premium Economy</option>
+                    <option value="business">Business</option>
+                    <option value="first">First Class</option>
+                </select>
+                <button class="w-full bg-orange-500 text-white py-2 hover:bg-orange-600">Search Flights</button>
+            </div>
+        </div>
+
+        <!-- Hotels Tab Content -->
+        <div class="tab-content hidden">
+            <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <input type="text" placeholder="Where are you going?" class="border p-2 w-full">
+                <input type="date" class="border p-2 w-full">
+                <input type="date" class="border p-2 w-full">
+            </div>
+
+            <div class="mt-4 grid gap-4 md:grid-cols-3">
+                <select class="border p-2 w-full">
+                    <option value="1-0">1 Room, 1 Adult</option>
+                    <option value="1-2">1 Room, 2 Adults</option>
+                    <option value="1-2-1">1 Room, 2 Adults, 1 Child</option>
+                    <option value="2-2">2 Rooms, 2 Adults</option>
+                </select>
+                <button class="w-full bg-orange-500 text-white py-2 hover:bg-orange-600">Search Hotels</button>
+            </div>
+        </div>
+
+        <!-- Packages Tab Content -->
+        <div class="tab-content hidden">
+            <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <input type="text" placeholder="From where?" class="border p-2 w-full">
+                <input type="text" placeholder="To where?" class="border p-2 w-full">
+                <input type="date" class="border p-2 w-full">
+                <input type="date" class="border p-2 w-full">
+            </div>
+
+            <div class="mt-4 grid gap-4 md:grid-cols-3">
+                <select class="border p-2 w-full">
+                    <option value="1">1 Adult</option>
+                    <option value="2">2 Adults</option>
+                    <option value="2-1">2 Adults, 1 Child</option>
+                    <option value="2-2">2 Adults, 2 Children</option>
+                </select>
+                <button class="w-full bg-orange-500 text-white py-2 hover:bg-orange-600">Search Packages</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab Switching Functionality
+        const tabs = document.querySelectorAll(".tab-btn");
+        const contents = document.querySelectorAll(".tab-content");
+
+        tabs.forEach((tab, index) => {
+            tab.addEventListener("click", () => {
+                tabs.forEach(btn => btn.classList.remove("bg-blue-700", "text-white"));
+                contents.forEach(content => content.classList.add("hidden"));
+                tab.classList.add("bg-blue-700", "text-white");
+                contents[index].classList.remove("hidden");
+            });
+        });
+    </script>
+</body>
+
+</html>

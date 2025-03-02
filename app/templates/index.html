@@ -3,86 +3,163 @@
 {% block title %}Flights - Horizon Travels{% endblock %}
 
 {% block content %}
-<header class="header">
-    <div class="container header-container">
-        <a href="/" class="logo">
-            <img src="/placeholder.svg" alt="HT Travels Logo" class="logo-img">
-            <span class="logo-text">HT Travels</span>
-        </a>
-        <nav class="nav">
-            <ul class="nav-list">
-                <li><a href="#" class="nav-link active">Home</a></li>
-                <li><a href="#" class="nav-link">Flights</a></li>
-                <li><a href="#" class="nav-link">Hotels</a></li>
-                <li><a href="#" class="nav-link">Packages</a></li>
-                <li><a href="#" class="nav-link">About Us</a></li>
-                <li><a href="#" class="nav-link">Contact</a></li>
-            </ul>
-        </nav>
-        <div class="header-actions">
-            <a href="#" class="btn btn-signin">Sign In</a>
-            <a href="#" class="btn btn-register">Register</a>
-            <button class="mobile-menu-toggle">
-                <span class="menu-icon"></span>
-            </button>
-        </div>
-    </div>
-</header>
 
-<!-- Hero Section -->
-<section class="hero">
-    <div class="hero-overlay"></div>
-    <div class="container hero-content">
-        <h1 class="hero-title">Discover the World with HT Travels</h1>
-        <p class="hero-subtitle">Find and book the best deals on flights, hotels, and vacation packages</p>
-        <div class="hero-form">
-            <form id="flight-search-form">
-                <!-- Add form fields here -->
-            </form>
+<div class="container">
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                <img src="/app/static/images/placeholder.svg" alt="HT Travels Logo" class="logo-img">
+                <span class="logo-text">HT Travels</span>
+            </a>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="#" class="nav-link active">Home</a></li>
+                    <li><a href="#" class="nav-link">Flights</a></li>
+                    <li><a href="#" class="nav-link">Hotels</a></li>
+                    <li><a href="#" class="nav-link">Packages</a></li>
+                    <li><a href="#" class="nav-link">About Us</a></li>
+                    <li><a href="#" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <a href="#" class="sign-in">Sign In</a>
+                <a href="#" class="register">Register</a>
+                <button class="menu-toggle">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
         </div>
-    </div>
-</section>
-
-<!-- Features Section -->
-<section class="features">
-    <div class="container">
-        <h2 class="section-title">Why Choose HT Travels</h2>
-        <p class="section-subtitle">Experience the best travel service with our exclusive benefits and features</p>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <img src="/placeholder.svg" alt="Flight Icon">
+    </header>
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-container">
+            <div class="hero-text">
+                <h1>Discover the World with HT Travels</h1>
+                <p>Find and book the best deals on flights, hotels, and vacation packages</p>
+            </div>
+            <div class="search-box">
+                <div class="tabs">
+                    <button class="tab active" onclick="showTab(0)">Flights</button>
+                    <button class="tab" onclick="showTab(1)">Hotels</button>
+                    <button class="tab" onclick="showTab(2)">Packages</button>
                 </div>
-                <h3 class="feature-title">Best Flight Deals</h3>
-                <p class="feature-description">We partner with over 500 airlines to bring you the best prices on flights
-                    worldwide.</p>
+                <div class="tab-content active">
+                    <div class="radio-group">
+                        <label><input type="radio" name="trip" value="roundtrip" checked> Round Trip</label>
+                        <label><input type="radio" name="trip" value="oneway"> One Way</label>
+                        <label><input type="radio" name="trip" value="multicity"> Multi-City</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="From where?">
+                        <input type="text" placeholder="To where?">
+                        <input type="date">
+                        <input type="date">
+                    </div>
+                    <div class="form-group">
+                        <select>
+                            <option>1 Adult</option>
+                            <option>2 Adults</option>
+                        </select>
+                        <select>
+                            <option>Economy</option>
+                            <option>Business</option>
+                        </select>
+                        <button class="search-btn">Search Flights</button>
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <div class="form-group">
+                        <input type="text" placeholder="Where are you going?">
+                        <input type="date">
+                        <input type="date">
+                    </div>
+                    <div class="form-group">
+                        <select>
+                            <option>1 Room, 1 Adult</option>
+                            <option>2 Adults</option>
+                        </select>
+                        <button class="search-btn">Search Hotels</button>
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <div class="form-group">
+                        <input type="text" placeholder="From where?">
+                        <input type="text" placeholder="To where?">
+                        <input type="date">
+                        <input type="date">
+                    </div>
+                    <div class="form-group">
+                        <select>
+                            <option>1 Adult</option>
+                            <option>2 Adults</option>
+                        </select>
+                        <button class="search-btn">Search Packages</button>
+                    </div>
+                </div>
             </div>
-            <!-- Add more feature cards here -->
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Footer -->
-<footer class="footer">
-    <div class="container footer-grid">
-        <div class="footer-section">
-            <div class="footer-logo">
-                <img src="/placeholder.svg" alt="HT Travels Logo" class="footer-logo-img">
-                <span class="footer-logo-text">HT Travels</span>
+    <script>
+        function showTab(index) {
+            document.querySelectorAll(".tab").forEach((tab, i) => {
+                tab.classList.toggle("active", i === index);
+                document.querySelectorAll(".tab-content")[i].classList.toggle("active", i === index);
+            });
+        }
+    </script>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="features-header">
+                <h2>Why Choose HT Travels</h2>
+                <p>Experience the best travel service with our exclusive benefits and features</p>
             </div>
-            <p class="footer-description">Your trusted partner for flights, hotels, and vacation packages worldwide.</p>
-            <div class="social-links">
-                <a href="#" class="social-link"><img src="/placeholder.svg" alt="Facebook"></a>
-                <a href="#" class="social-link"><img src="/placeholder.svg" alt="Instagram"></a>
-                <a href="#" class="social-link"><img src="/placeholder.svg" alt="Twitter"></a>
-                <a href="#" class="social-link"><img src="/placeholder.svg" alt="LinkedIn"></a>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Best Flight Deals</h3>
+                    <p>We partner with over 500 airlines to bring you the best prices on flights worldwide.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                    </div>
+                    <h3>Global Destinations</h3>
+                    <p>Explore thousands of destinations across the globe with our extensive network.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Customer Satisfaction</h3>
+                    <p>Our dedicated support team is available 24/7 to assist you with any travel needs.</p>
+                </div>
             </div>
         </div>
-        <!-- Add more footer sections here -->
-        <div class="footer-bottom">
-            <p class="footer-copyright">© <span id="current-year"></span> HT Travels. All rights reserved.</p>
-        </div>
-    </div>
-</footer>
+    </section>
+
+</div>
+
 
 {% endblock %}
