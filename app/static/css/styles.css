@@ -141,7 +141,7 @@ main {
 }
 .hero-container {
   position: relative;
-  max-width: 800px;
+  max-width: 60%;
   margin: 0 auto;
   padding: 20px;
 }
@@ -155,7 +155,7 @@ main {
 }
 .search-box {
   background: white;
-  padding: 20px;
+  padding: 10px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -193,23 +193,39 @@ main {
   margin-bottom: 10px;
 }
 .form-group {
+  padding: 10px;
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   gap: 10px;
   justify-content: center;
 }
+.form-group1 {
+  padding: 10px;
+  display: flex;
+  /* flex-wrap: wrap; */
+  /* gap: 2px; */
+  justify-content: center;
+}
+
+.form-group1 input,
+.form-group1 select {
+  margin-right: 8px;
+  width: 25%;
+  height: 45px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
 .form-group input,
 .form-group select {
-  padding: 10px;
-  width: 100%;
-  max-width: 200px;
+  width: 50%;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 .search-btn {
   background: #f97316;
   color: white;
-  padding: 10px 20px;
+  padding: 10px 50px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -300,13 +316,13 @@ main {
   text-align: center;
 }
 
-.section-header h2 {
+.popularDestination-header h2 {
   font-size: 2rem;
   font-weight: bold;
   color: #1e3a8a;
 }
 
-.section-header p {
+.popularDestination-header p {
   color: #4b5563;
   font-size: 1.1rem;
   max-width: 600px;
@@ -392,6 +408,15 @@ main {
   color: #2563eb;
 }
 
+.viewAll-btn {
+  background-color: #f97316;
+  border-radius: 32px;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: white;
+  font-size: larger;
+}
+
 .view-all {
   margin-top: 2rem;
 }
@@ -417,13 +442,13 @@ main {
   text-align: center;
 }
 
-.section-header h2 {
+.specialOffer-header h2 {
   font-size: 2.5rem;
   color: #1d4ed8;
   margin-bottom: 10px;
 }
 
-.section-header p {
+.specialOffer-header p {
   color: #555;
   max-width: 600px;
   margin: 0 auto 30px;
@@ -443,6 +468,7 @@ main {
 }
 
 .offer-card img {
+  margin-bottom: 10px;
   width: 100%;
   height: auto;
   display: block;
@@ -506,6 +532,7 @@ main {
 }
 
 .testimonials-section {
+  margin-top: 80px;
   background-color: #1d4ed8;
   color: white;
   padding: 60px 20px;
@@ -513,11 +540,13 @@ main {
 }
 
 .section-header h2 {
+  color: white;
   font-size: 2.5rem;
   margin-bottom: 10px;
 }
 
 .section-header p {
+  color: white;
   opacity: 0.9;
   max-width: 600px;
   margin: 0 auto 30px;
