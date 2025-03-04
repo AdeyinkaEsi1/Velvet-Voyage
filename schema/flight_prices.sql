@@ -1,24 +1,18 @@
-INSERT INTO flight_prices (departure, destination, price) VALUES
-('Dundee', 'Portsmouth', 120.00),
-('Portsmouth', 'Dundee', 120.00),  -- Reverse route
-
-('Bristol', 'Manchester', 80.00),
-('Manchester', 'Bristol', 80.00),  -- Reverse route
-
-('Bristol', 'Newcastle', 90.00),
-('Newcastle', 'Bristol', 90.00),  -- Reverse route
-
-('Bristol', 'Glasgow', 110.00),
-('Glasgow', 'Bristol', 110.00),  -- Reverse route
-
-('Bristol', 'London', 80.00),
-('London', 'Bristol', 80.00),  -- Reverse route
-
-('Manchester', 'Southampton', 90.00),
-('Southampton', 'Manchester', 90.00),  -- Reverse route
-
-('Cardiff', 'Edinburgh', 90.00),
-('Edinburgh', 'Cardiff', 90.00),  -- Reverse route
-
--- Default price for all other routes
-('DEFAULT', 'DEFAULT', 100.00);
+INSERT INTO
+    flight_prices (departure, destination, price)
+VALUES
+    ('Dundee', 'Portsmouth', 120),
+    ('Portsmouth', 'Dundee', 120),
+    ('Bristol', 'Manchester', 80),
+    ('Manchester', 'Bristol', 80),
+    ('Bristol', 'Newcastle', 90),
+    ('Newcastle', 'Bristol', 90),
+    ('Bristol', 'Glasgow', 110),
+    ('Glasgow', 'Bristol', 110),
+    ('Bristol', 'London', 80),
+    ('London', 'Bristol', 80),
+    ('Manchester', 'Southampton', 90),
+    -- ('Southampton', 'Manchester', 90),
+    ('Cardiff', 'Edinburgh', 90),
+    -- ('Edinburgh', 'Cardiff', 90),
+    ('DEFAULT', 'DEFAULT', 100);

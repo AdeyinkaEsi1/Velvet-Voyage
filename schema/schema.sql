@@ -3,7 +3,7 @@ CREATE TABLE
         id INT PRIMARY KEY AUTO_INCREMENT,
         departure VARCHAR(255) NOT NULL,
         destination VARCHAR(255) NOT NULL,
-        price DECIMAL(10, 2) NOT NULL
+        price INT NOT NULL
     );
 
 CREATE TABLE
