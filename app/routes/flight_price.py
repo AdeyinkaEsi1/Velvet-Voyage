@@ -43,26 +43,28 @@ def flight_price():
     print(f"Querying database for route: '{departure}' -> '{destination}'")
     
     # Get price from flight_prices table
-    query_price = " SELECT price FROM flight_prices WHERE departure = %s  AND destination = %s"
-    # query_price = "SELECT price FROM flight_prices WHERE departure = 'Dundee' AND destination = 'Portsmouth'"
-    cursor.execute(query_price, (departure.strip().lower(), destination.strip().lower()))
+    query_price = "SELECT price FROM flight_prices WHERE departure = %s AND destination = %s"
+    cursor.execute(query_price, (departure.strip(), destination.strip()))
     price_result = cursor.fetchone()
     
+    # notUnique_query_price = "SELECT price FROM flight_prices WHERE departure != %s AND destination != %s"
+    default_query_price = "SELECT price FROM flight_prices WHERE departure = 'DEFAULT' AND destination = 'DEFAULT'"
+    cursor.execute(default_query_price)
+    default_price_result = cursor.fetchone()
+
     # Get flight time from flights table
     query_flight = "SELECT departure_time, arrival_time FROM flights WHERE departure = %s AND destination = %s"
-    cursor.execute(query_flight, (departure.strip().lower(), destination.strip().lower()))
+    cursor.execute(query_flight, (departure.strip(), destination.strip()))
     flight_result = cursor.fetchone()
+
 
     cursor.close()
     conn.close()
 
-    if price_result:
+    if flight_result:
         return jsonify({
-            "price": price_result["price"],
-            # "departure_time": str(flight_result["departure_time"]),
-            # "arrival_time": str(flight_result["arrival_time"])
+            "departure_time": str(flight_result["departure_time"]),
+            "arrival_time": str(flight_result["arrival_time"]),
+            "price": price_result["price"] if price_result else default_price_result["price"]
         })
-    else:
-        print("No matching route found in database.")
-        return jsonify({"error": "No flight or price found for this route"}), 404
-# return render_template("flight_price.html")
+
