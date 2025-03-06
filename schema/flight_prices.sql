@@ -16,3 +16,4 @@ VALUES
     ('Cardiff', 'Edinburgh', 90),
     -- ('Edinburgh', 'Cardiff', 90),
     ('DEFAULT', 'DEFAULT', 100);
+    

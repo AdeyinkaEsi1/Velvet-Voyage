@@ -27,3 +27,6 @@ VALUES
     ('Birmingham', 'Newcastle', '17:00:00', '17:45:00'),
     ('Newcastle', 'Birmingham', '07:00:00', '07:45:00'),
     ('Aberdeen', 'Portsmouth', '08:00:00', '09:30:00');
+    
+-- Sorry, we have no flights available
+-- Please edit your search to find other routes

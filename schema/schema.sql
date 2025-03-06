@@ -15,12 +15,20 @@ CREATE TABLE
         arrival_time TIME NOT NULL
     );
 
+
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(255) NOT NULL UNIQUE,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
+    address VARCHAR(255) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    mobile_number VARCHAR(20) NOT NULL,
+    date_of_birth DATE NOT NULL,
+    gender ENUM('Male', 'Female', 'Other') NOT NULL,
     password_hash VARCHAR(255) NOT NULL
 );
+
 
 CREATE TABLE bookings (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -28,5 +36,8 @@ CREATE TABLE bookings (
     flight_id INT NOT NULL,
     booking_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (flight_id) REFERENCES flights(id)
+    FOREIGN KEY (flight_id) REFERENCES flights(id),
+    seats INT NOT NULL CHECK (seats BETWEEN 1 AND 130),
+    flight_class ENUM('economy', 'business', 'premium') NOT NULL,
+    round_trip BOOLEAN DEFAULT FALSE
 );
