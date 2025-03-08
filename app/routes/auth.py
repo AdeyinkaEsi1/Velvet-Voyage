@@ -158,7 +158,7 @@ def request_password_reset():
 
     msg.html = f"""
     <html>
-        <body style="font-family: Arial, sans-serif; background-color: gray; padding: 20px;">
+        <body style="font-family: Arial, sans-serif; padding: 20px;">
             <h2 style="color: #2E86C1;">HT Travels Password Reset</h2>
             <p>Hello <strong style="color: blue;">{first_name}</strong>,</p>
             <p>Your password reset OTP is: <strong style="font-size: 18px;">{otp}</strong></p>

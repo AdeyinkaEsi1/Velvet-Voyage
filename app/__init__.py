@@ -45,8 +45,12 @@ def create_app():
     from app.routes.auth import bp as auth_bp
     from app.routes.logout import bp as logout_bp
     from app.routes.main import bp as main_bp
+    from app.routes.user import bp as user_bp
+    from app.routes.admin import bp as admin_bp
 
     app.register_blueprint(main_bp)
+    app.register_blueprint(admin_bp)
+    app.register_blueprint(user_bp, url_prefix='/user')
     app.register_blueprint(flights_bp, url_prefix='/flights')
     app.register_blueprint(booking_bp, url_prefix='/bookings')
     app.register_blueprint(flight_price_bp, url_prefix='/flight_price')
