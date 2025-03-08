@@ -23,8 +23,8 @@
                 </ul>
             </nav>
             <div class="auth-buttons">
-                <a href="{{ url_for('login.login') }}" class="sign-in">Sign In</a>
-                <a href="{{ url_for('signup.signup') }}" class="register">Register</a>
+                <a href="{{ url_for('auth.login') }}" class="sign-in">Sign In</a>
+                <a href="{{ url_for('auth.register') }}" class="register">Register</a>
                 <button class="menu-toggle">
                     <i class="fa fa-bars"></i>
                 </button>
@@ -60,7 +60,7 @@
             <div class="modal-promo">
                 <h3>Welcome to HT Travels!</h3>
                 <p>Unlock exclusive deals, faster bookings, and personalized recommendations.</p>
-                <a href="{{ url_for('signup.signup') }}" class="sign-up">Join Now</a>
+                <a href="{{ url_for('auth.register') }}" class="sign-up">Join Now</a>
             </div>
 
             <!-- Close Button -->
@@ -81,16 +81,15 @@
                     <button class="tab" onclick="showTab(1)">Hotels</button>
                     <button class="tab" onclick="showTab(2)">Packages</button>
                 </div>
-                <div class="tab-content active">
+                <form id="flightForm">
                     <div class="radio-group">
                         <label><input type="radio" name="trip" value="roundtrip" checked> Round Trip</label>
                         <label><input type="radio" name="trip" value="oneway"> One Way</label>
                         <label><input type="radio" name="trip" value="multicity"> Multi-City</label>
                     </div>
-                    <!-- flight timetable -->
+
                     <div class="form-group1">
-                        <!-- <label for="departure">From where?</label> -->
-                        <select id="departure">
+                        <select id="departure" name="departure" required>
                             <option value="" disabled selected>Select Departure</option>
                             <option value="Newcastle">Newcastle</option>
                             <option value="Bristol">Bristol</option>
@@ -106,8 +105,7 @@
                             <option value="Aberdeen">Aberdeen</option>
                         </select>
 
-                        <!-- <label for="arrival">To where?</label> -->
-                        <select id="arrival" required>
+                        <select id="destination" name="destination" required>
                             <option value="" disabled selected>Select Destination</option>
                             <option value="Newcastle">Newcastle</option>
                             <option value="Bristol">Bristol</option>
@@ -122,28 +120,33 @@
                             <option value="Birmingham">Birmingham</option>
                             <option value="Aberdeen">Aberdeen</option>
                         </select>
-
-                        <!-- <label for="departure-date">Departure Date</label> -->
-                        <input type="date" id="departure-date" onfocus="this.removeAttribute('placeholder')"
-                            placeholder="Select departure date">
-
-                        <!-- <label for="return-date">Return Date</label> -->
-                        <input type="date" id="return-date" onfocus="this.removeAttribute('placeholder')"
-                            placeholder="Select arrival date">
                     </div>
+
+                    <div class="form-group1">
+                        <input type="date" id="departure-date" name="departure_date" required>
+                        <input type="date" id="return-date" name="return_date">
+                    </div>
+
                     <div class="form-group">
-                        <select>
-                            <option>1 Adult</option>
-                            <option>2 Adults</option>
+                        <select name="passengers">
+                            <option value="1">1 Adult</option>
+                            <option value="2">2 Adults</option>
+                            <option value="3">3 Adults</option>
                         </select>
-                        <select>
-                            <option>Economy</option>
-                            <option>Business</option>
+
+                        <select name="class">
+                            <option value="economy">Economy</option>
+                            <option value="business">Business</option>
                         </select>
-                        <button type="submit" class="search-btn"><a
-                                href="{{ url_for('flight_price.flight_price') }}">Search Flights</a></button>
                     </div>
-                </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="search-btn">Search Flights</button>
+                    </div>
+                </form>
+
+
+
                 <div class="tab-content">
                     <div class="form-group">
                         <input type="text" placeholder="Where are you going?">
@@ -536,4 +539,3 @@
 
 
 {% endblock %}
-
