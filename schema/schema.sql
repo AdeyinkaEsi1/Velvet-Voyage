@@ -26,7 +26,8 @@ CREATE TABLE users (
     mobile_number VARCHAR(20) NOT NULL,
     date_of_birth DATE NOT NULL,
     gender ENUM('Male', 'Female', 'Other') NOT NULL,
-    password_hash VARCHAR(255) NOT NULL
+    password_hash VARCHAR(255) NOT NULL,
+    role ENUM('user', 'admin') DEFAULT 'user'
 );
 
 
@@ -35,9 +36,10 @@ CREATE TABLE bookings (
     user_id INT NOT NULL,
     flight_id INT NOT NULL,
     booking_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (flight_id) REFERENCES flights(id),
     seats INT NOT NULL CHECK (seats BETWEEN 1 AND 130),
     flight_class ENUM('economy', 'business', 'premium') NOT NULL,
-    round_trip BOOLEAN DEFAULT FALSE
+    round_trip BOOLEAN DEFAULT FALSE,
+    status ENUM('pending', 'confirmed', 'checked-in', 'cancelled', 'completed', 'no-show') DEFAULT 'pending';
 );
