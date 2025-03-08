@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Book Flight - Horizon Travels{% endblock %}
+
+{% block content %}
+<!-- <h2>Booking Flight: {{ flights.flight_number }}</h2> -->
+<form action="{{ url_for('booking.submit', flight_id=flight.id) }}" method="POST">
+    <input type="text" name="name" placeholder="Your Name" required>
+    <input type="email" name="email" placeholder="Your Email" required>
+    <button type="submit">Confirm Booking</button>
+</form>
+{% endblock %}
