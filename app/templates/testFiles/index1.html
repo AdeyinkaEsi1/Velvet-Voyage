@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Booking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+    <link rel="stylesheet" href="index.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-btn active">Flights</button>
+        </div>
+
+        <div class="tab-content">
+            <form id="bookingForm" action="">
+                <div class="trip-options">
+                    <label><input type="radio" name="trip" value="roundtrip" checked> Round Trip</label>
+                    <label><input type="radio" name="trip" value="oneway"> One Way</label>
+                </div>
+                <div class="form-grid">
+                    <select name="departure" id="departure-location" required>
+                        <option value="" disabled selected>Select Departure</option>
+                        <option value="Newcastle">Newcastle</option>
+                        <option value="Bristol">Bristol</option>
+                        <option value="Cardiff">Cardiff</option>
+                        <option value="Edinburgh">Edinburgh</option>
+                        <option value="Manchester">Manchester</option>
+                        <option value="London">London</option>
+                        <option value="Glasgow">Glasgow</option>
+                        <option value="Portsmouth">Portsmouth</option>
+                        <option value="Dundee">Dundee</option>
+                        <option value="Southampton">Southampton</option>
+                        <option value="Birmingham">Birmingham</option>
+                        <option value="Aberdeen">Aberdeen</option>
+                    </select>
+                    <select id="destination" name="destination" required>
+                        <option value="" disabled selected>Select Destination</option>
+                        <option value="Newcastle">Newcastle</option>
+                        <option value="Bristol">Bristol</option>
+                        <option value="Cardiff">Cardiff</option>
+                        <option value="Edinburgh">Edinburgh</option>
+                        <option value="Manchester">Manchester</option>
+                        <option value="London">London</option>
+                        <option value="Glasgow">Glasgow</option>
+                        <option value="Portsmouth">Portsmouth</option>
+                        <option value="Dundee">Dundee</option>
+                        <option value="Southampton">Southampton</option>
+                        <option value="Birmingham">Birmingham</option>
+                        <option value="Aberdeen">Aberdeen</option>
+                    </select>
+                    <input type="text" id="departureDate" name="departure_date" placeholder="Departure Date" required>
+                    <input type="text" id="arrivalDate" name="arrival_date" placeholder="Arrival Date" required>
+                </div>
+                <div class="form-grid">
+                    <input type="number" id="seats" min="1" max="130" name="seats" placeholder="Seats" required>
+                    <select name="flight-class" required>
+                        <option value="" disabled selected>Choose Flight Class</option>
+                        <option value="economy">Economy</option>
+                        <option value="business">Business</option>
+                    </select>
+                    <button type="submit" class="search-btn">Search Flights</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("bookingForm").addEventListener("submit", function (event) {
+            let departureValue = document.getElementById("departureDate").value.trim();
+            let arrivalValue = document.getElementById("arrivalDate").value.trim();
+            if (!departureValue || !arrivalValue) {
+                alert("Please select both departure and arrival dates.");
+                event.preventDefault();
+            }
+        });
+
+        flatpickr("#departureDate", {
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            maxDate: new Date().fp_incr(90)
+        });
+
+        flatpickr("#arrivalDate", {
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            maxDate: new Date().fp_incr(90)
+        });
+
+        document.getElementById("seats").addEventListener("input", function () {
+            let value = parseInt(this.value, 10);
+            if (value > 130) this.value = 130;
+            else if (value < 1) this.value = 1;
+        });
+    </script>
+</body>
+
+</html>
