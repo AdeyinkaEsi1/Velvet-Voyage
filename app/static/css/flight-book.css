@@ -1,0 +1,109 @@
+.flight-review {
+  background: black;
+  color: gold;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.book-container {
+  min-width: 900px;
+  background: #111;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px gold;
+  text-align: center;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.flight-table {
+  background: #222;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 15px;
+  text-align: left;
+  font-size: 1.1rem;
+}
+
+th {
+  background: gold;
+  color: black;
+}
+
+td {
+  border-bottom: 1px solid gold;
+}
+
+.cta-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.edit-btn {
+  background: none;
+  color: gold;
+  border: 2px solid gold;
+  padding: 12px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+.edit-btn:hover {
+  background: gold;
+  color: black;
+}
+
+.proceed-btn {
+  background: gold;
+  color: black;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.proceed-btn:hover {
+  background: #ffd700d9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .book-container {
+    min-width: 100%;
+    padding: 20px;
+  }
+
+  table {
+    font-size: 1rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+  }
+
+  .edit-btn,
+  .proceed-btn {
+    width: 100%;
+  }
+}

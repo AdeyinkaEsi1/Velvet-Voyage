@@ -1,12 +1,143 @@
 {% extends "base.html" %}
 
-{% block title %}Book Flight - Horizon Travels{% endblock %}
+{% block title %}Flights - Horizon Travels{% endblock %}
 
 {% block content %}
-<!-- <h2>Booking Flight: {{ flights.flight_number }}</h2> -->
-<form action="{{ url_for('booking.submit', flight_id=flight.id) }}" method="POST">
-    <input type="text" name="name" placeholder="Your Name" required>
-    <input type="email" name="email" placeholder="Your Email" required>
-    <button type="submit">Confirm Booking</button>
-</form>
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flight-book.css') }}">
+</head>
+
+<main>
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                <img src="{{ url_for('static', filename='images/brand-logo.webp') }}" alt="HT Travels Logo"
+                    class="logo-img">
+                <span class="logo-text">HT Travels</span>
+            </a>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="" class="nav-link active">Home</a></li>
+                    <li><a href="#" class="nav-link">Flights</a></li>
+                    <li><a href="#" class="nav-link">About Us</a></li>
+                    <li><a href="#" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <a href="{{ url_for('auth.login') }}" class="sign-in">Sign In</a>
+                <a href="{{ url_for('auth.register') }}" class="register">Register</a>
+                <button class="menu-toggle">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+
+    <section class="flight-review">
+        <div class="book-container">
+            <h2>Review Your Booking</h2>
+            <div class="flight-table">
+                <table>
+                    <tr>
+                        <th>Flight Details</th>
+                        <th>User Selections</th>
+                    </tr>
+                    <tr>
+                        <td><strong>From:</strong> London Heathrow (LHR)</td>
+                        <td><strong>To:</strong> Dubai International (DXB)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Departure:</strong> 12th March 2025, 10:30 AM</td>
+                        <td><strong>Return:</strong> 20th March 2025, 5:45 PM</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Class:</strong> Business</td>
+                        <td><strong>Passengers:</strong> 2 Adults</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="cta-buttons">
+                <button class="edit-btn" onclick="editBooking()">Edit Details</button>
+                <button class="proceed-btn">Proceed to Payment</button>
+            </div>
+        </div>
+    </section>
+
+
+</main>
+
+
+
+
+<!-- Footer Section -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <!-- Company Info -->
+            <div class="footer-section">
+                <div class="logo">
+                    <img src="{{ url_for('static', filename='images/brand-logo.webp') }}" alt="HT Travels Logo">
+                    <span>HT Travels</span>
+                </div>
+                <p>Your trusted partner for flights, hotels, and vacation packages worldwide.</p>
+                <div class="social-icons">
+                    <a href="#" class="icon facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="icon instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="icon twitter"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" class="icon linkedin"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Flights</a></li>
+                    <li><a href="#">Hotels</a></li>
+                    <li><a href="#">Vacation Packages</a></li>
+                    <li><a href="#">Travel Insurance</a></li>
+                </ul>
+            </div>
+
+            <!-- Support -->
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Booking Terms</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Refund Policy</a></li>
+                    <li><a href="#">COVID-19 Travel Info</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>123 Travel Street, Suite 100<br>New York, NY 10001</p>
+                <p>Phone: +1 (555) 123-4567</p>
+                <p>Email: info@httravels.com</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2025 HT Travels. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
 {% endblock %}
