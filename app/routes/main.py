@@ -16,7 +16,7 @@ def get_db_connection():
 @bp.route('/')
 def home():
     error_message = request.args.get("error")
-    return render_template("index.html", error=error_message)
+    return render_template("home/index.html", error=error_message)
 #  {% if error %}
 #         <div style="color: red; font-weight: bold;">
 #             {{ error }}
