@@ -1,0 +1,231 @@
+/* Keyframes for Fade-in & Scale-Up */
+@keyframes fadeScaleUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Apply Animation to Flight Search Form */
+.flight-container {
+  animation: fadeScaleUp 0.8s ease-out both;
+}
+
+.flight-container {
+  font-family: Arial, sans-serif;
+  padding-bottom: 20px;
+  justify-content: center;
+  width: 70%;
+  background-color: #1a1a1a;
+  color: #ffcc00;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.tabs {
+  background-color: #ffcc00de;
+  padding: 10px;
+  border-radius: 1px;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  background-color: #1a1a1a;
+  color: #ffcc00;
+  border: 2px solid #ffcc00;
+  padding: 10px 40px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.tab-btn:hover {
+  background-color: #ffcc00;
+  color: #1a1a1a;
+}
+
+.tab-content {
+  margin-left: 30px;
+  margin-right: 30px;
+  margin-top: 30px;
+  display: block;
+}
+
+.trip-options {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: nowrap;
+  margin-bottom: 25px;
+}
+
+.trip-options input[type='radio'] {
+  display: none;
+}
+
+.custom-radio {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ffcc00;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.trip-options input[type='radio']:checked + .custom-radio {
+  background-color: #ffcc00;
+  box-shadow: 0 0 5px #ffcc00;
+}
+
+.trip-options input[type='radio']:checked + .custom-radio::after {
+  content: '';
+  width: 5px;
+  height: 5px;
+  background-color: #1a1a1a;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.trip-options label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  color: #ffcc00;
+  cursor: pointer;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+input,
+select {
+  padding: 10px;
+  border: 1px solid #ffcc00;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #1a1a1a;
+  color: #ffcc00;
+}
+
+input::placeholder,
+select {
+  color: #ffcc00;
+}
+
+.search-btn {
+  background-color: #ffcc00;
+  color: #1a1a1a;
+  border: 2px solid #ffcc00;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.search-btn:hover {
+  background-color: #1a1a1a;
+  color: #ffcc00;
+  border: 2pz solid #ffcc00;
+}
+
+/* Main input field */
+.flatpickr-input {
+  background-color: #1a1a1a;
+  color: #ffcc00;
+  border: 2px solid #ffcc00;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.flatpickr-input::placeholder {
+  color: #ffcc00;
+  opacity: 0.7;
+}
+
+.flatpickr-calendar {
+  background-color: #1a1a1a !important;
+  border: 2px solid #ffcc00 !important;
+  box-shadow: 0 0 10px #ffcc00;
+}
+
+.flatpickr-months {
+  background: #1a1a1a !important;
+  color: #ffcc00 !important;
+}
+
+.flatpickr-monthDropdown-months,
+.flatpickr-current-month input.cur-year {
+  color: #ffcc00 !important;
+}
+
+.flatpickr-weekday {
+  color: #ffcc00 !important;
+  font-weight: bold;
+}
+
+.flatpickr-day {
+  color: #ffcc00 !important;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.flatpickr-day:hover {
+  background-color: #ffcc00 !important;
+  color: #1a1a1a !important;
+}
+
+.flatpickr-day.selected {
+  background-color: #ffcc00 !important;
+  color: #1a1a1a !important;
+  font-weight: bold;
+}
+
+.flatpickr-day.today {
+  border: 2px solid #ffcc00 !important;
+}
+
+.flatpickr-day.disabled {
+  color: gray !important;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.flatpickr-prev-month,
+.flatpickr-next-month {
+  fill: #ffcc00 !important;
+}
+
+.flatpickr-prev-month:hover,
+.flatpickr-next-month:hover {
+  background: #ffcc00 !important;
+  border-radius: 50%;
+}
+
+/* Time Picker (if used) */
+.flatpickr-time {
+  background-color: #1a1a1a !important;
+  border-top: 1px solid #ffcc00 !important;
+}
+
+.flatpickr-time input {
+  color: #ffcc00 !important;
+}
