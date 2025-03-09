@@ -1,0 +1,544 @@
+{% extends "base.html" %}
+
+{% block title %}Flights - Horizon Travels{% endblock %}
+
+{% block content %}
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flight-form.css') }}">
+</head>
+
+<main>
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                <img src="{{ url_for('static', filename='images/brand-logo.webp') }}" alt="HT Travels Logo"
+                    class="logo-img">
+                <span class="logo-text">HT Travels</span>
+            </a>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="" class="nav-link active">Home</a></li>
+                    <li><a href="#" class="nav-link">Flights</a></li>
+                    <li><a href="#" class="nav-link">About Us</a></li>
+                    <li><a href="#" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <a href="{{ url_for('auth.login') }}" class="sign-in">Sign In</a>
+                <a href="{{ url_for('auth.register') }}" class="register">Register</a>
+                <button class="menu-toggle">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Login Popup Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-login-container">
+            <!-- Left: Login Form -->
+            <div class="modal-login-form">
+                <h2>Log in to HT Travels</h2>
+                <form>
+                    <div class="input-group">
+                        <label>Email/ Username/ Membership No.</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" required>
+                    </div>
+                    <div class="captcha">
+                        <input type="checkbox" id="captcha">
+                        <label for="captcha">I am human</label>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                    <button type="submit" class="login-btn">Continue</button>
+                </form>
+            </div>
+
+            <!-- Right: Promotional Section -->
+            <div class="modal-promo">
+                <h3>Welcome to HT Travels!</h3>
+                <p>Unlock exclusive deals, faster bookings, and personalized recommendations.</p>
+                <a href="{{ url_for('auth.register') }}" class="sign-up">Join Now</a>
+            </div>
+
+            <!-- Close Button -->
+            <span class="modal-close-btn">&times;</span>
+        </div>
+    </div>
+
+    <section class="hero">
+        <video autoplay loop muted playsinline class="hero-video">
+            <source src="{{ url_for('static', filename='videos/hero-vid2-3.mp4') }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="hero-text">
+            <h1>Discover the World with HT Travels</h1>
+            <p>Find and book the best deals on flights, hotels, and vacation packages</p>
+        </div>
+
+        <div class="flight-container">
+            <div class="tabs">
+                <button class="tab-btn">Book a Flight</button>
+            </div>
+
+            <div class="tab-content">
+                <form id="bookingForm" action="">
+                    <div class="trip-options">
+                        <label>
+                            <input type="radio" name="trip" value="roundtrip" checked>
+                            <span class="custom-radio"></span> Round Trip
+                        </label>
+                        <label>
+                            <input type="radio" name="trip" value="oneway">
+                            <span class="custom-radio"></span> One Way
+                        </label>
+                    </div>
+                    <div class="form-grid">
+                        <select name="departure" id="departure-location" required>
+                            <option value="" disabled selected>Select Departure</option>
+                            <option value="Newcastle">Newcastle</option>
+                            <option value="Bristol">Bristol</option>
+                            <option value="Cardiff">Cardiff</option>
+                            <option value="Edinburgh">Edinburgh</option>
+                            <option value="Manchester">Manchester</option>
+                            <option value="London">London</option>
+                            <option value="Glasgow">Glasgow</option>
+                            <option value="Portsmouth">Portsmouth</option>
+                            <option value="Dundee">Dundee</option>
+                            <option value="Southampton">Southampton</option>
+                            <option value="Birmingham">Birmingham</option>
+                            <option value="Aberdeen">Aberdeen</option>
+                        </select>
+                        <select id="destination" name="destination" required>
+                            <option value="" disabled selected>Select Destination</option>
+                            <option value="Newcastle">Newcastle</option>
+                            <option value="Bristol">Bristol</option>
+                            <option value="Cardiff">Cardiff</option>
+                            <option value="Edinburgh">Edinburgh</option>
+                            <option value="Manchester">Manchester</option>
+                            <option value="London">London</option>
+                            <option value="Glasgow">Glasgow</option>
+                            <option value="Portsmouth">Portsmouth</option>
+                            <option value="Dundee">Dundee</option>
+                            <option value="Southampton">Southampton</option>
+                            <option value="Birmingham">Birmingham</option>
+                            <option value="Aberdeen">Aberdeen</option>
+                        </select>
+                        <input type="text" id="departureDate" name="departure_date" placeholder="Departure Date"
+                            required>
+                        <input type="text" id="arrivalDate" name="arrival_date" placeholder="Arrival Date" required>
+                    </div>
+                    <div class="form-grid">
+                        <input type="number" id="seats" min="1" max="130" name="seats" placeholder="Seats" required>
+                        <select name="flight-class" required>
+                            <option value="" disabled selected>Choose Flight Class</option>
+                            <option value="economy">Economy</option>
+                            <option value="business">Business</option>
+                        </select>
+                        <button type="submit" class="search-btn">Search Flights</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            document.getElementById("bookingForm").addEventListener("submit", function (event) {
+                let departureValue = document.getElementById("departureDate").value.trim();
+                let arrivalValue = document.getElementById("arrivalDate").value.trim();
+                if (!departureValue || !arrivalValue) {
+                    alert("Please select both departure and arrival dates.");
+                    event.preventDefault();
+                }
+            });
+
+            flatpickr("#departureDate", {
+                dateFormat: "Y-m-d",
+                minDate: "today",
+                maxDate: new Date().fp_incr(90)
+            });
+
+            flatpickr("#arrivalDate", {
+                dateFormat: "Y-m-d",
+                minDate: "today",
+                maxDate: new Date().fp_incr(90)
+            });
+
+            document.getElementById("seats").addEventListener("input", function () {
+                let value = parseInt(this.value, 10);
+                if (value > 130) this.value = 130;
+                else if (value < 1) this.value = 1;
+            });
+        </script>
+
+    </section>
+
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="features-header">
+                <h2>Why Choose HT Travels</h2>
+                <p>Experience the best travel service with our exclusive benefits and features</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Best Flight Deals</h3>
+                    <p>We partner with over 500 airlines to bring you the best prices on flights worldwide.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                    </div>
+                    <h3>UK & Beyond</h3>
+                    <p>Explore thousands of destinations across the globe with our extensive network.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3>Customer Satisfaction</h3>
+                    <p>Our dedicated support team is available 24/7 to assist you with any travel needs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Destinations Section -->
+    <section class="popular-destinations">
+        <div class="popularDest-container">
+            <div class="popularDestination-header">
+                <h2>Popular Destinations</h2>
+                <p>Explore our most booked destinations and find your next adventure</p>
+            </div>
+            <div class="destinations-grid">
+                <!-- Destination Card -->
+                <div class="destination-card">
+                    <div class="destination-image">
+                        <img src="{{ url_for('static', filename='images/bristol.webp') }}" alt="New York, USA">
+                        <div class="overlay">
+                            <h3>Bristol</h3>
+                            <p>UK</p>
+                            <span class="price">&pound;100</span>
+                        </div>
+                    </div>
+                    <div class="destination-details">
+                        <span>Flights • Hotels • Activities</span>
+                        <a href="#">View Deals →</a>
+                    </div>
+                </div>
+
+                <div class="destination-card">
+                    <div class="destination-image">
+                        <img src="{{ url_for('static', filename='images/manchester2.avif') }}" alt="Paris, France">
+                        <div class="overlay">
+                            <h3>Manchester</h3>
+                            <p>UK</p>
+                            <span class="price">&pound;80</span>
+                        </div>
+                    </div>
+                    <div class="destination-details">
+                        <span>Flights • Hotels • Activities</span>
+                        <a href="#">View Deals →</a>
+                    </div>
+                </div>
+
+                <div class="destination-card">
+                    <div class="destination-image">
+                        <img src="{{ url_for('static', filename='images/glasgow2.avif') }}" alt="Tokyo, Japan">
+                        <div class="overlay">
+                            <h3>Glasgow</h3>
+                            <p>UK</p>
+                            <span class="price">&pound;110</span>
+                        </div>
+                    </div>
+                    <div class="destination-details">
+                        <span>Flights • Hotels • Activities</span>
+                        <a href="#">View Deals →</a>
+                    </div>
+                </div>
+
+                <div class="destination-card">
+                    <div class="destination-image">
+                        <img src="{{ url_for('static', filename='images/edinburgh.webp') }}" alt="Dubai, UAE">
+                        <div class="overlay">
+                            <h3>Edinburgh</h3>
+                            <p>UK</p>
+                            <span class="price">&pound;100</span>
+                        </div>
+                    </div>
+                    <div class="destination-details">
+                        <span>Flights • Hotels • Activities</span>
+                        <a href="#">View Deals →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="view-all">
+                <a href="#" class="viewAll-btn">View All Destinations</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Offers Section -->
+    <section class="special-offers">
+        <div class="SpecialOffer-container">
+            <div class="specialOffer-header">
+                <h2>Special Offers</h2>
+                <p>Take advantage of our limited-time deals and save on your next trip</p>
+            </div>
+            <div class="offers-grid">
+                <div class="offer-card">
+                    <div class="overlay"></div>
+                    <img src="{{ url_for('static', filename='images/summer-vacation-1.avif') }}"
+                        alt="Summer vacation offer">
+                    <div class="offer-details">
+                        <span class="badge">Limited Time</span>
+                        <h3>Summer Vacation Sale</h3>
+                        <p>Up to 30% off on selected destinations</p>
+                        <a href="#" class="btn">Book Now</a>
+                    </div>
+                </div>
+                <div class="offer-card">
+                    <div class="overlay"></div>
+                    <img src="{{ url_for('static', filename='images/business-class6.png') }}"
+                        alt="Business class offer">
+                    <div class="offer-details">
+                        <span class="badge">Premium</span>
+                        <h3>Business Class Upgrade</h3>
+                        <p>Enjoy 25% off on business class flights</p>
+                        <a href="#" class="btn">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>What Our Customers Say</h2>
+                <p>Read testimonials from our satisfied customers around the world</p>
+            </div>
+
+            <div class="testimonials-grid">
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <img src="{{ url_for('static', filename='images/sarah-johnson.avif') }}" alt="Sarah Johnson">
+                        <div>
+                            <h3>Sarah Johnson</h3>
+                            <p>Newcastle, UK</p>
+                        </div>
+                    </div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"HT Travels made booking my family vacation so easy! The prices were
+                        better than any other site I checked, and customer service was excellent."</p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <img src="{{ url_for('static', filename='images/David-Chen.avif') }}" alt="David Chen">
+                        <div>
+                            <h3>David Chen</h3>
+                            <p>Birmingham, UK</p>
+                        </div>
+                    </div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"I've been using HT Travels for all my business trips for the past
+                        year.
+                        Their platform is intuitive and they always find me the best connections."</p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <img src="{{ url_for('static', filename='images/maria-garcia.avif') }}" alt="Maria Garcia">
+                        <div>
+                            <h3>Maria Garcia</h3>
+                            <p>Glasgow, UK</p>
+                        </div>
+                    </div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Great experience with HT Travels! The booking process was smooth
+                        and
+                        when my flight was delayed, their support team helped me rebook immediately."</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Mobile App Section -->
+    <section class="mobile-app-section">
+        <div class="container">
+            <div class="mobile-app-wrapper">
+                <div class="mobile-app-content">
+                    <h2>Download Our Mobile App</h2>
+                    <p>Get exclusive mobile-only deals and manage your bookings on the go with our easy-to-use app.
+                    </p>
+                    <div class="app-btns">
+                        <div class="app-buttons">
+                            <a href="#">
+                                <img src="{{ url_for('static', filename='images/mobileapp-1.webp') }}"
+                                    alt="Download on App Store">
+                            </a>
+                            <a href="#">
+                                <img src="{{ url_for('static', filename='images/mobileapp-2.webp') }}"
+                                    alt="Get it on Google Play">
+                            </a>
+                        </div>
+                        <button class="download">Download</button>
+                    </div>
+
+                    <div class="rating">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span>4.8/5 from over 10,000 reviews</span>
+                    </div>
+                </div>
+
+                <div class="mobile-app-image">
+                    <img src="{{ url_for('static', filename='images/mobileapp-3.webp') }}" alt="HT Travels Mobile App">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Subscribe to Our Newsletter</h2>
+                <p>Stay updated with our latest offers, travel tips, and exclusive deals.</p>
+
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter your email address" required>
+                    <button type="submit">Subscribe</button>
+                </form>
+
+                <p class="terms">
+                    By subscribing, you agree to our <a href="#">Privacy Policy</a> and <a href="#">Terms of
+                        Service</a>.
+                </p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer Section -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <!-- Company Info -->
+            <div class="footer-section">
+                <div class="logo">
+                    <img src="{{ url_for('static', filename='images/brand-logo.webp') }}" alt="HT Travels Logo">
+                    <span>HT Travels</span>
+                </div>
+                <p>Your trusted partner for flights, hotels, and vacation packages worldwide.</p>
+                <div class="social-icons">
+                    <a href="#" class="icon facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="icon instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="icon twitter"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" class="icon linkedin"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Flights</a></li>
+                    <li><a href="#">Hotels</a></li>
+                    <li><a href="#">Vacation Packages</a></li>
+                    <li><a href="#">Travel Insurance</a></li>
+                </ul>
+            </div>
+
+            <!-- Support -->
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Booking Terms</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Refund Policy</a></li>
+                    <li><a href="#">COVID-19 Travel Info</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>123 Travel Street, Suite 100<br>New York, NY 10001</p>
+                <p>Phone: +1 (555) 123-4567</p>
+                <p>Email: info@httravels.com</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2025 HT Travels. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+
+
+{% endblock %}
