@@ -15,7 +15,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/flight-book.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 </head>
+
 
 <main>
     <header class="header">
@@ -42,37 +44,223 @@
             </div>
         </div>
     </header>
+    <!-- 
 
+    <div class="booking-container">
+        <div class="booking-card">
+            <h2>Booking Details</h2>
+            {% if booking %}
+            <table>
+                <tr>
+                    <td><strong>User ID:</strong></td>
+                    <td>{{ booking.user_id }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Flight ID:</strong></td>
+                    <td>{{ booking.flight_id }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Departure:</strong></td>
+                    <td>{{ booking.departure }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Destination:</strong></td>
+                    <td>{{ booking.destination }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Departure Time:</strong></td>
+                    <td>{{ booking.departure_time }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Arrival Time:</strong></td>
+                    <td>{{ booking.arrival_time }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Seats:</strong></td>
+                    <td>{{ booking.seats }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Flight Class:</strong></td>
+                    <td>{{ booking.flight_class }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Round Trip:</strong></td>
+                    <td>{{ "Yes" if booking.round_trip else "No" }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Total Price:</strong></td>
+                    <td>${{ booking.total_price }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Discount Applied:</strong></td>
+                    <td>${{ booking.discount_applied }}</td>
+                </tr>
+            </table>
+            {% else %}
+            <p>No bookings found.</p>
+            {% endif %}
+        </div>
+    </div> -->
 
     <section class="flight-review">
-        <div class="book-container">
-            <h2>Review Your Booking</h2>
-            <div class="flight-table">
-                <table>
-                    <tr>
-                        <th>Flight Details</th>
-                        <th>User Selections</th>
-                    </tr>
-                    <tr>
-                        <td><strong>From:</strong> London Heathrow (LHR)</td>
-                        <td><strong>To:</strong> Dubai International (DXB)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Departure:</strong> 12th March 2025, 10:30 AM</td>
-                        <td><strong>Return:</strong> 20th March 2025, 5:45 PM</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Class:</strong> Business</td>
-                        <td><strong>Passengers:</strong> 2 Adults</td>
-                    </tr>
-                </table>
+        <div class="flight-review">
+            <div class="book-container">
+                <h2>Flight Booking Review</h2>
+
+                {% if booking %}
+                <div class="flight-table">
+                    <table>
+                        <tr>
+                            <th colspan="2">Flight Details</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Flight ID:</strong></td>
+                            <td>{{ booking.flight_id }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Departure:</strong></td>
+                            <td>{{ booking.departure }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Destination:</strong></td>
+                            <td>{{ booking.destination }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Departure Time:</strong></td>
+                            <td>{{ booking.departure_time }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Arrival Time:</strong></td>
+                            <td>{{ booking.arrival_time }}</td>
+                        </tr>
+
+                        <tr>
+                            <th colspan="2">Booking Details</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Seats:</strong></td>
+                            <td>{{ booking.seats }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Flight Class:</strong></td>
+                            <td>{{ booking.flight_class }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Round Trip:</strong></td>
+                            <td>{{ "Yes" if booking.round_trip else "No" }}</td>
+                        </tr>
+
+                        <tr>
+                            <th colspan="2">Payment Details</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Base Price:</strong></td>
+                            <td>£{{ booking.total_price }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Discount Applied:</strong></td>
+                            <td>£{{ booking.discount_applied }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Final Price:</strong></td>
+                            <td>£{{ booking.total_price }}</td>
+                        </tr>
+                    </table>
+
+                    <div class="cta-buttons">
+                        <button class="edit-btn" onclick="window.location.href='/'">Edit Booking</button>
+                        <button class="proceed-btn" onclick="window.location.href='/payment'">Proceed to
+                            Payment</button>
+                    </div>
+                </div>
+                {% else %}
+                <p style="color: gold;">No bookings found.</p>
+                {% endif %}
             </div>
-            <div class="cta-buttons">
-                <button class="edit-btn" onclick="editBooking()">Edit Details</button>
-                <button class="proceed-btn">Proceed to Payment</button>
-            </div>
+
         </div>
     </section>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            console.log("DEBUG: Page Loaded!");
+
+            const storedBooking = localStorage.getItem("latestSelection");
+
+            if (storedBooking) {
+                let bookingData = JSON.parse(storedBooking);
+                console.log("DEBUG: Loaded Booking Data from LocalStorage:", bookingData);
+
+                try {
+                    // Fetch updated flight data
+                    const response = await fetch("/get_flight", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": "Bearer " + localStorage.getItem("jwtToken") // Ensure JWT is sent
+                        },
+                        body: JSON.stringify({
+                            departure: bookingData.departure,
+                            destination: bookingData.destination
+                        })
+                    });
+
+                    const data = await response.json();
+                    console.log("DEBUG: API Response:", data);
+
+                    if (!response.ok) {
+                        console.error("ERROR: ", data.error);
+                    } else {
+                        // ✅ Merge API data into `bookingData`
+                        bookingData.flight_id = data.flight_id;
+                        bookingData.departureDate = data.departure_time;
+                        bookingData.arrivalDate = data.arrival_time;
+                        bookingData.totalPrice = data.price; // Updating price from API
+
+                        // ✅ Store updated data
+                        localStorage.setItem("latestSelection", JSON.stringify(bookingData));
+                    }
+                } catch (error) {
+                    console.error("ERROR: Fetching flight data failed", error);
+                }
+
+                // ✅ Now update UI with data
+                updateUI(bookingData);
+            } else {
+                console.log("DEBUG: No booking data found in storage.");
+            }
+        });
+
+        // ✅ Function to update UI
+        function updateUI(bookingData) {
+            console.log("DEBUG: Updating UI with:", bookingData);
+
+            document.getElementById("booking-flight-id").textContent = bookingData.flight_id || "N/A";
+            document.getElementById("booking-departure").textContent = bookingData.departure || "N/A";
+            document.getElementById("booking-destination").textContent = bookingData.destination || "N/A";
+            document.getElementById("booking-departure-time").textContent = bookingData.departureDate || "N/A";
+            document.getElementById("booking-arrival-time").textContent = bookingData.arrivalDate || "N/A";
+            document.getElementById("booking-seats").textContent = bookingData.seats || "N/A";
+            document.getElementById("booking-class").textContent = bookingData.flightClass || "N/A";
+            document.getElementById("booking-trip").textContent = bookingData.roundTrip === "roundtrip" ? "Yes" : "No";
+            document.getElementById("booking-price").textContent = bookingData.totalPrice !== null ? `$${bookingData.totalPrice}` : "$0.00";
+            document.getElementById("booking-discount").textContent = bookingData.discountApplied !== null ? `$${bookingData.discountApplied}` : "$0.00";
+            document.getElementById("booking-final-price").textContent = bookingData.totalPrice !== null ? `$${bookingData.totalPrice}` : "$0.00";
+        }
+
+        function editBooking() {
+            window.location.href = "/";
+        }
+
+        document.getElementById("proceed-btn").addEventListener("click", function () {
+            localStorage.removeItem("latestSelection");
+            window.location.href = "/payment";
+        });
+
+
+    </script>
+
 
 
 </main>
@@ -128,7 +316,7 @@
             <!-- Contact Info -->
             <div class="footer-section">
                 <h3>Contact Us</h3>
-                <p>123 Travel Street, Suite 100<br>New York, NY 10001</p>
+                <p>123 Travel Street, Suite 100<br>Edinburgh, ED 10001</p>
                 <p>Phone: +1 (555) 123-4567</p>
                 <p>Email: info@httravels.com</p>
             </div>
@@ -140,4 +328,58 @@
     </div>
 </footer>
 
+
+
+
+<!-- <p>DEBUG: Booking Object - {{ booking }}</p> -->
+
+<!-- 
+        <div id="booking-details" style="background-color: black;">
+            <p style="color: gold;">Booking details will appear here after you book a flight.</p>
+        </div>
+    
+    
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                fetchBookingDetails();
+            });
+    
+            function fetchBookingDetails() {
+                fetch("http://127.0.0.1:5000/bookings/latest", {
+                    method: "GET",
+                    credentials: "include"
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("DEBUG: Booking API Response", data);
+    
+                        if (data.booking) {
+                            updateBookingDetails(data.booking);
+                        } else {
+                            console.warn("DEBUG: No booking found.");
+                        }
+                    })
+                    .catch(error => console.error("Error fetching booking:", error));
+            }
+    
+            function updateBookingDetails(booking) {
+                const bookingContainer = document.getElementById("booking-details");
+    
+                if (!bookingContainer) {
+                    console.error("ERROR: #booking-details element not found!");
+                    return;
+                }
+    
+                bookingContainer.innerHTML = `
+                    <p><strong>User ID:</strong> ${booking.user_id}</p>
+                    <p><strong>Flight ID:</strong> ${booking.flight_id}</p>
+                    <p><strong>Booking Time:</strong> ${booking.booking_time}</p>
+                    <p><strong>Seats:</strong> ${booking.seats}</p>
+                    <p><strong>Flight Class:</strong> ${booking.flight_class}</p>
+                    <p><strong>Round Trip:</strong> ${booking.round_trip ? "Yes" : "No"}</p>
+                    <p><strong>Total Price:</strong> $${booking.total_price}</p>
+                    <p><strong>Discount Applied:</strong> $${booking.discount_applied}</p>
+                `;
+            }
+        </script> -->
 {% endblock %}

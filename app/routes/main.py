@@ -1,6 +1,7 @@
 from flask import Blueprint, redirect, request, jsonify, render_template, url_for
 import mysql.connector
 from config import Config
+from flask import session
 
 bp = Blueprint('main', __name__)
 
@@ -13,15 +14,9 @@ def get_db_connection():
     )
     return conn
 
-@bp.route('/')
+
+
+
+@bp.route('/', methods=["GET"])
 def home():
-    error_message = request.args.get("error")
-    return render_template("home/index.html", error=error_message)
-
-
-#  {% if error %}
-#         <div style="color: red; font-weight: bold;">
-#             {{ error }}
-#         </div>
-#     {% endif %}
-    
+    return render_template("home/index.html")
