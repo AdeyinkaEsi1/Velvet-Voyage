@@ -27,18 +27,18 @@ def get_db_connection():
 @jwt_required()
 def flight_book():
     user_id = get_jwt_identity()
-    data = request.form  # Get data from form submission
+    data = request.form
 
     departure = data.get("departure")
     destination = data.get("destination")
     departure_date = data.get("departure_date")
-    arrival_date = data.get("arrival_date")
+    return_date = data.get("return_date")
     seats = int(data.get("seats", 1))
-    flight_class = data.get("flight_class").lower()
-    round_trip = data.get("trip") == "roundtrip"
+    flight_class = data.get("flight_class", "economy").strip().lower()
+    round_trip = data.get("round_trip") == "true"
 
     if not departure or not destination or not departure_date:
-        return render_template("index.html", error="Please fill in all required fields.")
+        return render_template("home/index.html", error="Please fill in all required fields.")
 
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -51,21 +51,26 @@ def flight_book():
     flight = cursor.fetchone()
 
     if not flight:
-        return render_template("index.html", error="No available flights for this route.")
+        return render_template("home/index.html", error="No available flights for this route.")
 
     # Fetch flight price
     cursor.execute("""
         SELECT price FROM flight_prices WHERE departure = %s AND destination = %s
     """, (departure, destination))
-    price_data = cursor.fetchone()
+    base_price = cursor.fetchone()
 
     cursor.close()
     conn.close()
-
-    if not price_data:
+    
+    if flight_class == "business":
+        base_flight_price = base_price["price"] * 2
+    else:
+        base_flight_price = base_price["price"]
+        
+    if not base_price:
         return render_template("home/index.html", error="Price not found for the selected route.")
 
-    base_price = price_data["price"] * seats
+    total_flight_price = base_flight_price * seats
 
     # Calculate discount
     booking_date = datetime.now().date()
@@ -80,21 +85,26 @@ def flight_book():
     elif 45 <= days_in_advance <= 59:
         discount_percentage = 10
 
-    discount_amount = (discount_percentage / 100) * base_price
-    final_price = base_price - discount_amount
+    discount_amount = (discount_percentage / 100) * total_flight_price
+    final_price = total_flight_price - discount_amount
 
     # Prepare booking details to pass to flight_book.html
     booking_details = {
+        "user_id": user_id,
         "flight_id": flight["id"],
         "departure": flight["departure"],
         "destination": flight["destination"],
+        "departure_date": departure_date,
         "departure_time": flight["departure_time"],
+        "return_date": return_date,
         "arrival_time": flight["arrival_time"],
         "seats": seats,
         "flight_class": flight_class,
         "round_trip": round_trip,
-        "total_price": final_price,
+        "base_price": base_flight_price,
+        "total_price": total_flight_price,
         "discount_applied": discount_amount,
+        "final_price": final_price,
     }
 
     return render_template("flight-book.html", booking=booking_details)
