@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Generate Receipt - Horizon Travels{% endblock %}
+
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Receipt</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</head>
+
+<main>
+    <div class="receipt-container">
+        <h2>Generate Receipt</h2>
+        <form id="receipt-form">
+            <div class="form-group">
+                <label for="booking_id">Enter Booking ID</label>
+                <input type="text" id="booking_id" name="booking_id" placeholder="e.g., 12345" required>
+            </div>
+            <button type="submit" class="generate-button">Generate Receipt</button>
+        </form>
+
+        <div id="receipt-details" class="hidden">
+            <h3>Booking Details</h3>
+            <div class="details-content">
+                <p><strong>Booking ID:</strong> <span id="receipt-booking-id"></span></p>
+                <p><strong>Payment Reference:</strong> <span id="receipt-payment-ref"></span></p>
+                <p><strong>Status:</strong> <span id="receipt-status"></span></p>
+                <p><strong>Flight:</strong> <span id="receipt-flight"></span></p>
+                <p><strong>Departure Time:</strong> <span id="receipt-departure-time"></span></p>
+                <p><strong>Arrival Time:</strong> <span id="receipt-arrival-time"></span></p>
+                <p><strong>Seats:</strong> <span id="receipt-seats"></span></p>
+                <p><strong>Class:</strong> <span id="receipt-class"></span></p>
+                <p><strong>Round Trip:</strong> <span id="receipt-round-trip"></span></p>
+                <p><strong>Booking Time:</strong> <span id="receipt-booking-time"></span></p>
+            </div>
+            <a id="download-receipt" class="download-button" href="#" target="_blank">Download Receipt as PDF</a>
+        </div>
+
+        <div id="error-message" class="hidden">
+            <p class="error-text"></p>
+        </div>
+    </div>
+
+
+    <div class="sidebar">
+        <a href="{{ url_for('dashboard.user_profile') }}">Profile</a>
+        <a href="{{ url_for('dashboard.user_bookings') }}">Bookings</a>
+        <a href="{{ url_for('dashboard.generate_receipt') }}">Generate Receipt</a>
+        <a href="{{ url_for('logout.logout') }}">Logout</a>
+    </div>
+</main>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const receiptForm = document.getElementById("receipt-form");
+        const receiptDetails = document.getElementById("receipt-details");
+        const errorMessage = document.getElementById("error-message");
+        const downloadReceiptLink = document.getElementById("download-receipt");
+        
+        receiptForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            
+            const bookingId = document.getElementById("booking_id").value.trim();
+            
+            alert('hi')
+            if (!bookingId) {
+                showError("Please enter a valid Booking ID.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://127.0.0.1:5000/bookings/receipt/${bookingId}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("access_token")}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || "Failed to fetch booking details.");
+                }
+
+                const data = await response.json();
+                displayReceiptDetails(data.receipt);
+                showReceiptDetails();
+                setDownloadLink(bookingId);
+            } catch (error) {
+                showError(error.message);
+            }
+        });
+
+        function displayReceiptDetails(receipt) {
+            document.getElementById("receipt-booking-id").textContent = receipt.booking_id;
+            document.getElementById("receipt-payment-ref").textContent = receipt.payment_reference;
+            document.getElementById("receipt-status").textContent = receipt.status;
+            document.getElementById("receipt-flight").textContent = `${receipt.flight.departure} → ${receipt.flight.destination}`;
+            document.getElementById("receipt-departure-time").textContent = receipt.flight.departure_time;
+            document.getElementById("receipt-arrival-time").textContent = receipt.flight.arrival_time;
+            document.getElementById("receipt-seats").textContent = receipt.seats;
+            document.getElementById("receipt-class").textContent = receipt.class;
+            document.getElementById("receipt-round-trip").textContent = receipt.round_trip ? "Yes" : "No";
+            document.getElementById("receipt-booking-time").textContent = receipt.booking_time;
+        }
+
+        function showReceiptDetails() {
+            receiptDetails.classList.remove("hidden");
+            errorMessage.classList.add("hidden");
+        }
+
+        function setDownloadLink(bookingId) {
+            downloadReceiptLink.href = `http://127.0.0.1:5000/bookings/receipt/pdf/${bookingId}`;
+        }
+
+        function showError(message) {
+            errorMessage.querySelector(".error-text").textContent = message;
+            errorMessage.classList.remove("hidden");
+            receiptDetails.classList.add("hidden");
+        }
+    });
+</script>
+
+{% endblock %}
