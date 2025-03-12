@@ -125,19 +125,6 @@ def process_payment():
 
     if not booking:
         return jsonify({"error": "Booking not found or not authorized"}), 404
-
-    # if booking["status"] != "pending":
-    #       return jsonify({
-    #     "error": f"Booking cannot be paid for (current status: {booking['status']})",
-    #     "redirect": url_for('dashboard.user_bookings')
-    #     }), 400
-
-    # if booking["payment_status"] == "paid":
-    #     return jsonify({
-    #     "error": "Booking is already paid for",
-    #     "redirect": url_for('dashboard.user_bookings')
-    #     }), 400
-
     payment_reference = ''.join(random.choices(string.ascii_uppercase + string.digits, k=12))
 
     cursor.execute("""

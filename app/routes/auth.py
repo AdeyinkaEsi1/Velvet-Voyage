@@ -1,8 +1,8 @@
-from datetime import timedelta
+from datetime import timedelta, timezone
 from flask import Blueprint, request, jsonify, render_template, make_response
 import mysql.connector
 from flask_bcrypt import Bcrypt
-from flask_jwt_extended import jwt_required, create_access_token, JWTManager
+from flask_jwt_extended import get_jwt_identity, jwt_required, create_access_token, verify_jwt_in_request, get_jwt
 from config import Config
 import re
 import random
@@ -14,7 +14,6 @@ from app import mail
 bp = Blueprint('auth', __name__)
 bcrypt = Bcrypt()
 
-# jwt = JWTManager()
 
 def get_db_connection():
     return mysql.connector.connect(
@@ -82,7 +81,8 @@ def register():
 
 @bp.route('/login_page', methods=['GET'])
 def login_page():
-    return render_template('user/auth/login.html')
+    message = request.args.get('message')
+    return render_template('user/auth/login.html', message=message)
 
 @bp.route('/register_page', methods=['GET'])
 def register_page():
@@ -113,21 +113,27 @@ def login():
         "access_token_cookie", access_token,
         httponly=True, secure=False, samesite="Lax"
         )
-        # print("Set-Cookie:", response.headers.get("Set-Cookie"))
         return response, 200
     else:
         return jsonify({"error": "Invalid email or password"}), 401     
 
     
 
-@bp.route('is_authenticated', methods=['GET'])
+@bp.route('/is_authenticated', methods=['GET'])
 @jwt_required()
 def is_authenticated():
-    if request.cookies.get("access_token_cookie"):
-        return jsonify({"message": "User is authenticated"}), 200
-    else:
-        return jsonify({"error": "User is not authenticated"}), 401
+    try:
+        verify_jwt_in_request()
+        user_id = get_jwt_identity()
+        jwt_data = get_jwt()
 
+        exp_timestamp = jwt_data.get("exp", 0)
+        if datetime.fromtimestamp(exp_timestamp, timezone.utc) < datetime.now(timezone.utc):
+            return jsonify({"error": "Token expired"}), 401
+
+        return jsonify({"message": "User is authenticated", "user_id": user_id}), 200
+    except Exception as e:
+        return jsonify({"error": "Not authenticated", "details": str(e)}), 401
 
 
 @bp.route('/password-reset/request', methods=['POST'])

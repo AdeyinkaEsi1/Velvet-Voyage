@@ -2,13 +2,26 @@ async function isLoggedIn() {
     try {
         const response = await fetch("/auth/is_authenticated", {
             method: "GET",
-            credentials: "include" // Include cookies in the request
+            credentials: "include",
+            headers: {
+                "Accept": "application/json"
+            }
         });
 
+        console.log("Authentication check response:", response);
+
+        if (response.status === 401) {
+            console.log("Token expired or user is not authenticated.");
+            window.location.href = "/auth/login?message=Session expired. Please log in again.";
+            return false;
+        }
+
         if (response.ok) {
-            return true; // User is logged in
+            const data = await response.json();
+            console.log("User authenticated:", data);
+            return true;
         } else {
-            return false; // User is not logged in
+            return false;
         }
     } catch (error) {
         console.error("Error checking auth status:", error);
@@ -23,7 +36,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     const dashboardLink = document.getElementById("dashboard-link");
     const signOutLink = document.getElementById("sign-out-link");
 
-    const loggedIn = await isLoggedIn()
+    const loggedIn = await isLoggedIn();
+    console.log("User is logged in:", loggedIn);
 
     if (loggedIn) {
         signInLink.style.display = "none";
@@ -46,7 +60,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                credentials: "include"
+                credentials: "include" // Include cookies in the request
             });
 
             if (!response.ok) {

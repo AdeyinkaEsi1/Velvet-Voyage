@@ -10,14 +10,23 @@
 
 <style>
     .error-message {
-    color: red;
-    font-size: 14px;
-    margin-top: 10px;
-    display: none; /* Hidden by default */
-}
+        color: red;
+        font-size: 14px;
+        margin-top: 10px;
+        display: none;
+        /* Hidden by default */
+    }
 </style>
 
 <main>
+
+    <div class="alert-container">
+        {% if message %}
+        <div class="alert-login alert-warning">
+            {{ message }}
+        </div>
+        {% endif %}
+    </div>
 
 
     <div class="login-container">

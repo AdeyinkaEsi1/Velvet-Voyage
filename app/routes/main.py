@@ -15,8 +15,6 @@ def get_db_connection():
     return conn
 
 
-
-
 @bp.route('/', methods=["GET"])
 def home():
     return render_template("home/index.html")

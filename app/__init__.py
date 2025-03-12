@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, redirect, url_for
 from flask_jwt_extended import JWTManager
 import mysql.connector
 from datetime import timedelta
@@ -12,7 +12,7 @@ def create_app():
     app.config["SECRET_KEY"] = secret_key
     app.config["SESSION_TYPE"] = "filesystem"
     app.config["JWT_SECRET_KEY"] = jwt_key
-    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=3)
     
     app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
     app.config["JWT_ACCESS_COOKIE_NAME"] = "access_token_cookie"
@@ -29,11 +29,14 @@ def create_app():
     global revoked_tokens
     revoked_tokens = set()
     
+    @jwt.expired_token_loader
+    def expired_token_callback(jwt_header, jwt_payload):
+        return redirect(url_for('auth.login_page', message="Session expired. Please log in again."))
+    
     @jwt.unauthorized_loader
     def unauthorized_response(callback):
-        return jsonify({
-            "error": "You have to sign in", "redirect": "/auth/login"
-            }), 401
+        return redirect(url_for('auth.login_page', message="You have to log in"))
+
 
     @jwt.token_in_blocklist_loader
     def check_if_token_is_revoked(jwt_header, jwt_payload):
@@ -41,7 +44,6 @@ def create_app():
 
     
     # Import Blueprints
-    from app.routes.flights import bp as flights_bp
     from app.routes.booking import bp as booking_bp
     from app.routes.flight_book import bp as flight_book_bp
     from app.routes.auth import bp as auth_bp
@@ -55,13 +57,14 @@ def create_app():
     app.register_blueprint(main_bp)
     app.register_blueprint(admin_bp)
     app.register_blueprint(user_bp, url_prefix='/user')
-    app.register_blueprint(flights_bp, url_prefix='/flights')
     app.register_blueprint(booking_bp, url_prefix='/bookings')
     app.register_blueprint(flight_book_bp, url_prefix='/flight_book')
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(logout_bp, url_prefix='/logout')
     app.register_blueprint(payment_bp, url_prefix='/payment')
     app.register_blueprint(dashboard_bp, url_prefix='/dashboard')
+    
+    
     
     return app
     

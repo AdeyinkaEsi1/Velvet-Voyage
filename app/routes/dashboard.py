@@ -1,8 +1,10 @@
+from flask import flash
 from flask import Blueprint, jsonify, render_template, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import mysql.connector
 from datetime import datetime, timedelta
 from config import Config
+from werkzeug.security import check_password_hash
 
 bp = Blueprint('dashboard', __name__)
 
@@ -18,10 +20,63 @@ def get_db_connection():
 
 
 
-@bp.route('/profile', methods=['GET'])
+@bp.route('/profile', methods=['GET', 'POST'])
 @jwt_required()
 def user_profile():
-    return render_template("user/dashboard/profile.html")
+    user_id = get_jwt_identity()
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    if request.method == 'POST':
+        data = request.form
+        
+        current_password = data.get("current_password")
+        new_password = data.get("password")
+        confirm_password = data.get("confirm_password")
+        
+        cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
+        user_data = cursor.fetchone()
+
+        if not user_data:
+            return "User not found", 404
+        
+        if not user_data.get("password_hash"):
+            flash("Password data is missing. Please reset your password.", "error")
+        elif not check_password_hash(user_data["password_hash"], current_password):
+            flash("Current password is incorrect.", "error")
+
+        else:
+            cursor.execute("""
+                UPDATE users
+                SET first_name = %s, last_name = %s, email = %s, address = %s, city = %s, 
+                    mobile_number = %s, date_of_birth = %s, gender = %s, password = %s
+                WHERE id = %s
+            """, (
+                data.get("first_name"),
+                data.get("last_name"),
+                data.get("email"),
+                data.get("address"),
+                data.get("city"),
+                data.get("mobile_number"),
+                data.get("date_of_birth"),
+                data.get("gender"),
+                data.get("password"),
+                user_id
+            ))
+
+            conn.commit()
+            flash("Profile updated successfully!", "success")
+
+    cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
+    user_data = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    if not user_data:
+        return "User not found", 404
+
+    return render_template("user/dashboard/profile.html", data=user_data)
+
 
 
 @bp.route('/generate_receipt', methods=['GET'])

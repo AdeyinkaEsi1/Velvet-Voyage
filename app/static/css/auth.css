@@ -1,6 +1,50 @@
 /* Reset styles */
 
 /* =================== COMMON FORM STYLES =================== */
+/* Alert Container */
+
+main {
+  background-color: black;
+}
+
+.alert-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Alert Message */
+.alert-login {
+  width: 400px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ffcc00;
+  background-color: #fff3cd;
+  color: #856404;
+  border-radius: 5px;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.alert-login {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
 .input-group {
   margin-bottom: 15px;
 }
@@ -9,13 +53,15 @@
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
-  color: #333;
+  color: #ffcc00;
 }
 
 .input-group input,
 .input-group select {
   width: 100%;
   padding: 10px;
+  background-color: black;
+  color: #ffcc00;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
@@ -25,8 +71,8 @@
 .submit-btn,
 .login-btn {
   width: 100%;
-  background: #003366;
-  color: white;
+  background: #ffcc00;
+  color: black;
   border: none;
   padding: 10px;
   font-size: 16px;
@@ -36,12 +82,12 @@
 
 .submit-btn:hover,
 .login-btn:hover {
-  background: #002244;
+  background: black;
 }
 
 /* Promo section (common for both login & signup) */
 .promo {
-  background: #003366;
+  background: #ffcc003c;
   color: white;
   padding: 40px;
   text-align: center;
@@ -52,17 +98,19 @@
 }
 
 .promo h3 {
+  font-size: 50px;
   margin-bottom: 15px;
+  color: black;
 }
 
 .promo p {
-  font-size: 14px;
+  font-size: 18px;
   margin-bottom: 15px;
 }
 
 .promo .sign-up {
-  background: white;
-  color: #003366;
+  background: #ffcc00;
+  color: black;
   text-decoration: none;
   padding: 8px 15px;
   border-radius: 5px;
@@ -71,13 +119,14 @@
 }
 
 .promo .sign-up:hover {
-  background: #e6e6e6;
+  background: black;
+  color: gold;
 }
 
 /* =================== LOGIN PAGE STYLES =================== */
 .login-container {
   display: flex;
-  background: white;
+  background: #222;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   max-width: 800px;
@@ -92,7 +141,7 @@
 }
 
 .login-form h2 {
-  color: #003366;
+  color: #ffcc00;
   margin-bottom: 20px;
   text-align: center;
 }
@@ -112,7 +161,7 @@
   display: block;
   text-align: right;
   margin-bottom: 15px;
-  color: #003366;
+  color: #ffcc00;
   text-decoration: none;
 }
 
@@ -123,7 +172,7 @@
 /* =================== SIGNUP PAGE STYLES =================== */
 .signup-container {
   display: flex;
-  background: white;
+  background: #222;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   max-width: 900px;
@@ -138,7 +187,7 @@
 }
 
 .form-container h2 {
-  color: #003366;
+  color: #ffcc00;
   margin-bottom: 20px;
   text-align: center;
 }
