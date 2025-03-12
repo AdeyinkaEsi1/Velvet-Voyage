@@ -50,7 +50,6 @@
         <a href="{{ url_for('dashboard.user_profile') }}">Profile</a>
         <a href="{{ url_for('dashboard.user_bookings') }}">Bookings</a>
         <a href="{{ url_for('dashboard.generate_receipt') }}">Generate Receipt</a>
-        <a href="{{ url_for('logout.logout') }}">Logout</a>
     </div>
 </main>
 
@@ -61,12 +60,12 @@
         const receiptDetails = document.getElementById("receipt-details");
         const errorMessage = document.getElementById("error-message");
         const downloadReceiptLink = document.getElementById("download-receipt");
-        
+
         receiptForm.addEventListener("submit", async function (e) {
             e.preventDefault();
-            
+
             const bookingId = document.getElementById("booking_id").value.trim();
-            
+
             if (!bookingId) {
                 showError("Please enter a valid Booking ID.");
                 return;
