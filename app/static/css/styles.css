@@ -189,7 +189,7 @@ main {
   gap: 16px;
 }
 
-.sign-in {
+.sign-in, .dashboard {
   display: none;
   border: 1px solid #ffcc00e9;
   padding: 8px 16px;
@@ -200,11 +200,11 @@ main {
   transition: background-color 0.3s;
 }
 
-.sign-in:hover {
+.sign-in:hover, .dashboard:hover {
   background-color: #ffcc00e2;
 }
 
-.register {
+.register, .sign-out {
   border: 1px solid #ffcc00e2;
   color: white;
   padding: 8px 16px;
@@ -223,7 +223,7 @@ main {
   transition: background-color 0.3s;
 } */
 
-.register:hover {
+.register:hover, .sign-out:hover {
   background-color: #ffcc00;
 }
 
