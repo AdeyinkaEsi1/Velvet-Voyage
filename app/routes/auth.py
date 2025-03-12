@@ -31,7 +31,6 @@ def register():
     required_fields = ["first_name", "last_name", "email", "confirm_email", "address", "city", 
                        "mobile_number", "date_of_birth", "gender", "password", "confirm_password"]
 
-    # Check if all fields are present
     if not all(field in data for field in required_fields):
         return jsonify({"error": "All fields are required"}), 400
 
@@ -81,6 +80,13 @@ def register():
         conn.close()    
 
 
+@bp.route('/login_page', methods=['GET'])
+def login_page():
+    return render_template('user/auth/login.html')
+
+@bp.route('/register_page', methods=['GET'])
+def register_page():
+    return render_template('user/auth/register.html')
 
 
 @bp.route('/login', methods=['POST'])
@@ -103,7 +109,6 @@ def login():
         access_token = create_access_token(identity=str(user['id']))
 
         response = make_response(jsonify({"message": "Login successful"}))
-        
         response.set_cookie(
         "access_token_cookie", access_token,
         httponly=True, secure=False, samesite="Lax"
@@ -114,6 +119,16 @@ def login():
         return jsonify({"error": "Invalid email or password"}), 401     
 
     
+
+@bp.route('is_authenticated', methods=['GET'])
+@jwt_required()
+def is_authenticated():
+    if request.cookies.get("access_token_cookie"):
+        return jsonify({"message": "User is authenticated"}), 200
+    else:
+        return jsonify({"error": "User is not authenticated"}), 401
+
+
 
 @bp.route('/password-reset/request', methods=['POST'])
 def request_password_reset():
