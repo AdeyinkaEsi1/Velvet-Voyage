@@ -1,7 +1,7 @@
 from datetime import timedelta
 import re
 from flask_bcrypt import Bcrypt
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, render_template, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import mysql.connector
 from config import Config
@@ -27,6 +27,34 @@ def is_admin(user_id):
     conn.close()
     return user and user["role"] == "admin"
 
+
+@bp.route('/admin/dashboard', methods=['GET'])
+@jwt_required()
+def admin_dashboard():
+    admin_id = get_jwt_identity()
+    if not is_admin(admin_id):
+        return jsonify({"error": "Unauthorized"}), 403
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    query = """
+    SELECT COUNT(id) AS total_users, 
+           (SELECT COUNT(id) FROM bookings) AS total_bookings, 
+           (SELECT COUNT(id) FROM flights) AS total_flights
+    FROM users
+    """
+
+    cursor.execute(query)
+    dashboard_data = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    
+    return render_template("admin/dashboard.html", dashboard_data=dashboard_data)
+
+    # return jsonify({"dashboard_data": dashboard_data}), 200
+
+
 @bp.route('/admin/users', methods=['GET'])
 @jwt_required()
 def get_all_users():
@@ -41,7 +69,8 @@ def get_all_users():
     cursor.close()
     conn.close()
 
-    return jsonify({"users": users}), 200
+    return render_template('admin/users.html', users=users)
+    # return jsonify({"users": users}), 200
 
 @bp.route('/admin/users/delete/<int:user_id>', methods=['DELETE'])
 @jwt_required()
@@ -196,7 +225,8 @@ def get_all_bookings():
     cursor.close()
     conn.close()
 
-    return jsonify({"bookings": bookings}), 200
+    return render_template('admin/bookings.html', bookings=bookings)
+    # return jsonify({"bookings": bookings}), 200
 
 
 @bp.route('/admin/bookings/edit/<booking_id>', methods=['PUT'])
@@ -265,8 +295,10 @@ def get_all_flights():
 
     cursor.close()
     conn.close()
+    
+    return render_template('admin/flights.html', flights=flights)
 
-    return jsonify({"flights": flights}), 200
+    # return jsonify({"flights": flights}), 200
 
 
 
@@ -427,8 +459,8 @@ def monthly_sales():
     sales_data = cursor.fetchall()
     cursor.close()
     conn.close()
-
-    return jsonify({"monthly_sales": sales_data}), 200
+    return render_template('admin/sales.html', sales_data=sales_data)
+    # return jsonify({"monthly_sales": sales_data}), 200
 
 
 @bp.route('/admin/reports/sales-per-journey', methods=['GET'])

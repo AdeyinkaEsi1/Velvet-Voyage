@@ -1,0 +1,496 @@
+/* General Styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: black;
+  color: gold;
+}
+
+.admin-dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 20%;
+  background-color: #222;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(255, 215, 0, 0.1);
+}
+
+.sidebar h2 {
+  color: gold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav ul li {
+  margin: 15px 0;
+}
+
+.sidebar nav ul li a {
+  color: gold;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.sidebar nav ul li a:hover {
+  text-decoration: underline;
+}
+
+/* Main Content */
+.main-content {
+  width: 80%;
+  padding: 20px;
+}
+
+.content-section {
+  margin-bottom: 40px;
+}
+
+.content-section h2 {
+  color: gold;
+  border-bottom: 2px solid gold;
+  padding-bottom: 10px;
+}
+
+/* Forms and Tables */
+.flight-form,
+.booking-list,
+.user-list,
+.sales-breakdown {
+  background-color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.flight-form h3,
+.booking-list h3,
+.user-list h3,
+.sales-breakdown h3 {
+  color: gold;
+  margin-bottom: 15px;
+}
+
+input,
+button {
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid gold;
+  border-radius: 4px;
+  background-color: #444;
+  color: gold;
+}
+
+button {
+  cursor: pointer;
+  background-color: gold;
+  color: black;
+  border: none;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+table th,
+table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid gold;
+}
+
+table th {
+  background-color: #444;
+  color: gold;
+}
+
+.edit-btn,
+.delete-btn,
+.reset-pwd-btn {
+  padding: 5px 10px;
+  margin: 0 5px;
+  font-size: 14px;
+}
+
+.edit-btn {
+  background-color: #ffcc00;
+}
+
+.delete-btn {
+  background-color: #ff4444;
+}
+
+.reset-pwd-btn {
+  background-color: #00cc66;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-dashboard {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+  }
+
+  .main-content {
+    width: 100%;
+  }
+}
+
+/* Booking Management Section */
+#booking-management {
+  margin-bottom: 40px;
+}
+
+#booking-management h2 {
+  color: gold;
+  border-bottom: 2px solid gold;
+  padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+#booking-management h2 i {
+  margin-right: 10px;
+}
+
+/* List of All Bookings */
+.booking-list {
+  background-color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.booking-list h3 {
+  color: gold;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.booking-list h3 i {
+  margin-right: 10px;
+}
+
+.booking-list table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.booking-list table th,
+.booking-list table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid gold;
+}
+
+.booking-list table th {
+  background-color: #444;
+  color: gold;
+}
+
+.booking-list table td {
+  background-color: #333;
+}
+
+.booking-list table td button {
+  padding: 5px 10px;
+  margin: 0 5px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.booking-list table td button i {
+  margin-right: 5px;
+}
+
+.booking-list table td .edit-btn {
+  background-color: #ffcc00;
+  color: black;
+}
+
+.booking-list table td .status-btn {
+  background-color: #00cc66;
+  color: white;
+}
+/* User Management Section */
+#user-management {
+    margin-bottom: 40px;
+}
+
+#user-management h2 {
+    color: gold;
+    border-bottom: 2px solid gold;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+#user-management h2 i {
+    margin-right: 10px;
+}
+
+/* List of All Users */
+.user-list {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.user-list h3 {
+    color: gold;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.user-list h3 i {
+    margin-right: 10px;
+}
+
+.user-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.user-list table th,
+.user-list table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid gold;
+}
+
+.user-list table th {
+    background-color: #444;
+    color: gold;
+}
+
+.user-list table td {
+    background-color: #333;
+}
+
+.user-list table td button {
+    padding: 5px 10px;
+    margin: 0 5px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+.user-list table td button i {
+    margin-right: 5px;
+}
+
+.user-list table td .edit-btn {
+    background-color: #ffcc00;
+    color: black;
+}
+
+.user-list table td .delete-btn {
+    background-color: #ff4444;
+}
+
+.user-list table td .reset-pwd-btn {
+    background-color: #00cc66;
+    color: white;
+}
+
+.user-list table td .edit-btn:hover,
+.user-list table td .delete-btn:hover,
+.user-list table td .reset-pwd-btn:hover {
+    opacity: 0.9;
+}
+.booking-list table td .edit-btn:hover,
+.booking-list table td .status-btn:hover {
+  opacity: 0.9;
+}
+
+/* User Management Section */
+#user-management {
+  margin-bottom: 40px;
+}
+
+#user-management h2 {
+  color: gold;
+  border-bottom: 2px solid gold;
+  padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+#user-management h2 i {
+  margin-right: 10px;
+}
+
+/* List of All Users */
+.user-list {
+  background-color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.user-list h3 {
+  color: gold;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.user-list h3 i {
+  margin-right: 10px;
+}
+
+.user-list table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.user-list table th,
+.user-list table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid gold;
+}
+
+.user-list table th {
+  background-color: #444;
+  color: gold;
+}
+
+.user-list table td {
+  background-color: #333;
+}
+
+.user-list table td button {
+  padding: 5px 10px;
+  margin: 0 5px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.user-list table td button i {
+  margin-right: 5px;
+}
+
+.user-list table td .edit-btn {
+  background-color: #ffcc00;
+  color: black;
+}
+
+.user-list table td .reset-pwd-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.user-list table td .edit-btn:hover,
+.user-list table td .reset-pwd-btn:hover {
+  opacity: 0.9;
+}
+
+/* Sales Reports Section */
+#sales-reports {
+  margin-bottom: 40px;
+}
+
+#sales-reports h2 {
+  color: gold;
+  border-bottom: 2px solid gold;
+  padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+#sales-reports h2 i {
+  margin-right: 10px;
+}
+
+/* Monthly Sales Breakdown */
+.sales-breakdown,
+.sales-per-journey,
+.top-customers {
+  background-color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.sales-breakdown h3,
+.sales-per-journey h3,
+.top-customers h3 {
+  color: gold;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.sales-breakdown h3 i,
+.sales-per-journey h3 i,
+.top-customers h3 i {
+  margin-right: 10px;
+}
+
+.sales-breakdown table,
+.sales-per-journey table,
+.top-customers table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.sales-breakdown table th,
+.sales-breakdown table td,
+.sales-per-journey table th,
+.sales-per-journey table td,
+.top-customers table th,
+.top-customers table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid gold;
+}
+
+.sales-breakdown table th,
+.sales-per-journey table th,
+.top-customers table th {
+  background-color: #444;
+  color: gold;
+}
+
+.sales-breakdown table td,
+.sales-per-journey table td,
+.top-customers table td {
+  background-color: #333;
+}

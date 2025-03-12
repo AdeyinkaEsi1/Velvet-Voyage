@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                credentials: "include" // Include cookies in the request
+                credentials: "include"
             });
 
             if (!response.ok) {
@@ -74,3 +74,4 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     });
 });
+
