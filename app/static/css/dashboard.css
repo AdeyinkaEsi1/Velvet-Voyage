@@ -1,0 +1,319 @@
+/* Main Layout */
+main {
+  display: grid;
+  grid-template-columns: 4fr 1fr; /* 4:1 ratio for main content to sidebar */
+  background: black;
+  padding: 20px;
+  min-height: 100vh;
+  gap: 30px;
+}
+
+/* Sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #222;
+  padding: 20px;
+  box-shadow: -2px 0px 10px gold;
+}
+
+.sidebar a {
+  color: gold;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 15px 20px;
+  width: 100%;
+  text-align: center;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  display: block;
+}
+
+.sidebar a:hover {
+  color: rgba(255, 217, 0, 0.7);
+  background: rgba(255, 217, 0, 0.2);
+}
+
+/* Adds a border between sidebar links */
+.sidebar a:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 217, 0, 0.3);
+}
+
+/* Dashboard Container - Specific to Bookings Page */
+.bookings-container {
+  padding: 30px;
+  background: #222;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px gold;
+  text-align: center;
+  border-right: 2px solid gold;
+}
+
+.bookings-container h2 {
+  margin-bottom: 20px;
+  color: gold;
+  text-transform: uppercase;
+}
+
+/* Table Styling */
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: black;
+  color: gold;
+}
+
+th,
+td {
+  padding: 12px;
+  border: 1px solid gold;
+  text-align: center;
+}
+
+th {
+  background: #333;
+  font-weight: bold;
+}
+
+tbody tr:hover {
+  background: #444;
+}
+
+/* Flight Class Color Coding */
+.class-economy {
+  color: lightblue;
+}
+
+.class-business {
+  color: orange;
+}
+
+/* Status Color Coding */
+.status-confirmed {
+  color: green;
+  font-weight: bold;
+}
+
+.status-cancelled {
+  color: red;
+  font-weight: bold;
+}
+
+.status-pending {
+  color: yellow;
+  font-weight: bold;
+}
+
+/* No Bookings Message */
+.no-bookings {
+  font-size: 18px;
+  font-style: italic;
+  color: gray;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+  main {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 10px;
+    box-shadow: none;
+    border-top: 2px solid gold;
+  }
+
+  .sidebar a {
+    padding: 10px;
+  }
+
+  .bookings-container {
+    border-right: none;
+  }
+}
+
+/* Profile Container */
+.profile-container {
+  padding: 30px;
+  background: #222;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px gold;
+  text-align: left;
+  border-right: 2px solid gold;
+  color: gold;
+}
+
+.profile-container h2 {
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* Profile Form */
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-group label {
+  font-size: 16px;
+  color: gold;
+}
+
+.form-group input,
+.form-group select {
+  padding: 10px;
+  border: 1px solid gold;
+  border-radius: 5px;
+  background: black;
+  color: gold;
+  font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: rgba(255, 217, 0, 0.7);
+  box-shadow: 0 0 5px rgba(255, 217, 0, 0.7);
+}
+
+/* Save Button */
+.save-button {
+  padding: 10px 20px;
+  background: gold;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.save-button:hover {
+  background: rgba(255, 217, 0, 0.7);
+}
+
+/* Receipt Container */
+.receipt-container {
+  padding: 30px;
+  background: #222;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px gold;
+  text-align: left;
+  border-right: 2px solid gold;
+  color: gold;
+}
+
+.receipt-container h2 {
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* Form Styling */
+#receipt-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#receipt-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+#receipt-form label {
+  font-size: 16px;
+  color: gold;
+}
+
+#receipt-form input {
+  padding: 10px;
+  border: 1px solid gold;
+  border-radius: 5px;
+  background: black;
+  color: gold;
+  font-size: 14px;
+}
+
+#receipt-form input:focus {
+  outline: none;
+  border-color: rgba(255, 217, 0, 0.7);
+  box-shadow: 0 0 5px rgba(255, 217, 0, 0.7);
+}
+
+.generate-button {
+  padding: 10px 20px;
+  background: gold;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.generate-button:hover {
+  background: rgba(255, 217, 0, 0.7);
+}
+
+/* Receipt Details */
+#receipt-details {
+  margin-top: 20px;
+}
+
+.details-content {
+  background: #333;
+  padding: 20px;
+  border-radius: 5px;
+  color: gold;
+}
+
+.details-content p {
+  margin: 10px 0;
+}
+
+.download-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: gold;
+  color: black;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
+
+.download-button:hover {
+  background: rgba(255, 217, 0, 0.7);
+}
+
+/* Error Message */
+#error-message {
+  margin-top: 20px;
+  padding: 10px;
+  background: #ff4444;
+  border-radius: 5px;
+  color: white;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
