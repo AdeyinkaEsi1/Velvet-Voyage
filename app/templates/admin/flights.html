@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Horizon Travels{% endblock %}
+
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+
+<body>
+    <div class="admin-dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="{{ url_for('admin.admin_dashboard') }}" style="text-decoration: none;">
+                <h2>Admin Dashboard</h2>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('admin.get_all_flights') }}"><i class="fas fa-plane"></i> Flight
+                    <li><a href="{{ url_for('admin.get_all_bookings') }}"><i class="fas fa-ticket-alt"></i>Booking
+                            Management</a></li>
+                    <li><a href="{{ url_for('admin.get_all_users') }}"><i class="fas fa-users"></i>User
+                            Management</a></li>
+                    <li><a href="{{ url_for('admin.monthly_sales') }}"><i class="fas fa-chart-line"></i>Sales
+                            Reports</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Flight Management Section -->
+            <section id="flight-management" class="content-section">
+                <h2><i class="fas fa-plane"></i> Flight Management</h2>
+
+                <!-- Add New Flight Form -->
+                <div class="flight-form">
+                    <h3><i class="fas fa-plus-circle"></i> Add New Flight</h3>
+                    <form>
+                        <input type="text" placeholder="Flight Number" required>
+                        <input type="text" placeholder="Departure" required>
+                        <input type="text" placeholder="Destination" required>
+                        <input type="number" placeholder="Price" required>
+                        <button type="submit"><i class="fas fa-save"></i> Add Flight</button>
+                    </form>
+                </div>
+
+                <!-- List of All Flights -->
+                <div class="flight-list">
+                    <h3><i class="fas fa-list"></i> List of All Flights</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Flight Number</th>
+                                <th>Departure</th>
+                                <th>Destination</th>
+                                <th>Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>FL123</td>
+                                <td>New York</td>
+                                <td>London</td>
+                                <td>$500</td>
+                                <td>
+                                    <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                                    <button class="delete-btn"><i class="fas fa-trash"></i> Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>FL456</td>
+                                <td>Paris</td>
+                                <td>Tokyo</td>
+                                <td>$700</td>
+                                <td>
+                                    <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                                    <button class="delete-btn"><i class="fas fa-trash"></i> Delete</button>
+                                </td>
+                            </tr>
+                            <!-- Add more rows as needed -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+{% endblock %}

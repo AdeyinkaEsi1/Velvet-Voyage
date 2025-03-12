@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Horizon Travels{% endblock %}
+
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+
+<body>
+    <div class="admin-dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="{{ url_for('admin.admin_dashboard') }}" style="text-decoration: none;">
+                <h2>Admin Dashboard</h2>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('admin.get_all_flights') }}"><i class="fas fa-plane"></i> Flight
+                    <li><a href="{{ url_for('admin.get_all_bookings') }}"><i class="fas fa-ticket-alt"></i>Booking
+                            Management</a></li>
+                    <li><a href="{{ url_for('admin.get_all_users') }}"><i class="fas fa-users"></i>User
+                            Management</a></li>
+                    <li><a href="{{ url_for('admin.monthly_sales') }}"><i class="fas fa-chart-line"></i>Sales
+                            Reports</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Booking Management Section -->
+            <section id="booking-management" class="content-section">
+                <h2><i class="fas fa-ticket-alt"></i> Booking Management</h2>
+
+                <!-- List of All Bookings -->
+                <div class="booking-list">
+                    <h3><i class="fas fa-list"></i> All Bookings</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Customer Name</th>
+                                <th>Flight Number</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>BK001</td>
+                                <td>John Doe</td>
+                                <td>FL123</td>
+                                <td>Confirmed</td>
+                                <td>
+                                    <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                                    <button class="status-btn"><i class="fas fa-sync"></i> Update Status</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>BK002</td>
+                                <td>Jane Smith</td>
+                                <td>FL456</td>
+                                <td>Pending</td>
+                                <td>
+                                    <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                                    <button class="status-btn"><i class="fas fa-sync"></i> Update Status</button>
+                                </td>
+                            </tr>
+                            <!-- Add more rows as needed -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+
+</html>
+{% endblock %}

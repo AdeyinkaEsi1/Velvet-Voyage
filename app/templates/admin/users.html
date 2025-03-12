@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Horizon Travels{% endblock %}
+
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+
+<body>
+    <div class="admin-dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="{{ url_for('admin.admin_dashboard') }}" style="text-decoration: none;">
+                <h2>Admin Dashboard</h2>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('admin.get_all_flights') }}"><i class="fas fa-plane"></i> Flight
+                    <li><a href="{{ url_for('admin.get_all_bookings') }}"><i class="fas fa-ticket-alt"></i>Booking
+                            Management</a></li>
+                    <li><a href="{{ url_for('admin.get_all_users') }}"><i class="fas fa-users"></i>User
+                            Management</a></li>
+                    <li><a href="{{ url_for('admin.monthly_sales') }}"><i class="fas fa-chart-line"></i>Sales
+                            Reports</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- User Management Section -->
+            <section id="user-management" class="content-section">
+                <h2><i class="fas fa-users"></i> User Management</h2>
+
+                <!-- List of All Users -->
+                <div class="user-list">
+                    <h3><i class="fas fa-list"></i> All Users</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>U001</td>
+                                <td>john_doe</td>
+                                <td>john@example.com</td>
+                                <td>Customer</td>
+                                <td>
+                                    <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                                    <button class="reset-pwd-btn"><i class="fas fa-key"></i> Reset Password</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>U002</td>
+                                <td>jane_smith</td>
+                                <td>jane@example.com</td>
+                                <td>Admin</td>
+                                <td>
+                                    <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                                    <button class="reset-pwd-btn"><i class="fas fa-key"></i> Reset Password</button>
+                                </td>
+                            </tr>
+                            <!-- Add more rows as needed -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+{% endblock %}
