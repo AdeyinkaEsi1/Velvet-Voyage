@@ -22,32 +22,6 @@
 </head>
 
 <main>
-    <header class="header">
-
-        <div class="header-container">
-            <a href="/" class="logo">
-                <img src="{{ url_for('static', filename='images/brand-logo.webp') }}" alt="HT Travels Logo"
-                    class="logo-img">
-                <span class="logo-text">HT Travels</span>
-            </a>
-            <nav class="nav">
-                <ul class="nav-list">
-                    <li><a href="" class="nav-link active">Home</a></li>
-                    <li><a href="#" class="nav-link">Flights</a></li>
-                    <li><a href="#" class="nav-link">About Us</a></li>
-                    <li><a href="#" class="nav-link">Contact</a></li>
-                </ul>
-            </nav>
-            <div class="auth-buttons">
-                <a href="{{ url_for('auth.login') }}" class="sign-in">Sign In</a>
-                <a href="{{ url_for('auth.register') }}" class="register">Register</a>
-                <button class="menu-toggle">
-                    <i class="fa fa-bars"></i>
-                </button>
-            </div>
-        </div>
-    </header>
-
     <!-- Login Popup Modal -->
     <div id="loginModal" class="modal">
         <div class="modal-login-container">
@@ -76,7 +50,7 @@
             <div class="modal-promo">
                 <h3>Welcome to HT Travels!</h3>
                 <p>Unlock exclusive deals, faster bookings, and personalized recommendations.</p>
-                <a href="{{ url_for('auth.register') }}" class="sign-up">Join Now</a>
+                <a href="{{ url_for('auth.register_page') }}" class="sign-up">Join Now</a>
             </div>
 
             <!-- Close Button -->
@@ -103,14 +77,15 @@
                 <form id="bookingForm" action="/flight_book" method="POST">
                     <div class="trip-options">
                         <label>
-                            <input type="radio" name="round_trip" value="true" checked>
-                            <span class="custom-radio"></span> Round Trip
+                            <input id="one-way" type="radio" name="round_trip" value="false" checked>
+                            <span class="custom-radio one-way"></span> One Way
                         </label>
                         <label>
-                            <input type="radio" name="round_trip" value="false">
-                            <span class="custom-radio"></span> One Way
+                            <input id="round-trip" type="radio" name="round_trip" value="true">
+                            <span class="custom-radio"></span> Round Trip
                         </label>
                     </div>
+
                     <div class="form-grid">
                         <select name="departure" id="departure-location" required>
                             <option value="" disabled selected>Select Departure</option>
@@ -127,7 +102,7 @@
                             <option value="Birmingham">Birmingham</option>
                             <option value="Aberdeen">Aberdeen</option>
                         </select>
-                        <select id="destination-location" name="destination" required>
+                        <select name="destination" id="destination-location" required>
                             <option value="" disabled selected>Select Destination</option>
                             <option value="Newcastle">Newcastle</option>
                             <option value="Bristol">Bristol</option>
@@ -142,8 +117,10 @@
                             <option value="Birmingham">Birmingham</option>
                             <option value="Aberdeen">Aberdeen</option>
                         </select>
-                        <input type="date" id="departureDate" name="departure_date" placeholder="Departure Date" required>
-                        <input type="date" id="arrivalDate" name="arrival_date" placeholder="Arrival Date" required>
+                        <input type="date" id="departureDate" name="departure_date" placeholder="Departure Date"
+                            required>
+                        <input type="date" id="returnDate" name="return_date" placeholder="Return Date" required
+                            disabled>
                     </div>
                     <div class="form-grid">
                         <input type="number" id="seats" min="1" max="130" name="seats" placeholder="Seats" required>
@@ -151,7 +128,6 @@
                             <option value="" disabled selected>Choose Flight Class</option>
                             <option value="economy">Economy</option>
                             <option value="business">Business</option>
-                            <option value="premium">Premium</option>
                         </select>
                         <button id="newSearch" type="submit" class="search-btn">Search Flights</button>
                     </div>
@@ -162,20 +138,25 @@
         <script>
             document.getElementById("bookingForm").addEventListener("submit", function (event) {
                 let departureValue = document.getElementById("departureDate").value.trim();
-                let arrivalValue = document.getElementById("arrivalDate").value.trim();
-                if (!departureValue || !arrivalValue) {
-                    alert("Please select both departure and arrival dates.");
+                if (!departureValue) {
+                    alert("Please select departure dates.");
                     event.preventDefault();
                 }
             });
 
-            flatpickr("#departureDate", {
+            let departurePicker = flatpickr("#departureDate", {
                 dateFormat: "Y-m-d",
                 minDate: "today",
-                maxDate: new Date().fp_incr(90)
+                maxDate: new Date().fp_incr(90),
+                onChange: function (selectedDates) {
+                    if (selectedDates.length > 0) {
+                        let minReturnDate = selectedDates[0];
+                        arrivalPicker.set("minDate", minReturnDate);
+                    }
+                }
             });
 
-            flatpickr("#arrivalDate", {
+            let arrivalPicker = flatpickr("#returnDate", {
                 dateFormat: "Y-m-d",
                 minDate: "today",
                 maxDate: new Date().fp_incr(90)
@@ -197,7 +178,31 @@
                 }
             });
 
+
+
+            const oneWayRadio = document.getElementById('one-way');
+            const roundTripRadio = document.getElementById('round-trip');
+            const returnDateInput = document.getElementById('returnDate');
+
+            function toggleReturnDate() {
+                if (roundTripRadio.checked) {
+                    returnDateInput.disabled = false;
+                } else {
+                    returnDateInput.disabled = true;
+                    returnDateInput.value = "";
+                }
+            }
+            oneWayRadio.addEventListener('change', toggleReturnDate);
+            roundTripRadio.addEventListener('change', toggleReturnDate);
+
         </script>
+
+        <style>
+            #returnDate:disabled {
+                cursor: not-allowed;
+                background-color: rgba(255, 217, 0, 0.43);
+            }
+        </style>
 
     </section>
 
@@ -496,67 +501,5 @@
         </div>
     </section>
 </main>
-
-<!-- Footer Section -->
-<footer class="footer">
-    <div class="container">
-        <div class="footer-grid">
-            <!-- Company Info -->
-            <div class="footer-section">
-                <div class="logo">
-                    <img src="{{ url_for('static', filename='images/brand-logo.webp') }}" alt="HT Travels Logo">
-                    <span>HT Travels</span>
-                </div>
-                <p>Your trusted partner for flights, hotels, and vacation packages worldwide.</p>
-                <div class="social-icons">
-                    <a href="#" class="icon facebook"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="#" class="icon instagram"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" class="icon twitter"><i class="fa-brands fa-twitter"></i></a>
-                    <a href="#" class="icon linkedin"><i class="fa-brands fa-linkedin"></i></a>
-                </div>
-            </div>
-
-            <!-- Quick Links -->
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Flights</a></li>
-                    <li><a href="#">Hotels</a></li>
-                    <li><a href="#">Vacation Packages</a></li>
-                    <li><a href="#">Travel Insurance</a></li>
-                </ul>
-            </div>
-
-            <!-- Support -->
-            <div class="footer-section">
-                <h3>Support</h3>
-                <ul>
-                    <li><a href="#">FAQs</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">Booking Terms</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Refund Policy</a></li>
-                    <li><a href="#">COVID-19 Travel Info</a></li>
-                </ul>
-            </div>
-
-            <!-- Contact Info -->
-            <div class="footer-section">
-                <h3>Contact Us</h3>
-                <p>123 Travel Street, Suite 100<br>New York, NY 10001</p>
-                <p>Phone: +1 (555) 123-4567</p>
-                <p>Email: info@httravels.com</p>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <p>© 2025 HT Travels. All rights reserved.</p>
-        </div>
-    </div>
-</footer>
-
-
 
 {% endblock %}

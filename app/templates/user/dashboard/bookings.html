@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Flights - Horizon Travels{% endblock %}
+
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</head>
+
+<main>
+    <div class="bookings-container">
+        <h2>My Bookings</h2>
+
+        {% if bookings %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Departure</th>
+                        <th>Destination</th>
+                        <th>Departure Time</th>
+                        <th>Seats</th>
+                        <th>Flight Class</th>
+                        <th>Status</th>
+                        <th>Payment Ref</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.booking_id }}</td>
+                        <td>{{ booking.departure }}</td>
+                        <td>{{ booking.destination }}</td>
+                        <td>{{ booking.departure_time }}</td>
+                        <td>{{ booking.seats }}</td>
+                        <td class="class-{{ booking.flight_class }}">{{ booking.flight_class|capitalize }}</td>
+                        <td class="status-{{ booking.status }}">{{ booking.status|capitalize }}</td>
+                        <td>{{ booking.payment_reference or 'N/A' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="no-bookings">No bookings found.</p>
+        {% endif %}
+    </div>
+
+    <div class="sidebar">
+        <a href="{{ url_for('dashboard.user_profile') }}">Profile</a>
+        <a href="{{ url_for('dashboard.user_bookings') }}">Bookings</a>
+        <a href="{{ url_for('dashboard.generate_receipt') }}">Generate Receipt</a>
+        <a href="{{ url_for('logout.logout') }}">Logout</a>
+    </div>
+</main>
+
+{% endblock %}
