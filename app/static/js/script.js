@@ -1,74 +1,62 @@
+async function isLoggedIn() {
+    try {
+        const response = await fetch("/auth/is_authenticated", {
+            method: "GET",
+            credentials: "include" // Include cookies in the request
+        });
 
-const home = () => {
-    document.addEventListener("DOMContentLoaded", function () {
-        let userLoggedIn = false; // Replace with actual session check
-    
-        if (!userLoggedIn) {
-            setTimeout(() => {
-                let modal = document.getElementById("loginModal");
-                if (modal) {
-                    modal.classList.add("show");
-                }
-            }, 5000);
+        if (response.ok) {
+            return true; // User is logged in
+        } else {
+            return false; // User is not logged in
         }
-    
-        let closeButton = document.querySelector(".modal-close-btn");
-        if (closeButton) {
-            closeButton.addEventListener("click", function () {
-                document.getElementById("loginModal").classList.remove("show");
+    } catch (error) {
+        console.error("Error checking auth status:", error);
+        return false;
+    }
+}
+
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const signInLink = document.getElementById("sign-in-link");
+    const registerLink = document.getElementById("register-link");
+    const dashboardLink = document.getElementById("dashboard-link");
+    const signOutLink = document.getElementById("sign-out-link");
+
+    const loggedIn = await isLoggedIn()
+
+    if (loggedIn) {
+        signInLink.style.display = "none";
+        registerLink.style.display = "none";
+        dashboardLink.style.display = "inline-block";
+        signOutLink.style.display = "inline-block";
+    } else {
+        signInLink.style.display = "inline-block";
+        registerLink.style.display = "inline-block";
+        dashboardLink.style.display = "none";
+        signOutLink.style.display = "none";
+    }
+
+    signOutLink.addEventListener("click", async function (e) {
+        e.preventDefault();
+
+        try {
+            const response = await fetch("/logout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include"
             });
+
+            if (!response.ok) {
+                throw new Error("Logout failed. Please try again.");
+            }
+
+            window.location.reload();
+        } catch (error) {
+            console.error("Logout error:", error);
+            alert(error.message);
         }
-    
-        window.addEventListener("click", function (event) {
-            let modal = document.getElementById("loginModal");
-            if (modal && event.target === modal) {
-                modal.classList.remove("show");
-            }
-        });
-    
-    
-        document.getElementById("flightForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-        
-            let departure = document.getElementById("departure").value;
-            let destination = document.getElementById("destination").value;
-        
-            if (!departure || !destination) {
-                alert("Please select both departure and destination!");
-                return;
-            }
-            window.location.href = `/flight_price/?departure=${encodeURIComponent(departure)}&destination=${encodeURIComponent(destination)}`;
-        });
-    
     });
-
-};
-home()
-
-
-
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     const searchForm = document.getElementById("flight-search-form");
-    
-    //     searchForm.addEventListener("submit", function (event) {
-    //         event.preventDefault();
-    
-    //         // Get form values
-    //         const departure = searchForm.departure.value;
-    //         const arrival = searchForm.arrival.value;
-    //         const date = searchForm.date.value;
-    
-    //         if (!departure || !arrival || !date) {
-    //             alert("Please fill in all fields.");
-    //             return;
-    //         }
-    
-    //         // Redirect to flights page with query params
-    //         const searchParams = new URLSearchParams({ departure, arrival, date });
-    //         window.location.href = `/flights?${searchParams.toString()}`;
-    //     });
-    
-    
-    
-    
-    // });
+});

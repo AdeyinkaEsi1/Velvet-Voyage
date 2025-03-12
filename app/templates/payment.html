@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Flights - Horizon Travels{% endblock %}
+
+{% block content %}
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flight-form.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/payment.css') }}">
+    <script>
+        const flightBookUrl = "{{ url_for('flight_book.flight_book') }}";
+    </script>
+
+</head>
+
+
+<div class="payment-container">
+    <div class="payment-form">
+        <h2>Secure Payment</h2>
+        <form id="paymentForm" action="{{ url_for('payment.process_payment') }}" method="POST">
+            <input type="hidden" name="booking_id" value="{{ booking_id }}">
+            <label>Card Number</label>
+            <input type="text" name="card_number" placeholder="1234 5678 9012 3456" required>
+
+            <label>Expiry Date</label>
+            <input type="text" name="expiry" placeholder="MM/YY" required>
+
+            <label>CVV</label>
+            <input type="text" name="cvv" placeholder="123" required>
+
+            <button type="submit">Pay Now</button>
+            <button class="paypal-btn">Pay with PayPal</button>
+        </form>
+    </div>
+
+    <div class="booking-details">
+        <h2>Flight Details</h2>
+        <p><strong>Booking ID:</strong> {{ booking_id }}</p>
+        <p><strong>Flight ID:</strong> {{ flight_id }}</p>
+        <p><strong>Departure:</strong> {{ departure }}</p>
+        <p><strong>Destination:</strong> {{ destination }}</p>
+        <p><strong>Departure Time:</strong> {{ departure_time }}</p>
+        <p><strong>Arrival Time:</strong> {{ arrival_time }}</p>
+        <p><strong>Seats:</strong> {{ seats }}</p>
+        <p><strong>Flight Class:</strong> {{ flight_class }}</p>
+        <p><strong>Round Trip:</strong> {{ round_trip }}</p>
+        <p><strong>Total Price:</strong> £{{ final_price }}</p>
+        <p><strong>Discount Applied:</strong> £{{ discount }}</p>
+    </div>
+</div>
+
+
+{% if error %}
+<div class="error-message">{{ error }}</div>
+{% endif %}
+
+<script>
+    document.getElementById("paymentForm").addEventListener("submit", function (event) {
+        alert('clicked')
+        event.preventDefault();
+
+        fetch("{{ url_for('payment.process_payment') }}", {
+            method: "POST",
+            body: new FormData(this),
+            credentials: "include"
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert("Payment Failed: " + data.error);
+                } else {
+                    alert("Payment Successful!");
+                    if (data.redirect) {
+                        window.location.href = data.redirect;
+                    }
+                    window.location.href = "/dashboard/bookings";
+                }
+            })
+            .catch(error => console.error("Error processing payment:", error));
+    });
+</script>
+
+
+{% endblock %}

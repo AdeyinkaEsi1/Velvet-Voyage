@@ -1,5 +1,5 @@
 from datetime import timedelta
-from flask import Blueprint, request, jsonify, render_template, Response
+from flask import Blueprint, redirect, request, jsonify, render_template, Response, url_for
 import mysql.connector
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from config import Config
@@ -10,6 +10,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 import io
 from datetime import datetime
+from flask import session
 
 
 bp = Blueprint('bookings', __name__)
@@ -22,220 +23,234 @@ def get_db_connection():
         database=Config.DB_NAME
     )
 
-        
+
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
-@bp.route('/', methods=['GET'])
+
+@bp.route('/confirm_booking', methods=['POST'])
 @jwt_required()
-def get_user_bookings():
-    user_id = get_jwt_identity()
+def confirm_booking():
+    user_id = get_jwt_identity() 
 
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    if not request.is_json:
+        return jsonify({"error": "Request must be JSON"}), 400
 
-    query = """
-    SELECT b.booking_id, b.flight_id, f.departure, f.destination, f.departure_time, 
-           f.arrival_time, b.seats, b.flight_class, b.round_trip, b.status, b.booking_time, b.payment_reference
-    FROM bookings b
-    LEFT JOIN flights f ON b.flight_id = f.id
-    WHERE b.user_id = %s
-    ORDER BY b.booking_time DESC
-    """
-    
-    cursor.execute(query, (user_id,))
-    bookings = cursor.fetchall()
-    for booking in bookings:
-        if isinstance(booking["departure_time"], timedelta):
-            booking["departure_time"] = str(booking["departure_time"])
-        if isinstance(booking["arrival_time"], timedelta):
-            booking["arrival_time"] = str(booking["arrival_time"])
+    data = request.get_json()
 
-    cursor.close()
-    conn.close()
+    print("DEBUG: Received Data:", data)
 
-    return jsonify({"bookings": bookings}), 200
+    # Extract booking details
+    flight_id = data.get("flight_id")
+    seats = data.get("seats")
+    flight_class = data.get("flight_class")
+    round_trip = data.get("round_trip")
+    base_price = data.get("base_price")
+    discount = data.get("discount")
+    final_price = data.get("final_price")
 
+    print("DEBUG: Flight ID:", flight_id, "Type:", type(flight_id))
 
-@bp.route('/book', methods=["POST"])
-@jwt_required()
-def book_flight():
-    user_id = get_jwt_identity()
-    data = request.json
-    
-    required_fields = ["flight_id", "seats", "flight_class", "round_trip"]
-    if not all(field in data for field in required_fields):
-        return jsonify({"error": "All fields are required"}), 400
+    if not all([flight_id, seats, flight_class, base_price, discount, final_price]):
+        return jsonify({"error": "Missing booking details"}), 400
 
-    flight_id = data["flight_id"]
-    seats = data["seats"]
-    flight_class = data["flight_class"].lower()
-    round_trip = data["round_trip"]
+    try:
+        flight_id = int(flight_id)
+    except (ValueError, TypeError):
+        return jsonify({"error": "Invalid flight_id: Must be an integer"}), 400
 
-    if seats < 1 or seats > 130:
-        return jsonify({"error": "Seats must be between 1 and 130"}), 400
-    if flight_class not in ["economy", "business", "premium"]:
-        return jsonify({"error": "Invalid flight class"}), 400
-    
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-
-    cursor.execute("""
-        SELECT f.departure, f.destination, f.departure_time, fp.price
-        FROM flights f
-        JOIN flight_prices fp ON f.departure = fp.departure AND f.destination = fp.destination
-        WHERE f.id = %s
-    """, (flight_id,))
-    
-    flight = cursor.fetchone()
-
-    if not flight:
-        return jsonify({"error": "Flight not found"}), 404
-
-    departure_time = (datetime.min + flight["departure_time"]).time()  # Convert timedelta to time
-    departure_datetime = datetime.combine(datetime.now().date(), departure_time)
-    booking_date = datetime.now()
-    days_in_advance = (departure_datetime - booking_date).days
-
-    discount_percentage = 0
-    if 80 <= days_in_advance <= 90:
-        discount_percentage = 25
-    elif 60 <= days_in_advance <= 79:
-        discount_percentage = 15
-    elif 45 <= days_in_advance <= 59:
-        discount_percentage = 10
-
-    original_price = flight["price"] * seats
-    discount_amount = (discount_percentage / 100) * original_price
-    final_price = original_price - discount_amount
+    if isinstance(round_trip, str):
+        round_trip = round_trip.lower() == "true"
+    round_trip = int(round_trip) 
 
     booking_id = str(uuid.uuid4())[:12].replace("-", "").upper()
-    
-    cursor.execute("""
-        INSERT INTO bookings (booking_id, user_id, flight_id, booking_time, seats, flight_class, 
-                              round_trip, status, total_price, discount_applied)
-        VALUES (%s, %s, %s, NOW(), %s, %s, %s, 'pending', %s, %s)
-    """, (booking_id, user_id, flight_id, seats, flight_class, round_trip, final_price, discount_amount))
-
-    conn.commit()
-    
-    cursor.execute("SELECT * FROM bookings WHERE booking_id = %s", (booking_id,))
-    booking_details = cursor.fetchone()
-
-    cursor.close()
-    conn.close()
-
-    return jsonify({
-        "message": "Successfully booked a flight",
-        "booking": {
-            "user_id": booking_details["user_id"],
-            "flight_id": booking_details["flight_id"],
-            "booking_time": str(booking_details["booking_time"]),
-            "seats": booking_details["seats"],
-            "flight_class": booking_details["flight_class"],
-            "round_trip": bool(booking_details["round_trip"]),
-            "booking_id": booking_details["booking_id"],
-            "total_price": booking_details["total_price"],
-            "discount_applied": booking_details["discount_applied"]
-        }
-    }), 200
-
-
-
-@bp.route('/cancel', methods=['PUT'])
-@jwt_required()
-def cancel_booking():
-    user_id = get_jwt_identity()
-    data = request.json
-    booking_id = data.get("booking_id")
-
-    if not booking_id:
-        return jsonify({"error": "Booking ID is required"}), 400
 
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute("""
-        SELECT departure_time, total_price, status FROM bookings 
-        WHERE booking_id = %s AND user_id = %s
-    """, (booking_id, user_id))
+    try:
+        cursor.execute("SELECT id FROM flights WHERE id = %s", (flight_id,))
+        flight = cursor.fetchone()
+
+        if not flight:
+            return jsonify({"error": f"Invalid flight_id: Flight {flight_id} does not exist"}), 400
+
+        cursor.execute("""
+            INSERT INTO bookings (booking_id, user_id, flight_id, booking_time, seats, flight_class, 
+                                round_trip, status, total_price, discount_applied)
+            VALUES (%s, %s, %s, NOW(), %s, %s, %s, 'pending', %s, %s)
+        """, (booking_id, user_id, flight_id, seats, flight_class, round_trip, final_price, discount))
+
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": "Failed to save booking", "details": str(e)}), 500
+    finally:
+        cursor.close()
+        conn.close()
+
+    return jsonify({"message": "Booking confirmed!", "booking_id": booking_id}), 200
+
+
+
+
+
+# @bp.route('/book', methods=["POST"])
+# @jwt_required()
+# def book_flight():
+#     user_id = get_jwt_identity()
+#     data = request.json
+#     response_format = request.args.get("format", "json")
     
-    booking = cursor.fetchone()
+#     required_fields = ["flight_id", "seats", "flight_class", "round_trip"]
+#     if not all(field in data for field in required_fields):
+#         return jsonify({"error": "All fields are required"}), 400
 
-    if not booking:
-        return jsonify({"error": "Booking not found or not authorized"}), 404
+#     flight_id = data["flight_id"]
+#     seats = data["seats"]
+#     flight_class = data["flight_class"].lower()
+#     round_trip = data["round_trip"]
 
-    if booking["status"] in ("completed", "checked-in", "cancelled"):
-        return jsonify({"error": f"Booking cannot be cancelled (current status: {booking['status']})"}), 400
+#     if seats < 1 or seats > 130:
+#         return jsonify({"error": "Seats must be between 1 and 130"}), 400
+#     if flight_class not in ["economy", "business", "premium"]:
+#         return jsonify({"error": "Invalid flight class"}), 400
+    
+#     conn = get_db_connection()
+#     cursor = conn.cursor(dictionary=True)
 
-    departure_time = (datetime.min + booking["departure_time"]).time()  # Convert timedelta to time
-    departure_datetime = datetime.combine(datetime.now().date(), departure_time)
-    cancel_date = datetime.now()
-    days_before_departure = (departure_datetime - cancel_date).days
+#     cursor.execute("""
+#     SELECT f.id, f.departure, f.destination, f.departure_time, 
+#            COALESCE(fp.price, dp.price) AS price
+#     FROM flights f
+#     LEFT JOIN flight_prices fp ON LOWER(TRIM(f.departure)) = LOWER(TRIM(fp.departure)) 
+#                                AND LOWER(TRIM(f.destination)) = LOWER(TRIM(fp.destination))
+#     LEFT JOIN flight_prices dp ON dp.departure = 'DEFAULT' AND dp.destination = 'DEFAULT'
+#     WHERE f.id = %s
+#     """, (flight_id,))
+    
+#     flight = cursor.fetchone()
+#     print("DEBUG: Flight Query Result ->", flight)
+
+#     if not flight:
+#         if response_format == "json":
+#             return jsonify({"error": "Flight not found"}), 404
+#         else:
+#             return redirect(url_for("main.home", error="Sorry, we have no flights available. Please edit your search to find other routes."))
+        
+
+#     departure_time = (datetime.min + flight["departure_time"]).time()  # Convert timedelta to time
+#     departure_datetime = datetime.combine(datetime.now().date(), departure_time)
+#     booking_date = datetime.now()
+#     days_in_advance = (departure_datetime - booking_date).days
+
+#     discount_percentage = 0
+#     if 80 <= days_in_advance <= 90:
+#         discount_percentage = 25
+#     elif 60 <= days_in_advance <= 79:
+#         discount_percentage = 15
+#     elif 45 <= days_in_advance <= 59:
+#         discount_percentage = 10
+
+#     original_price = flight["price"] * seats
+#     discount_amount = (discount_percentage / 100) * original_price
+#     final_price = original_price - discount_amount
+
+#     booking_id = str(uuid.uuid4())[:12].replace("-", "").upper()
+
+#     cursor.execute("""
+#         INSERT INTO bookings (booking_id, user_id, flight_id, booking_time, seats, flight_class, 
+#                             round_trip, status, total_price, discount_applied)
+#         VALUES (%s, %s, %s, NOW(), %s, %s, %s, 'pending', %s, %s)
+#     """, (booking_id, user_id, flight_id, seats, flight_class, round_trip, final_price, discount_amount))
+
+#     conn.commit()
+
+#     cursor.execute("SELECT * FROM bookings WHERE booking_id = %s", (booking_id,))
+#     booking_details = cursor.fetchone()
+
+#     cursor.close()
+#     conn.close()
+
+#     print("DEBUG: Booking Details:", booking_details)
+
+#     if not booking_details:
+#         return jsonify({"error": "Booking not found"}), 404
+
+#     if response_format == "json":
+#         return jsonify({
+#             "message": "Successfully booked a flight",
+#             "booking": {
+#                 "user_id": booking_details["user_id"],
+#                 "flight_id": booking_details["flight_id"],
+#                 "booking_time": str(booking_details["booking_time"]),
+#                 "seats": booking_details["seats"],
+#                 "flight_class": booking_details["flight_class"],
+#                 "round_trip": bool(booking_details["round_trip"]),
+#                 "booking_id": booking_details["booking_id"],
+#                 "total_price": str(booking_details["total_price"]),
+#                 "discount_applied": str(booking_details["discount_applied"])
+#             }
+#         }), 200
+#     else:
+#         return render_template("flight-book.html", booking=booking_details)
 
 
-    cancellation_fee = 0
-    if 30 <= days_before_departure < 60:
-        cancellation_fee = 0.40 * booking["total_price"]
-    elif days_before_departure < 30:
-        cancellation_fee = booking["total_price"]
 
-    cursor.execute("""
-        UPDATE bookings 
-        SET status = 'cancelled', cancellation_fee = %s
-        WHERE booking_id = %s
-    """, (cancellation_fee, booking_id))
+# @bp.route('/cancel', methods=['PUT'])
+# @jwt_required()
+# def cancel_booking():
+#     user_id = get_jwt_identity()
+#     data = request.json
+#     booking_id = data.get("booking_id")
 
-    conn.commit()
-    cursor.close()
-    conn.close()
+#     if not booking_id:
+#         return jsonify({"error": "Booking ID is required"}), 400
 
-    return jsonify({
-        "message": "Booking cancelled",
-        "cancellation_fee": cancellation_fee
-    }), 200
+#     conn = get_db_connection()
+#     cursor = conn.cursor(dictionary=True)
+
+#     cursor.execute("""
+#         SELECT departure_time, total_price, status FROM bookings 
+#         WHERE booking_id = %s AND user_id = %s
+#     """, (booking_id, user_id))
+    
+#     booking = cursor.fetchone()
+
+#     if not booking:
+#         return jsonify({"error": "Booking not found or not authorized"}), 404
+
+#     if booking["status"] in ("completed", "checked-in", "cancelled"):
+#         return jsonify({"error": f"Booking cannot be cancelled (current status: {booking['status']})"}), 400
+
+#     departure_time = (datetime.min + booking["departure_time"]).time()  # Convert timedelta to time
+#     departure_datetime = datetime.combine(datetime.now().date(), departure_time)
+#     cancel_date = datetime.now()
+#     days_before_departure = (departure_datetime - cancel_date).days
 
 
+#     cancellation_fee = 0
+#     if 30 <= days_before_departure < 60:
+#         cancellation_fee = 0.40 * booking["total_price"]
+#     elif days_before_departure < 30:
+#         cancellation_fee = booking["total_price"]
+
+#     cursor.execute("""
+#         UPDATE bookings 
+#         SET status = 'cancelled', cancellation_fee = %s
+#         WHERE booking_id = %s
+#     """, (cancellation_fee, booking_id))
+
+#     conn.commit()
+#     cursor.close()
+#     conn.close()
+
+#     return jsonify({
+#         "message": "Booking cancelled",
+#         "cancellation_fee": cancellation_fee
+#     }), 200
 
 
-@bp.route('/pay', methods=['POST'])
-@jwt_required()
-def process_payment():
-    user_id = get_jwt_identity()
-    data = request.json
-    booking_id = data.get("booking_id")
-
-    if not booking_id:
-        return jsonify({"error": "Booking ID is required"}), 400
-
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-
-    cursor.execute("SELECT status, payment_status FROM bookings WHERE booking_id = %s AND user_id = %s", 
-                   (booking_id, user_id))
-    booking = cursor.fetchone()
-
-    if not booking:
-        return jsonify({"error": "Booking not found or not authorized"}), 404
-
-    if booking["status"] != "pending":
-        return jsonify({"error": f"Booking cannot be paid for (current status: {booking['status']})"}), 400
-
-    if booking["payment_status"] == "paid":
-        return jsonify({"error": "Booking is already paid for"}), 400
-
-    payment_successful = random.choice([True, False])  # Simulate success/failure
-
-    if payment_successful:
-        payment_reference = ''.join(random.choices(string.ascii_uppercase + string.digits, k=12))  # Generate ref
-        cursor.execute("UPDATE bookings SET payment_status = 'paid', status = 'confirmed', payment_reference = %s WHERE booking_id = %s", 
-                       (payment_reference, booking_id))
-        conn.commit()
-
-        return jsonify({"message": "Payment successful!", "payment_reference": payment_reference}), 200
-    else:
-        cursor.execute("UPDATE bookings SET payment_status = 'failed' WHERE booking_id = %s", (booking_id,))
-        conn.commit()
-        return jsonify({"error": "Payment failed. Try again."}), 400
 
 
 

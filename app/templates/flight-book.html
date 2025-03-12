@@ -20,30 +20,6 @@
 
 
 <main>
-    <header class="header">
-        <div class="header-container">
-            <a href="/" class="logo">
-                <img src="{{ url_for('static', filename='images/brand-logo.webp') }}" alt="HT Travels Logo"
-                    class="logo-img">
-                <span class="logo-text">HT Travels</span>
-            </a>
-            <nav class="nav">
-                <ul class="nav-list">
-                    <li><a href="" class="nav-link active">Home</a></li>
-                    <li><a href="#" class="nav-link">Flights</a></li>
-                    <li><a href="#" class="nav-link">About Us</a></li>
-                    <li><a href="#" class="nav-link">Contact</a></li>
-                </ul>
-            </nav>
-            <div class="auth-buttons">
-                <a href="{{ url_for('auth.login') }}" class="sign-in">Sign In</a>
-                <a href="{{ url_for('auth.register') }}" class="register">Register</a>
-                <button class="menu-toggle">
-                    <i class="fa fa-bars"></i>
-                </button>
-            </div>
-        </div>
-    </header>
 
     <section class="flight-review">
         <div class="flight-review">
@@ -102,19 +78,19 @@
                             </tr>
                             <tr>
                                 <td><strong>Base Price (Per Seat):</strong></td>
-                                <td id="basePrice">${{ booking.base_price }}</td>
+                                <td id="basePrice">£{{ booking.base_price }}</td>
                             </tr>
                             <tr>
                                 <td><strong>Total Price (Before Discount):</strong></td>
-                                <td id="totalPrice">${{ booking.total_price}} ({{ booking.base_price }} x {{ booking.seats }} seats)</td>
+                                <td id="totalPrice">£{{ booking.total_price}} ({{ booking.base_price }} x {{ booking.seats }} seats)</td>
                             </tr>
                             <tr>
                                 <td><strong>Discount Applied:</strong></td>
-                                <td id="discountApplied">${{ booking.discount_applied }}</td>
+                                <td id="discountApplied">£{{ booking.discount_applied }}</td>
                             </tr>
                             <tr>
                                 <td><strong>Final Price (After Discount)</strong></td>
-                                <td id="finalPrice">${{ booking.final_price }}</td>
+                                <td id="finalPrice">£{{ booking.final_price }}</td>
                             </tr>
                         </table>
                         {% else %}
@@ -168,64 +144,6 @@
     </script>
 </main>
 
-<!-- Footer Section -->
-<footer class="footer">
-    <div class="container">
-        <div class="footer-grid">
-            <!-- Company Info -->
-            <div class="footer-section">
-                <div class="logo">
-                    <img src="{{ url_for('static', filename='images/brand-logo.webp') }}" alt="HT Travels Logo">
-                    <span>HT Travels</span>
-                </div>
-                <p>Your trusted partner for flights, hotels, and vacation packages worldwide.</p>
-                <div class="social-icons">
-                    <a href="#" class="icon facebook"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="#" class="icon instagram"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" class="icon twitter"><i class="fa-brands fa-twitter"></i></a>
-                    <a href="#" class="icon linkedin"><i class="fa-brands fa-linkedin"></i></a>
-                </div>
-            </div>
 
-            <!-- Quick Links -->
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Flights</a></li>
-                    <li><a href="#">Hotels</a></li>
-                    <li><a href="#">Vacation Packages</a></li>
-                    <li><a href="#">Travel Insurance</a></li>
-                </ul>
-            </div>
-
-            <!-- Support -->
-            <div class="footer-section">
-                <h3>Support</h3>
-                <ul>
-                    <li><a href="#">FAQs</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">Booking Terms</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Refund Policy</a></li>
-                    <li><a href="#">COVID-19 Travel Info</a></li>
-                </ul>
-            </div>
-
-            <!-- Contact Info -->
-            <div class="footer-section">
-                <h3>Contact Us</h3>
-                <p>123 Travel Street, Suite 100<br>Edinburgh, ED 10001</p>
-                <p>Phone: +1 (555) 123-4567</p>
-                <p>Email: info@httravels.com</p>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <p>© 2025 HT Travels. All rights reserved.</p>
-        </div>
-    </div>
-</footer>
 
 {% endblock %}
