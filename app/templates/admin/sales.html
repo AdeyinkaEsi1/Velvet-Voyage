@@ -20,12 +20,14 @@
             </a>
             <nav>
                 <ul>
-                    <li><a href="{{ url_for('admin.get_all_flights') }}"><i class="fas fa-plane"></i> Flight
-                    <li><a href="{{ url_for('admin.get_all_bookings') }}"><i class="fas fa-ticket-alt"></i>Booking
+                    <li><a href="{{ url_for('admin.get_all_flights') }}"><i class="fas fa-plane"></i> Flights
                             Management</a></li>
-                    <li><a href="{{ url_for('admin.get_all_users') }}"><i class="fas fa-users"></i>User
-                            Management</a></li>
-                    <li><a href="{{ url_for('admin.monthly_sales') }}"><i class="fas fa-chart-line"></i>Sales
+                    <li><a href="{{ url_for('admin.get_all_bookings') }}"><i class="fas fa-ticket-alt"></i>Bookings
+                            Management</a>
+                    </li>
+                    <li><a href="{{ url_for('admin.get_all_users') }}"><i class="fas fa-users"></i>Users Management</a>
+                    </li>
+                    <li><a href="{{ url_for('admin.sales_reports') }}"><i class="fas fa-chart-line"></i> Sales
                             Reports</a></li>
                 </ul>
             </nav>
@@ -44,28 +46,20 @@
                         <thead>
                             <tr>
                                 <th>Month</th>
-                                <th>Total Sales</th>
-                                <th>Top Customer</th>
-                                <th>Most Profitable Route</th>
+                                <th>Total Sales (£)</th>
                             </tr>
                         </thead>
                         <tbody>
+                            {% for sale in monthly_sales %}
                             <tr>
-                                <td>January</td>
-                                <td>$50,000</td>
-                                <td>John Doe</td>
-                                <td>New York → London</td>
+                                <td>{{ sale.month }}</td>
+                                <td>£{{ sale.total_sales }}</td>
                             </tr>
-                            <tr>
-                                <td>February</td>
-                                <td>$45,000</td>
-                                <td>Jane Smith</td>
-                                <td>Paris → Tokyo</td>
-                            </tr>
-                            <!-- Add more rows as needed -->
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
+
 
                 <!-- Sales Per Journey -->
                 <div class="sales-per-journey">
@@ -74,25 +68,22 @@
                         <thead>
                             <tr>
                                 <th>Journey</th>
-                                <th>Total Sales</th>
+                                <th>Total Sales (£)</th>
                                 <th>Number of Bookings</th>
                             </tr>
                         </thead>
                         <tbody>
+                            {% for sale in sales_per_journey %}
                             <tr>
-                                <td>New York → London</td>
-                                <td>$30,000</td>
-                                <td>150</td>
+                                <td>{{ sale.departure }} → {{ sale.destination }}</td>
+                                <td>£{{ sale.total_sales }}</td>
+                                <td>{{ sale.total_bookings }}</td>
                             </tr>
-                            <tr>
-                                <td>Paris → Tokyo</td>
-                                <td>$25,000</td>
-                                <td>120</td>
-                            </tr>
-                            <!-- Add more rows as needed -->
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
+
 
                 <!-- Top Customers -->
                 <div class="top-customers">
@@ -101,25 +92,70 @@
                         <thead>
                             <tr>
                                 <th>Customer Name</th>
-                                <th>Total Spent</th>
+                                <th>Email</th>
+                                <th>Total Spent (£)</th>
                                 <th>Number of Bookings</th>
                             </tr>
                         </thead>
                         <tbody>
+                            {% for customer in top_customers %}
                             <tr>
-                                <td>John Doe</td>
-                                <td>$10,000</td>
-                                <td>20</td>
+                                <td>{{ customer.first_name }} {{ customer.last_name }}</td>
+                                <td>{{ customer.email }}</td>
+                                <td>£{{ customer.total_spent }}</td>
+                                <td>{{ customer.total_bookings }}</td>
                             </tr>
-                            <tr>
-                                <td>Jane Smith</td>
-                                <td>$8,500</td>
-                                <td>15</td>
-                            </tr>
-                            <!-- Add more rows as needed -->
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Profitable routes -->
+                <div class="profitable-routes">
+                    <h3><i class="fas fa-money-bill"></i> Most Profitable Routes</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Route</th>
+                                <th>Total Revenue (£)</th>
+                                <th>Number of Bookings</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for route in profitable_routes %}
+                            <tr>
+                                <td>{{ route.departure }} → {{ route.destination }}</td>
+                                <td>£{{ route.revenue }}</td>
+                                <td>{{ route.total_bookings }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!--  -->
+                <div class="loss-routes">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Loss-Making Routes</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Route</th>
+                                <th>Total Revenue (£)</th>
+                                <th>Number of Bookings</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for route in loss_routes %}
+                            <tr>
+                                <td>{{ route.departure }} → {{ route.destination }}</td>
+                                <td>£{{ route.revenue }}</td>
+                                <td>{{ route.total_bookings }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
             </section>
         </main>
     </div>
