@@ -40,7 +40,7 @@ def flight_book():
     error = "Please fill in all required fields."
 
     if not departure or not destination or not departure_date:
-        return render_template("home/index.html", error=error)
+        return render_template("index.html", error=error)
 
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -70,7 +70,7 @@ def flight_book():
         base_flight_price = base_price["price"]
         
     if not base_price:
-        return render_template("home/index.html", error="Price not found for the selected route.")
+        return render_template("index.html", error="Price not found for the selected route.")
 
     total_flight_price = base_flight_price * seats
 
