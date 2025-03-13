@@ -28,6 +28,32 @@ def is_admin(user_id):
     return user and user["role"] == "admin"
 
 
+# @bp.route('/admin/dashboard', methods=['GET'])
+# @jwt_required()
+# def admin_dashboard():
+#     admin_id = get_jwt_identity()
+#     if not is_admin(admin_id):
+#         return jsonify({"error": "Unauthorized"}), 403
+
+#     conn = get_db_connection()
+#     cursor = conn.cursor(dictionary=True)
+
+#     query = """
+#     SELECT COUNT(id) AS total_users, 
+#            (SELECT COUNT(id) FROM bookings) AS total_bookings, 
+#            (SELECT COUNT(id) FROM flights) AS total_flights
+#     FROM users
+#     """
+
+#     cursor.execute(query)
+#     dashboard_data = cursor.fetchone()
+#     cursor.close()
+#     conn.close()
+    
+#     return render_template("admin/dashboard.html", dashboard_data=dashboard_data)
+
+
+
 @bp.route('/admin/dashboard', methods=['GET'])
 @jwt_required()
 def admin_dashboard():
@@ -38,21 +64,41 @@ def admin_dashboard():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    query = """
-    SELECT COUNT(id) AS total_users, 
-           (SELECT COUNT(id) FROM bookings) AS total_bookings, 
-           (SELECT COUNT(id) FROM flights) AS total_flights
-    FROM users
-    """
-
-    cursor.execute(query)
+    # total users, total bookings, total flights, total revenue
+    cursor.execute("""
+        SELECT 
+            (SELECT COUNT(id) FROM users) AS total_users,
+            (SELECT COUNT(id) FROM bookings) AS total_bookings,
+            (SELECT COUNT(id) FROM flights) AS total_flights,
+            (SELECT COALESCE(SUM(fp.price * b.seats), 0) FROM bookings b 
+             JOIN flight_prices fp ON b.flight_id = fp.id 
+             WHERE b.payment_status = 'paid') AS total_revenue,
+            (SELECT COUNT(id) FROM bookings WHERE status = 'pending') AS pending_bookings,
+            (SELECT COUNT(id) FROM bookings WHERE status = 'confirmed') AS confirmed_bookings
+    """)
     dashboard_data = cursor.fetchone()
+
+    # recent bookings
+    cursor.execute("""
+        SELECT b.booking_id, u.first_name, u.last_name, 
+               f.departure, f.destination, b.status
+        FROM bookings b
+        JOIN users u ON b.user_id = u.id
+        JOIN flights f ON b.flight_id = f.id
+        ORDER BY b.booking_time DESC
+        LIMIT 5
+    """)
+    recent_bookings = cursor.fetchall()
+
     cursor.close()
     conn.close()
-    
-    return render_template("admin/dashboard.html", dashboard_data=dashboard_data)
 
-    # return jsonify({"dashboard_data": dashboard_data}), 200
+    return render_template(
+        "admin/dashboard.html",
+        dashboard_data=dashboard_data,
+        recent_bookings=recent_bookings
+    )
+
 
 
 @bp.route('/admin/users', methods=['GET'])
@@ -64,13 +110,50 @@ def get_all_users():
 
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT id, first_name, last_name, email, role FROM users")
+    cursor.execute("SELECT id, first_name, last_name, city, gender, mobile_number, email, role FROM users")
     users = cursor.fetchall()
     cursor.close()
     conn.close()
 
     return render_template('admin/users.html', users=users)
     # return jsonify({"users": users}), 200
+
+
+
+@bp.route('/admin/update_user_role/<int:user_id>', methods=['PUT'])
+@jwt_required()
+def update_user_role(user_id):
+    admin_id = get_jwt_identity()
+
+    if not is_admin(admin_id):
+        return jsonify({"error": "Unauthorized access"}), 403
+
+    data = request.json
+    new_role = data.get("role")
+
+    if new_role not in ["user", "admin"]:
+        return jsonify({"error": "Invalid role. Choose 'user' or 'admin'."}), 400
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT id FROM users WHERE id = %s", (user_id,))
+    user = cursor.fetchone()
+
+    if not user:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": "User not found"}), 404
+
+    cursor.execute("UPDATE users SET role = %s WHERE id = %s", (new_role, user_id))
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify({"message": f"User role updated successfully to '{new_role}'"}), 200
+
+
 
 @bp.route('/admin/users/delete/<int:user_id>', methods=['DELETE'])
 @jwt_required()
@@ -206,7 +289,7 @@ def get_all_bookings():
 
     query = """
     SELECT b.booking_id, u.first_name, u.last_name, u.email, 
-           f.departure, f.destination, f.departure_time, f.arrival_time, 
+           f.departure, f.destination, f.departure_time, f.id, f.arrival_time, 
            b.seats, b.flight_class, b.round_trip, b.status, b.booking_time, b.payment_status
     FROM bookings b
     LEFT JOIN users u ON b.user_id = u.id
@@ -229,7 +312,7 @@ def get_all_bookings():
     # return jsonify({"bookings": bookings}), 200
 
 
-@bp.route('/admin/bookings/edit/<booking_id>', methods=['PUT'])
+@bp.route('/admin/update/booking/<booking_id>', methods=['PUT'])
 @jwt_required()
 def update_booking_status(booking_id):
     admin_id = get_jwt_identity()
@@ -256,7 +339,7 @@ def update_booking_status(booking_id):
 
 
 
-@bp.route('/admin/bookings/delete/<booking_id>', methods=['DELETE'])
+@bp.route('/admin/delete/booking/<booking_id>', methods=['DELETE'])
 @jwt_required()
 def delete_booking(booking_id):
     admin_id = get_jwt_identity()
@@ -275,30 +358,45 @@ def delete_booking(booking_id):
 
 
 
+
+def format_timedelta(td):
+    """Convert a timedelta object to a string in HH:MM:SS format."""
+    total_seconds = int(td.total_seconds())
+    hours, remainder = divmod(total_seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    return f"{hours:02}:{minutes:02}:{seconds:02}"
+
+
 @bp.route('/admin/flights', methods=['GET'])
 @jwt_required()
-def get_all_flights():
+def get_all_flights(): 
     admin_id = get_jwt_identity()
     if not is_admin(admin_id):
         return jsonify({"error": "Unauthorized"}), 403
 
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM flights")
-    flights = cursor.fetchall()
 
+    cursor.execute("""
+        SELECT f.id, f.departure, f.destination, f.departure_time, f.arrival_time, fp.price
+        FROM flights f
+        LEFT JOIN flight_prices fp 
+        ON f.departure = fp.departure AND f.destination = fp.destination
+    """)
+    
+    flights = cursor.fetchall()
+    
     for flight in flights:
         if isinstance(flight["departure_time"], timedelta):
-            flight["departure_time"] = str(flight["departure_time"])
+            flight["departure_time"] = format_timedelta(flight["departure_time"])
         if isinstance(flight["arrival_time"], timedelta):
-            flight["arrival_time"] = str(flight["arrival_time"])
+            flight["arrival_time"] = format_timedelta(flight["arrival_time"])
+
 
     cursor.close()
     conn.close()
     
     return render_template('admin/flights.html', flights=flights)
-
-    # return jsonify({"flights": flights}), 200
 
 
 
@@ -310,7 +408,7 @@ def add_flight():
         return jsonify({"error": "Unauthorized"}), 403
 
     data = request.json
-    required_fields = ["departure", "destination", "departure_time", "arrival_time"]
+    required_fields = ["departure", "destination", "departure_time", "arrival_time", "price"]
     
     if not all(field in data for field in required_fields):
         return jsonify({"error": "Missing required flight details"}), 400
@@ -318,50 +416,28 @@ def add_flight():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    cursor.execute(
-        "INSERT INTO flights (departure, destination, departure_time, arrival_time) VALUES (%s, %s, %s, %s)",
-        (data["departure"], data["destination"], data["departure_time"], data["arrival_time"])
-    )
-    conn.commit()
-    cursor.close()
-    conn.close()
+    try:
+        cursor.execute(
+            "INSERT INTO flights (departure, destination, departure_time, arrival_time) VALUES (%s, %s, %s, %s)",
+            (data["departure"], data["destination"], data["departure_time"], data["arrival_time"])
+        )
+        
+        flight_id = cursor.lastrowid
 
-    return jsonify({"message": "Flight added successfully"}), 201
+        cursor.execute(
+            "INSERT INTO flight_prices (departure, destination, price) VALUES (%s, %s, %s) "
+            "ON DUPLICATE KEY UPDATE price = VALUES(price)",
+            (data["departure"], data["destination"], data["price"])
+        )
 
-
-@bp.route('/admin/flights/edit/<int:flight_id>', methods=['PUT'])
-@jwt_required()
-def update_flight(flight_id):
-    admin_id = get_jwt_identity()
-    if not is_admin(admin_id):
-        return jsonify({"error": "Unauthorized"}), 403
-
-    data = request.json
-    update_fields = []
-    values = []
-
-    allowed_fields = ["departure", "destination", "departure_time", "arrival_time"]
-
-    for field in allowed_fields:
-        if field in data:
-            update_fields.append(f"{field} = %s")
-            values.append(data[field])
-
-    if not update_fields:
-        return jsonify({"error": "No valid fields to update"}), 400
-
-    values.append(flight_id)
-
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    
-    query = f"UPDATE flights SET {', '.join(update_fields)} WHERE id = %s"
-    cursor.execute(query, values)
-    conn.commit()
-    cursor.close()
-    conn.close()
-
-    return jsonify({"message": "Flight updated successfully"}), 200
+        conn.commit()
+        return jsonify({"message": "Flight added successfully", "flight_id": flight_id}), 201
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+        conn.close()
 
 
 
@@ -381,6 +457,7 @@ def delete_flight(flight_id):
     conn.close()
 
     return jsonify({"message": "Flight deleted successfully"}), 200
+
 
 
 @bp.route('/admin/flights/prices', methods=['GET'])
@@ -410,6 +487,52 @@ def get_all_flight_prices():
     return jsonify({"flight_prices": prices}), 200
 
 
+@bp.route('/admin/update/flight/<int:flight_id>', methods=['PUT'])
+@jwt_required()
+def update_flight(flight_id):
+    admin_id = get_jwt_identity()
+    if not is_admin(admin_id):
+        return jsonify({"error": "Unauthorized"}), 403
+
+    data = request.json
+    departure = data.get("departure")
+    destination = data.get("destination")
+    departure_time = data.get("departure_time")
+    arrival_time = data.get("arrival_time")
+    price = data.get("price")
+
+    if not (departure and destination and departure_time and arrival_time and price):
+        return jsonify({"error": "All fields are required"}), 400
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            UPDATE flights 
+            SET departure=%s, destination=%s, departure_time=%s, arrival_time=%s
+            WHERE id=%s
+        """, (departure, destination, departure_time, arrival_time, flight_id))
+
+        cursor.execute("""
+            UPDATE flight_prices
+            SET price=%s
+            WHERE departure=%s AND destination=%s
+        """, (price, departure, destination))
+
+        conn.commit()
+        return jsonify({"message": "Flight updated successfully!"}), 200
+
+    except mysql.connector.Error as err:
+        conn.rollback()
+        return jsonify({"error": f"Database error: {err}"}), 500
+
+    finally:
+        cursor.close()
+        conn.close()
+
+
+
 
 @bp.route('/admin/flights/edit/prices/<int:price_id>', methods=['PUT'])
 @jwt_required()
@@ -435,9 +558,10 @@ def update_flight_price(price_id):
     return jsonify({"message": f"Flight price updated to {new_price}"}), 200
 
 
-@bp.route('/admin/reports/monthly-sales', methods=['GET'])
+@bp.route('/admin/reports', methods=['GET'])
 @jwt_required()
-def monthly_sales():
+def sales_reports():
+    """Fetch all sales reports and pass to admin/sales.html"""
     admin_id = get_jwt_identity()
     if not is_admin(admin_id):
         return jsonify({"error": "Unauthorized"}), 403
@@ -445,142 +569,85 @@ def monthly_sales():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    query = """
-    SELECT DATE_FORMAT(booking_time, '%Y-%m') AS month, 
-           SUM(fp.price * b.seats) AS total_sales
-    FROM bookings b
-    JOIN flight_prices fp ON b.flight_id = fp.id
-    WHERE b.payment_status = 'paid'
-    GROUP BY month
-    ORDER BY month DESC
-    """
+    # Monthly Sales Breakdown
+    cursor.execute("""
+        SELECT DATE_FORMAT(booking_time, '%Y-%m') AS month, 
+               SUM(fp.price * b.seats) AS total_sales
+        FROM bookings b
+        JOIN flight_prices fp ON b.flight_id = fp.id
+        WHERE b.payment_status = 'paid'
+        GROUP BY month
+        ORDER BY month DESC
+    """)
+    monthly_sales = cursor.fetchall()
 
-    cursor.execute(query)
-    sales_data = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return render_template('admin/sales.html', sales_data=sales_data)
-    # return jsonify({"monthly_sales": sales_data}), 200
+    # Sales per Journey
+    cursor.execute("""
+        SELECT fp.departure, fp.destination, 
+               SUM(fp.price * b.seats) AS total_sales, 
+               COUNT(b.booking_id) AS total_bookings
+        FROM bookings b
+        JOIN flight_prices fp ON b.flight_id = fp.id
+        WHERE b.payment_status = 'paid'
+        GROUP BY fp.departure, fp.destination
+        ORDER BY total_sales DESC
+    """)
+    sales_per_journey = cursor.fetchall()
 
+    # Top Customers
+    cursor.execute("""
+        SELECT u.id, u.first_name, u.last_name, u.email, 
+               SUM(fp.price * b.seats) AS total_spent, 
+               COUNT(b.booking_id) AS total_bookings
+        FROM bookings b
+        JOIN users u ON b.user_id = u.id
+        JOIN flight_prices fp ON b.flight_id = fp.id
+        WHERE b.payment_status = 'paid'
+        GROUP BY u.id, u.first_name, u.last_name, u.email
+        ORDER BY total_spent DESC
+        LIMIT 10
+    """)
+    top_customers = cursor.fetchall()
 
-@bp.route('/admin/reports/sales-per-journey', methods=['GET'])
-@jwt_required()
-def sales_per_journey():
-    admin_id = get_jwt_identity()
-    if not is_admin(admin_id):
-        return jsonify({"error": "Unauthorized"}), 403
+    # Profitable Routes
+    cursor.execute("""
+        SELECT fp.departure, fp.destination, 
+               SUM(fp.price * b.seats) AS revenue,
+               COUNT(b.booking_id) AS total_bookings
+        FROM bookings b
+        JOIN flight_prices fp ON b.flight_id = fp.id
+        WHERE b.payment_status = 'paid'
+        GROUP BY fp.departure, fp.destination
+        HAVING revenue > 5000
+        ORDER BY revenue DESC
+    """)
+    profitable_routes = cursor.fetchall()
 
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    # Loss-Making Routes
+    cursor.execute("""
+        SELECT fp.departure, fp.destination, 
+               SUM(fp.price * b.seats) AS revenue,
+               COUNT(b.booking_id) AS total_bookings
+        FROM bookings b
+        JOIN flight_prices fp ON b.flight_id = fp.id
+        WHERE b.payment_status = 'paid'
+        GROUP BY fp.departure, fp.destination
+        HAVING revenue < 1000
+        ORDER BY revenue ASC
+    """)
+    loss_routes = cursor.fetchall()
 
-    query = """
-    SELECT fp.departure, fp.destination, 
-           SUM(fp.price * b.seats) AS total_sales, 
-           COUNT(b.booking_id) AS total_bookings
-    FROM bookings b
-    JOIN flight_prices fp ON b.flight_id = fp.id
-    WHERE b.payment_status = 'paid'
-    GROUP BY fp.departure, fp.destination
-    ORDER BY total_sales DESC
-    """
-
-    cursor.execute(query)
-    sales_data = cursor.fetchall()
-    cursor.close()
-    conn.close()
-
-    return jsonify({"sales_per_journey": sales_data}), 200
-
-
-@bp.route('/admin/reports/top-customers', methods=['GET'])
-@jwt_required()
-def top_customers():
-    admin_id = get_jwt_identity()
-    if not is_admin(admin_id):
-        return jsonify({"error": "Unauthorized"}), 403
-
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-
-    query = """
-    SELECT u.id, u.first_name, u.last_name, u.email, 
-           SUM(fp.price * b.seats) AS total_spent, 
-           COUNT(b.booking_id) AS total_bookings
-    FROM bookings b
-    JOIN users u ON b.user_id = u.id
-    JOIN flight_prices fp ON b.flight_id = fp.id
-    WHERE b.payment_status = 'paid'
-    GROUP BY u.id, u.first_name, u.last_name, u.email
-    ORDER BY total_spent DESC
-    LIMIT 10
-    """
-
-    cursor.execute(query)
-    customers = cursor.fetchall()
     cursor.close()
     conn.close()
 
-    return jsonify({"top_customers": customers}), 200
-
-
-@bp.route('/admin/reports/profitable-routes', methods=['GET'])
-@jwt_required()
-def profitable_routes():
-    admin_id = get_jwt_identity()
-    if not is_admin(admin_id):
-        return jsonify({"error": "Unauthorized"}), 403
-
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-
-    query = """
-    SELECT fp.departure, fp.destination, 
-           SUM(fp.price * b.seats) AS revenue,
-           COUNT(b.booking_id) AS total_bookings
-    FROM bookings b
-    JOIN flight_prices fp ON b.flight_id = fp.id
-    WHERE b.payment_status = 'paid'
-    GROUP BY fp.departure, fp.destination
-    HAVING revenue > 5000
-    ORDER BY revenue DESC
-    """
-
-    cursor.execute(query)
-    routes = cursor.fetchall()
-    cursor.close()
-    conn.close()
-
-    return jsonify({"profitable_routes": routes}), 200
-
-
-@bp.route('/admin/reports/loss-routes', methods=['GET'])
-@jwt_required()
-def loss_routes():
-    admin_id = get_jwt_identity()
-    if not is_admin(admin_id):
-        return jsonify({"error": "Unauthorized"}), 403
-
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-
-    query = """
-    SELECT fp.departure, fp.destination, 
-           SUM(fp.price * b.seats) AS revenue,
-           COUNT(b.booking_id) AS total_bookings
-    FROM bookings b
-    JOIN flight_prices fp ON b.flight_id = fp.id
-    WHERE b.payment_status = 'paid'
-    GROUP BY fp.departure, fp.destination
-    HAVING revenue < 1000  -- Assuming a threshold for losses
-    ORDER BY revenue ASC
-    """
-
-    cursor.execute(query)
-    routes = cursor.fetchall()
-    cursor.close()
-    conn.close()
-
-    return jsonify({"loss_routes": routes}), 200
+    return render_template(
+        "admin/sales.html",
+        monthly_sales=monthly_sales,
+        sales_per_journey=sales_per_journey,
+        top_customers=top_customers,
+        profitable_routes=profitable_routes,
+        loss_routes=loss_routes
+    )
 
 
 

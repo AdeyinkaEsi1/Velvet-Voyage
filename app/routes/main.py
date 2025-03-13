@@ -17,4 +17,16 @@ def get_db_connection():
 
 @bp.route('/', methods=["GET"])
 def home():
-    return render_template("home/index.html")
+    return render_template("index.html")
+
+
+@bp.route('/contact', methods=["GET"])
+def contact():
+    return render_template("contact.html")
+
+
+@bp.route('/about', methods=["GET"])
+def about():
+    return render_template("about-us.html")
+
+

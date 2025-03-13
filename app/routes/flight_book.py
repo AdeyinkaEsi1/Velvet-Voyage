@@ -36,9 +36,11 @@ def flight_book():
     seats = int(data.get("seats", 1))
     flight_class = data.get("flight_class", "economy").strip().lower()
     round_trip = data.get("round_trip") == "true"
+    
+    error = "Please fill in all required fields."
 
     if not departure or not destination or not departure_date:
-        return render_template("home/index.html", error="Please fill in all required fields.")
+        return render_template("home/index.html", error=error)
 
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -51,7 +53,7 @@ def flight_book():
     flight = cursor.fetchone()
 
     if not flight:
-        return render_template("home/index.html", error="No available flights for this route.")
+        return render_template("index.html", error="Sorry, No Available Flights for the Selected Route.")
 
     # Fetch flight price
     cursor.execute("""

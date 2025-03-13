@@ -136,6 +136,12 @@ def is_authenticated():
         return jsonify({"error": "Not authenticated", "details": str(e)}), 401
 
 
+@bp.route('/password-reset', methods=['GET'])
+def password_reset_page():
+    return render_template('user/auth/password-reset.html')
+
+
+
 @bp.route('/password-reset/request', methods=['POST'])
 def request_password_reset():
     data = request.json
