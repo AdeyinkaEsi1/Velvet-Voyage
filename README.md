@@ -22,9 +22,10 @@ i have exported the db with command - mysqldump -u root -p ht_booking > backup.s
         --- It will restore all tables and data.
 
 5: to verify setup;
-        -- mysql -u root -p;
-        -- USE ht_booking;
-        -- SHOW TABLES;
+        
+        mysql -u root -p;
+        USE ht_booking;
+        SHOW TABLES;
 
 
 
