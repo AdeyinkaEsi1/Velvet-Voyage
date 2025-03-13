@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us - Horizon Travels{% endblock %}
+
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+</head>
+
+<style>
+    .contact-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+        text-align: center;
+        background-color: black;
+        color: gold;
+        border-radius: 10px;
+    }
+
+    .contact-info {
+        display: flex;
+        justify-content: space-between;
+        margin: 20px 0;
+    }
+
+    .info-box {
+        width: 30%;
+        background: #222;
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    .info-box i {
+        font-size: 24px;
+        color: gold;
+    }
+
+    .contact-form {
+        background: #111;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 10px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid gold;
+        border-radius: 5px;
+        background: black;
+        color: gold;
+    }
+
+    .contact-form button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        background-color: gold;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .faq-section {
+        margin-top: 30px;
+    }
+
+    .faq summary {
+        font-weight: bold;
+        cursor: pointer;
+        padding: 10px;
+        border: 1px solid gold;
+        background: #222;
+        color: gold;
+        border-radius: 5px;
+    }
+
+    .faq p {
+        background: black;
+        color: white;
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 5px;
+    }
+</style>
+
+<body style="background-color: black;">
+    <div class="contact-container">
+        <h1>Contact Us</h1>
+        <p>Need assistance? We're here to help! Reach out to us via the form below or through our support channels.</p>
+
+        <!-- Contact Information -->
+        <div class="contact-info">
+            <div class="info-box">
+                <i class="fas fa-phone-alt"></i>
+                <h3>Call Us</h3>
+                <p>+44 1234 567 890</p>
+            </div>
+            <div class="info-box">
+                <i class="fas fa-envelope"></i>
+                <h3>Email Us</h3>
+                <p>support@horizontravels.com</p>
+            </div>
+            <div class="info-box">
+                <i class="fas fa-map-marker-alt"></i>
+                <h3>Visit Us</h3>
+                <p>123 Horizon Street, London, UK</p>
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form">
+            <h2>Send Us a Message</h2>
+            <form id="contact-form">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <input type="text" name="subject" placeholder="Subject" required>
+                <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+            <p id="form-message"></p>
+        </div>
+
+        <!-- Frequently Asked Questions -->
+        <div class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq">
+                <details>
+                    <summary>How can I change or cancel my booking?</summary>
+                    <p>You can modify or cancel your booking by logging into your account and navigating to the
+                        ‘Bookings’ section.</p>
+                </details>
+                <details>
+                    <summary>What payment methods do you accept?</summary>
+                    <p>We accept Visa, MasterCard, American Express, and PayPal.</p>
+                </details>
+                <details>
+                    <summary>Do you offer refunds?</summary>
+                    <p>Refunds are subject to our cancellation policy. Please refer to our terms and conditions for more
+                        details.</p>
+                </details>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    document.getElementById("contact-form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const formObject = {};
+        formData.forEach((value, key) => formObject[key] = value);
+
+        try {
+            const response = await fetch("/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formObject)
+            });
+
+            const result = await response.json();
+            document.getElementById("form-message").textContent = result.message;
+            this.reset();
+        } catch (error) {
+            document.getElementById("form-message").textContent = "Something went wrong, please try again.";
+        }
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - Horizon Travels{% endblock %}
+
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+</head>
+
+<style>
+    /* General Styles */
+    .about-hero {
+        background: url('../images/about-bg.jpg') no-repeat center center/cover;
+        height: 50vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: gold;
+        text-align: center;
+    }
+
+    .hero-text h1 {
+        font-size: 3rem;
+        margin-bottom: 10px;
+    }
+
+    .about-content {
+        background: black;
+        color: gold;
+        padding: 50px;
+        text-align: center;
+    }
+
+    .about-container {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    h2 {
+        margin-top: 40px;
+        font-size: 2rem;
+    }
+
+    .features {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 20px;
+    }
+
+    .feature-box {
+        background: #222;
+        padding: 20px;
+        border-radius: 8px;
+        width: 200px;
+        text-align: center;
+    }
+
+    .feature-box i {
+        font-size: 30px;
+        margin-bottom: 10px;
+    }
+
+    .team {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 20px;
+    }
+
+    .team-member {
+        text-align: center;
+    }
+
+    .team-member img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+    }
+
+    .testimonials {
+        margin-top: 30px;
+    }
+
+    .testimonial {
+        background: #222;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 8px;
+        font-style: italic;
+    }
+
+    .cta-button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background: gold;
+        color: black;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+
+    .cta-button:hover {
+        background: #e0b000;
+    }
+</style>
+
+<body>
+    <section class="about-hero">
+        <div class="hero-text">
+            <h1>About Horizon Travels</h1>
+            <p>Your gateway to seamless travel experiences.</p>
+        </div>
+    </section>
+
+    <section class="about-content">
+        <div class="about-container">
+            <h2>Who We Are</h2>
+            <p>Horizon Travels is a leading travel booking platform committed to providing seamless, affordable, and
+                luxurious travel experiences. Whether you're planning a solo trip, a family vacation, or a business
+                journey, we make travel stress-free.</p>
+
+            <h2>Our Mission</h2>
+            <p>To redefine travel by offering effortless booking solutions, competitive pricing, and world-class
+                customer service.</p>
+
+            <h2>Why Choose Us?</h2>
+            <div class="features">
+                <div class="feature-box">
+                    <i class="fas fa-plane"></i>
+                    <h3>Seamless Bookings</h3>
+                    <p>Book flights in just a few clicks with real-time pricing and availability.</p>
+                </div>
+                <div class="feature-box">
+                    <i class="fas fa-wallet"></i>
+                    <h3>Best Prices</h3>
+                    <p>We offer exclusive deals and competitive prices for all travelers.</p>
+                </div>
+                <div class="feature-box">
+                    <i class="fas fa-headset"></i>
+                    <h3>24/7 Support</h3>
+                    <p>Our dedicated team is available round-the-clock to assist you.</p>
+                </div>
+            </div>
+
+            <h2>Meet Our Team</h2>
+            <div class="team">
+                <div class="team-member">
+                    <img src="{{ url_for('static', filename='images/team1.jpg') }}" alt="CEO">
+                    <h4>Jane Doe</h4>
+                    <p>CEO & Founder</p>
+                </div>
+                <div class="team-member">
+                    <img src="{{ url_for('static', filename='images/team2.jpg') }}" alt="CTO">
+                    <h4>John Smith</h4>
+                    <p>Chief Technology Officer</p>
+                </div>
+                <div class="team-member">
+                    <img src="{{ url_for('static', filename='images/team3.jpg') }}" alt="CMO">
+                    <h4>Emily Brown</h4>
+                    <p>Marketing Director</p>
+                </div>
+            </div>
+
+            <h2>What Our Customers Say</h2>
+            <div class="testimonials">
+                <div class="testimonial">
+                    <p>"Horizon Travels made my vacation so easy! The booking process was smooth, and their support team
+                        was super helpful!"</p>
+                    <span>- Michael Johnson</span>
+                </div>
+                <div class="testimonial">
+                    <p>"Best prices and great service! I’ll be booking all my future flights with Horizon Travels."</p>
+                    <span>- Sarah Williams</span>
+                </div>
+            </div>
+
+            <h2>Join Us on Your Next Journey</h2>
+            <p>Book your next adventure with Horizon Travels and experience a new level of convenience and comfort.</p>
+            <a href="{{ url_for('main.home') }}" class="cta-button">Book Now</a>
+        </div>
+    </section>
+</body>
+{% endblock %}
