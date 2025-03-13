@@ -26,7 +26,7 @@
 <div class="payment-container">
     <div class="payment-form">
         <h2>Secure Payment</h2>
-        <form id="paymentForm" action="{{ url_for('payment.process_payment') }}" method="POST">
+        <form id="paymentForm" method="POST">
             <input type="hidden" name="booking_id" value="{{ booking_id }}">
             <label>Card Number</label>
             <input type="text" name="card_number" placeholder="1234 5678 9012 3456" required>
@@ -65,6 +65,7 @@
 
 <script>
     document.getElementById("paymentForm").addEventListener("submit", function (event) {
+        // alert('j')
         event.preventDefault();
 
         fetch("{{ url_for('payment.process_payment') }}", {
@@ -84,6 +85,7 @@
                     window.location.href = "/dashboard/bookings";
                 }
             })
+            
             .catch(error => console.error("Error processing payment:", error));
     });
 </script>

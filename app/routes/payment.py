@@ -136,6 +136,7 @@ def process_payment():
     
     cursor.close()
     conn.close()
-
-    return redirect(url_for('dashboard.user_bookings'))
+    
+    return jsonify(booking_id=booking_id, payment_reference=payment_reference), 200
+    # return redirect(url_for('dashboard.user_bookings'))
 
