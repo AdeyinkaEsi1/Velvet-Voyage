@@ -15,7 +15,7 @@ i have exported the db with command - mysqldump -u root -p ht_booking > backup.s
 
 3: Exit MySQL with command --> exit;
 
-4: Import the Database Dump with command ---> mysql -u <your_username>> -p ht_booking < database/backup.sql
+4: Import the Database Dump with command ---> mysql -u <your_username> -p ht_booking < database/backup.sql
        ---Run the following from  cmd or powershell
 
         ---  Enter the MySQL password when prompted.
