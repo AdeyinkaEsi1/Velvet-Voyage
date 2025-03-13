@@ -11,37 +11,31 @@ body {
   min-height: 100vh;
 }
 
-/* Sidebar */
 .sidebar {
-  width: 20%;
+  width: 250px;
   background-color: #222;
   padding: 20px;
-  box-shadow: 2px 0 5px rgba(255, 215, 0, 0.1);
 }
 
 .sidebar h2 {
   color: gold;
   text-align: center;
-  margin-bottom: 20px;
 }
 
-.sidebar nav ul {
+.sidebar ul {
   list-style: none;
   padding: 0;
 }
 
-.sidebar nav ul li {
-  margin: 15px 0;
+.sidebar ul li {
+  padding: 10px;
+  text-align: center;
 }
 
-.sidebar nav ul li a {
-  color: gold;
+.sidebar ul li a {
   text-decoration: none;
+  color: gold;
   font-size: 18px;
-}
-
-.sidebar nav ul li a:hover {
-  text-decoration: underline;
 }
 
 /* Main Content */
@@ -441,6 +435,8 @@ table th {
 /* Monthly Sales Breakdown */
 .sales-breakdown,
 .sales-per-journey,
+.profitable-routes,
+.loss-routes,
 .top-customers {
   background-color: #333;
   padding: 20px;
@@ -450,6 +446,8 @@ table th {
 
 .sales-breakdown h3,
 .sales-per-journey h3,
+.profitable-routes h3,
+.loss-routes h3,
 .top-customers h3 {
   color: gold;
   margin-bottom: 15px;
@@ -459,12 +457,16 @@ table th {
 
 .sales-breakdown h3 i,
 .sales-per-journey h3 i,
+.profitable-routes h3 i,
+.loss-routes h3 i,
 .top-customers h3 i {
   margin-right: 10px;
 }
 
 .sales-breakdown table,
 .sales-per-journey table,
+.profitable-routes table,
+.loss-routes table,
 .top-customers table {
   width: 100%;
   border-collapse: collapse;
@@ -484,6 +486,8 @@ table th {
 
 .sales-breakdown table th,
 .sales-per-journey table th,
+.profitable-routes th,
+.loss-routes th,
 .top-customers table th {
   background-color: #444;
   color: gold;
@@ -491,6 +495,28 @@ table th {
 
 .sales-breakdown table td,
 .sales-per-journey table td,
+.profitable-routes td,
+.loss-routes td,
 .top-customers table td {
   background-color: #333;
+}
+
+
+
+.error-message {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.error-message.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.error-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
 }

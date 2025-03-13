@@ -289,7 +289,7 @@ main {
 
 /* FEATURES SECTION */
 .features-section {
-  padding: 4rem 0;
+  padding: 4rem ;
   background-color: black;
 }
 .features-header {
@@ -630,7 +630,6 @@ main {
   background: black;
   color: gold;
   padding: 60px 20px;
-  text-align: center;
 }
 
 .section-header h2 {
@@ -648,8 +647,10 @@ main {
 }
 
 .testimonials-grid {
+  margin-left: 75px;  
   display: grid;
-  gap: 30px;
+  place-items: center;
+  gap: 40px;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
