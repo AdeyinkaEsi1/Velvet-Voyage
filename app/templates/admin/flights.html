@@ -8,6 +8,43 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
 </head>
 
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: #fff;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+        max-width: 600px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close:hover {
+        color: #000;
+    }
+</style>
+
 <body>
     <div class="admin-dashboard">
         <!-- Sidebar -->
@@ -17,12 +54,14 @@
             </a>
             <nav>
                 <ul>
-                    <li><a href="{{ url_for('admin.get_all_flights') }}"><i class="fas fa-plane"></i> Flight
-                    <li><a href="{{ url_for('admin.get_all_bookings') }}"><i class="fas fa-ticket-alt"></i>Booking
+                    <li><a href="{{ url_for('admin.get_all_flights') }}"><i class="fas fa-plane"></i> Flights
                             Management</a></li>
-                    <li><a href="{{ url_for('admin.get_all_users') }}"><i class="fas fa-users"></i>User
-                            Management</a></li>
-                    <li><a href="{{ url_for('admin.monthly_sales') }}"><i class="fas fa-chart-line"></i>Sales
+                    <li><a href="{{ url_for('admin.get_all_bookings') }}"><i class="fas fa-ticket-alt"></i>Bookings
+                            Management</a>
+                    </li>
+                    <li><a href="{{ url_for('admin.get_all_users') }}"><i class="fas fa-users"></i>Users Management</a>
+                    </li>
+                    <li><a href="{{ url_for('admin.sales_reports') }}"><i class="fas fa-chart-line"></i> Sales
                             Reports</a></li>
                 </ul>
             </nav>
@@ -37,14 +76,17 @@
                 <!-- Add New Flight Form -->
                 <div class="flight-form">
                     <h3><i class="fas fa-plus-circle"></i> Add New Flight</h3>
-                    <form>
-                        <input type="text" placeholder="Flight Number" required>
-                        <input type="text" placeholder="Departure" required>
-                        <input type="text" placeholder="Destination" required>
-                        <input type="number" placeholder="Price" required>
+                    <form id="add-flight-form" style="display: flex; gap: 1.3rem;">
+                        <input type="text" name="departure" placeholder="Departure" required>
+                        <input type="text" name="destination" placeholder="Destination" required>
+                        <input type="time" name="departure_time" placeholder="Departure Time" required>
+                        <input type="time" name="arrival_time" placeholder="Arrival Time" required>
+                        <input type="number" name="price" placeholder="Price (£)" required>
                         <button type="submit"><i class="fas fa-save"></i> Add Flight</button>
                     </form>
+                    <div id="flight-error-message" class="error-message"></div>
                 </div>
+
 
                 <!-- List of All Flights -->
                 <div class="flight-list">
@@ -52,39 +94,161 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Flight Number</th>
+                                <th>Flight ID</th>
                                 <th>Departure</th>
                                 <th>Destination</th>
-                                <th>Price</th>
+                                <th>Departure Time</th>
+                                <th>Arrival Time</th>
+                                <th>Price (£)</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
+                            {% for flight in flights %}
                             <tr>
-                                <td>FL123</td>
-                                <td>New York</td>
-                                <td>London</td>
-                                <td>$500</td>
+                                <td>{{ flight.id }}</td>
                                 <td>
-                                    <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
-                                    <button class="delete-btn"><i class="fas fa-trash"></i> Delete</button>
+                                    <input type="text" id="departure-{{ flight.id }}" value="{{ flight.departure }}">
+                                </td>
+                                <td>
+                                    <input type="text" id="destination-{{ flight.id }}"
+                                        value="{{ flight.destination }}">
+                                </td>
+                                <td>
+                                    <input type="time" id="departure-time-{{ flight.id }}"
+                                        value="{{ flight.departure_time }}">
+                                </td>
+                                <td>
+                                    <input type="time" id="arrival-time-{{ flight.id }}"
+                                        value="{{ flight.arrival_time }}">
+                                </td>
+                                <td>
+                                    <input type="number" id="price-{{ flight.id }}" value="{{ flight.price }}">
+                                </td>
+                                <td style="width: 100px;">
+                                    <button class="save-btn" onclick="updateFlight('{{ flight.id }}')">
+                                        <i class="fas fa-save"></i> Save
+                                    </button>
+                                    <button class="delete-btn" onclick="deleteFlight('{{ flight.id }}')">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>FL456</td>
-                                <td>Paris</td>
-                                <td>Tokyo</td>
-                                <td>$700</td>
-                                <td>
-                                    <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
-                                    <button class="delete-btn"><i class="fas fa-trash"></i> Delete</button>
-                                </td>
-                            </tr>
-                            <!-- Add more rows as needed -->
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
+
             </section>
+
+
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const addFlightForm = document.getElementById("add-flight-form");
+                    const errorMessage = document.getElementById("flight-error-message");
+
+                    addFlightForm.addEventListener("submit", async function (e) {
+                        e.preventDefault();
+
+                        const formData = new FormData(addFlightForm);
+                        const flightData = {
+                            departure: formData.get("departure"),
+                            destination: formData.get("destination"),
+                            departure_time: formData.get("departure_time"),
+                            arrival_time: formData.get("arrival_time"),
+                            price: formData.get("price")
+                        };
+
+                        try {
+                            const response = await fetch("/admin/new/flights", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+                                },
+                                body: JSON.stringify(flightData),
+                            });
+
+                            const data = await response.json();
+
+                            if (!response.ok) {
+                                throw new Error(data.error || "Failed to add flight");
+                            }
+
+                            addFlightForm.reset();
+                            errorMessage.textContent = "Flight added successfully!";
+                            errorMessage.className = "error-message success";
+
+                            window.location.reload();
+                        } catch (error) {
+                            console.error("Error adding flight:", error);
+                            errorMessage.textContent = error.message;
+                            errorMessage.className = "error-message error";
+                        }
+                    });
+                });
+            </script>
+
+
+
+            <script>
+                async function updateFlight(flightId) {
+                    const updatedFlight = {
+                        departure: document.getElementById(`departure-${flightId}`).value,
+                        destination: document.getElementById(`destination-${flightId}`).value,
+                        departure_time: document.getElementById(`departure-time-${flightId}`).value,
+                        arrival_time: document.getElementById(`arrival-time-${flightId}`).value,
+                        price: document.getElementById(`price-${flightId}`).value
+                    };
+
+                    try {
+                        const response = await fetch(`/admin/update/flight/${flightId}`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${localStorage.getItem("access_token")}`
+                            },
+                            body: JSON.stringify(updatedFlight)
+                        });
+
+                        const data = await response.json();
+
+                        if (!response.ok) {
+                            throw new Error(data.error || "Failed to update flight");
+                        }
+
+                        alert("Flight updated successfully!");
+                        window.location.reload();
+                    } catch (error) {
+                        alert("Error: " + error.message);
+                    }
+                }
+
+                async function deleteFlight(flightId) {
+                    if (!confirm("Are you sure you want to delete this flight?")) return;
+
+                    try {
+                        const response = await fetch(`/admin/flights/delete/${flightId}`, {
+                            method: "DELETE",
+                            headers: {
+                                "Authorization": `Bearer ${localStorage.getItem("access_token")}`
+                            }
+                        });
+
+                        const data = await response.json();
+                        if (!response.ok) throw new Error(data.error || "Failed to delete flight");
+
+                        alert("Flight deleted successfully!");
+                        window.location.reload();
+                    } catch (error) {
+                        console.error("Error deleting flight:", error);
+                    }
+                }
+            </script>
+
+
+
         </main>
     </div>
 </body>

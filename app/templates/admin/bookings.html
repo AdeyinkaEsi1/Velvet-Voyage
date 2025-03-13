@@ -8,6 +8,105 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
 </head>
 
+<style>
+    /* Style the select dropdown */
+    select {
+        background: #333;
+        /* Dark gray background */
+        color: gold;
+        /* Gold text */
+        border: 2px solid gold;
+        padding: 8px 12px;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    select:focus {
+        outline: none;
+        border-color: #ffcc00;
+        /* Brighter gold on focus */
+    }
+
+    /* Style the save button */
+    button {
+        background: gold;
+        color: black;
+        border: none;
+        padding: 10px 18px;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.2s;
+    }
+
+    #del-btn {
+        background-color: rgba(255, 0, 0, 0.71);
+        color: black;
+    }
+
+    button:hover {
+        background: #ffcc00;
+        transform: scale(1.05);
+    }
+
+    button:active {
+        background: #e6b800;
+        transform: scale(1);
+    }
+    
+
+
+
+select {
+    background: #333;
+    /* Dark gray background */
+    color: gold;
+    /* Gold text */
+    border: 2px solid gold;
+    padding: 8px 12px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+select:focus {
+    outline: none;
+    border-color: #ffcc00;
+    /* Brighter gold on focus */
+}
+
+/* Style the save button */
+button {
+    background: gold;
+    color: black;
+    border: none;
+    padding: 10px 18px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+#del-btn {
+    background-color: rgba(255, 0, 0, 0.71);
+    color: black;
+}
+
+button:hover {
+    background: #ffcc00;
+    transform: scale(1.05);
+}
+
+button:active {
+    background: #e6b800;
+    transform: scale(1);
+}
+
+</style>
+
 <body>
     <div class="admin-dashboard">
         <!-- Sidebar -->
@@ -15,14 +114,13 @@
             <a href="{{ url_for('admin.admin_dashboard') }}" style="text-decoration: none;">
                 <h2>Admin Dashboard</h2>
             </a>
-            <nav>
+             <nav>
                 <ul>
-                    <li><a href="{{ url_for('admin.get_all_flights') }}"><i class="fas fa-plane"></i> Flight
-                    <li><a href="{{ url_for('admin.get_all_bookings') }}"><i class="fas fa-ticket-alt"></i>Booking
-                            Management</a></li>
-                    <li><a href="{{ url_for('admin.get_all_users') }}"><i class="fas fa-users"></i>User
-                            Management</a></li>
-                    <li><a href="{{ url_for('admin.monthly_sales') }}"><i class="fas fa-chart-line"></i>Sales
+                    <li><a href="{{ url_for('admin.get_all_flights') }}"><i class="fas fa-plane"></i> Flights Management</a></li>
+                    <li><a href="{{ url_for('admin.get_all_bookings') }}"><i class="fas fa-ticket-alt"></i>Bookings Management</a>
+                    </li>
+                    <li><a href="{{ url_for('admin.get_all_users') }}"><i class="fas fa-users"></i>Users Management</a></li>
+                    <li><a href="{{ url_for('admin.sales_reports') }}"><i class="fas fa-chart-line"></i> Sales
                             Reports</a></li>
                 </ul>
             </nav>
@@ -42,33 +140,44 @@
                             <tr>
                                 <th>Booking ID</th>
                                 <th>Customer Name</th>
-                                <th>Flight Number</th>
+                                <th>Email</th>
+                                <th>Flight ID</th>
+                                <th>Flight Class</th>
                                 <th>Status</th>
-                                <th>Actions</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
+                            {% for booking in bookings %}
                             <tr>
-                                <td>BK001</td>
-                                <td>John Doe</td>
-                                <td>FL123</td>
-                                <td>Confirmed</td>
+                                <td>{{ booking.booking_id }}</td>
+                                <td>{{ booking.first_name }} {{ booking.last_name }}</td>
+                                <td>{{ booking.email }}</td>
+                                <td>{{ booking.flight_id }}</td>
+                                <td>{{ booking.flight_class }}</td>
                                 <td>
-                                    <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
-                                    <button class="status-btn"><i class="fas fa-sync"></i> Update Status</button>
+                                    <select id="status-{{ booking.booking_id }}">
+                                        <option value="pending" {% if booking.status=='pending' %}selected{% endif %}>
+                                            Pending</option>
+                                        <option value="confirmed" {% if booking.status=='confirmed' %}selected{% endif
+                                            %}>Confirmed</option>
+                                        <option value="checked-in" {% if booking.status=='checked-in' %}selected{% endif
+                                            %}>Checked-In</option>
+                                        <option value="cancelled" {% if booking.status=='cancelled' %}selected{% endif
+                                            %}>Cancelled</option>
+                                        <option value="completed" {% if booking.status=='completed' %}selected{% endif
+                                            %}>Completed</option>
+                                        <option value="no-show" {% if booking.status=='no-show' %}selected{% endif %}>
+                                            No-Show</option>
+                                    </select>
+                                </td>
+                                <td style="display: flex;">
+                                    <button onclick="updateBookingStatus('{{ booking.booking_id }}')">Save</button>
+                                    <button id="del-btn"
+                                        onclick="deleteBooking('{{ booking.booking_id }}')">Delete</button>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>BK002</td>
-                                <td>Jane Smith</td>
-                                <td>FL456</td>
-                                <td>Pending</td>
-                                <td>
-                                    <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
-                                    <button class="status-btn"><i class="fas fa-sync"></i> Update Status</button>
-                                </td>
-                            </tr>
-                            <!-- Add more rows as needed -->
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -76,6 +185,63 @@
         </main>
     </div>
 </body>
+
+<script>
+    async function updateBookingStatus(bookingId) {
+        const statusSelect = document.getElementById(`status-${bookingId}`);
+        const updatedStatus = statusSelect.value;
+
+        try {
+            const response = await fetch(`/admin/update/booking/${bookingId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("access_token")}`
+                },
+                body: JSON.stringify({ status: updatedStatus })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Failed to update booking status");
+            }
+
+            alert("Booking status updated successfully!");
+        } catch (error) {
+            alert("Error: " + error.message);
+        }
+    }
+
+    async function deleteBooking(bookingId) {
+        const confirmDelete = confirm("Are you sure you want to delete this booking?");
+        if (!confirmDelete) return;
+
+        try {
+            const response = await fetch(`/admin/delete/booking/${bookingId}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("access_token")}`
+                }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Failed to delete booking");
+            }
+
+            alert("Booking deleted successfully!");
+
+            const row = document.getElementById(`booking-row-${bookingId}`);
+            if (row) row.remove();
+
+        } catch (error) {
+            alert("Error: " + error.message);
+        }
+    }
+
+</script>
 
 </html>
 {% endblock %}

@@ -8,6 +8,57 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
 </head>
 
+
+<style>
+    .admin-dashboard {
+        display: flex;
+        background-color: black;
+        color: gold;
+    }
+
+    .main-content {
+        flex-grow: 1;
+        padding: 20px;
+    }
+
+    .summary-cards {
+        display: flex;
+        gap: 20px;
+    }
+
+    .card {
+        background-color: #333;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        width: 200px;
+    }
+
+    .card p {
+        font-size: 22px;
+        font-weight: bold;
+        color: gold;
+    }
+
+    .recent-bookings table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .recent-bookings th,
+    .recent-bookings td {
+        padding: 10px;
+        border-bottom: 1px solid gold;
+        text-align: center;
+    }
+
+    .recent-bookings th {
+        background-color: #444;
+        color: gold;
+    }
+</style>
+
 <body>
     <div class="admin-dashboard">
         <!-- Sidebar -->
@@ -17,12 +68,11 @@
             </a>
             <nav>
                 <ul>
-                    <li><a href="{{ url_for('admin.get_all_flights') }}"><i class="fas fa-plane"></i> Flight
-                    <li><a href="{{ url_for('admin.get_all_bookings') }}"><i class="fas fa-ticket-alt"></i>Booking
-                            Management</a></li>
-                    <li><a href="{{ url_for('admin.get_all_users') }}"><i class="fas fa-users"></i>User
-                            Management</a></li>
-                    <li><a href="{{ url_for('admin.monthly_sales') }}"><i class="fas fa-chart-line"></i>Sales
+                    <li><a href="{{ url_for('admin.get_all_flights') }}"><i class="fas fa-plane"></i> Flights</a></li>
+                    <li><a href="{{ url_for('admin.get_all_bookings') }}"><i class="fas fa-ticket-alt"></i> Bookings</a>
+                    </li>
+                    <li><a href="{{ url_for('admin.get_all_users') }}"><i class="fas fa-users"></i> Users</a></li>
+                    <li><a href="{{ url_for('admin.sales_reports') }}"><i class="fas fa-chart-line"></i> Sales
                             Reports</a></li>
                 </ul>
             </nav>
@@ -30,135 +80,71 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Flight Management -->
-            <section id="flight-management" class="content-section">
-                <h2>Flight Management</h2>
-                <div class="flight-form">
-                    <h3>Add New Flight</h3>
-                    <form>
-                        <input type="text" placeholder="Flight Number" required>
-                        <input type="text" placeholder="Departure" required>
-                        <input type="text" placeholder="Destination" required>
-                        <input type="number" placeholder="Price" required>
-                        <button type="submit">Add Flight</button>
-                    </form>
-                </div>
-                <div class="flight-list">
-                    <h3>Flight List</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Flight Number</th>
-                                <th>Departure</th>
-                                <th>Destination</th>
-                                <th>Price</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>FL123</td>
-                                <td>New York</td>
-                                <td>London</td>
-                                <td>$500</td>
-                                <td>
-                                    <button class="edit-btn">Edit</button>
-                                    <button class="delete-btn">Delete</button>
-                                </td>
-                            </tr>
-                            <!-- Add more rows as needed -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+            <h1><i class="fas fa-chart-bar"></i> Admin Dashboard</h1>
 
-            <!-- Booking Management -->
-            <section id="booking-management" class="content-section">
-                <h2>Booking Management</h2>
-                <div class="booking-list">
-                    <h3>All Bookings</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Booking ID</th>
-                                <th>Flight Number</th>
-                                <th>Customer Name</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>BK001</td>
-                                <td>FL123</td>
-                                <td>John Doe</td>
-                                <td>Confirmed</td>
-                                <td>
-                                    <button class="edit-btn">Edit</button>
-                                </td>
-                            </tr>
-                            <!-- Add more rows as needed -->
-                        </tbody>
-                    </table>
+            <!-- Summary Cards -->
+            <div class="summary-cards">
+                <div class="card">
+                    <h3><i class="fas fa-users"></i> Total Users</h3>
+                    <p>{{ dashboard_data.total_users }}</p>
                 </div>
-            </section>
+                <div class="card">
+                    <h3><i class="fas fa-ticket-alt"></i> Total Bookings</h3>
+                    <p>{{ dashboard_data.total_bookings }}</p>
+                </div>
+                <div class="card">
+                    <h3><i class="fas fa-plane"></i> Total Flights</h3>
+                    <p>{{ dashboard_data.total_flights }}</p>
+                </div>
+                <div class="card">
+                    <h3><i class="fas fa-money-bill"></i> Total Revenue</h3>
+                    <p>£{{ dashboard_data.total_revenue }}</p>
+                </div>
+            </div>
 
-            <!-- User Management -->
-            <section id="user-management" class="content-section">
-                <h2>User Management</h2>
-                <div class="user-list">
-                    <h3>All Users</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>User ID</th>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>U001</td>
-                                <td>john_doe</td>
-                                <td>john@example.com</td>
-                                <td>
-                                    <button class="edit-btn">Edit</button>
-                                    <button class="reset-pwd-btn">Reset Password</button>
-                                </td>
-                            </tr>
-                            <!-- Add more rows as needed -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+            <!-- Booking Stats in Table -->
+            <div class="table-container">
+                <h2><i class="fas fa-info-circle"></i> Booking Status Overview</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Pending Bookings</th>
+                            <th>Confirmed Bookings</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ dashboard_data.pending_bookings }}</td>
+                            <td>{{ dashboard_data.confirmed_bookings }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-            <!-- Sales Reports -->
-            <section id="sales-reports" class="content-section">
-                <h2>Sales Reports</h2>
-                <div class="sales-breakdown">
-                    <h3>Monthly Sales Breakdown</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Month</th>
-                                <th>Total Sales</th>
-                                <th>Top Customer</th>
-                                <th>Most Profitable Route</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>January</td>
-                                <td>$50,000</td>
-                                <td>John Doe</td>
-                                <td>New York → London</td>
-                            </tr>
-                            <!-- Add more rows as needed -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+            <!-- Recent Bookings -->
+            <div class="table-container recent-bookings">
+                <h2><i class="fas fa-clock"></i> Recent Bookings</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Customer</th>
+                            <th>Journey</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in recent_bookings %}
+                        <tr>
+                            <td>{{ booking.booking_id }}</td>
+                            <td>{{ booking.first_name }} {{ booking.last_name }}</td>
+                            <td>{{ booking.departure }} → {{ booking.destination }}</td>
+                            <td>{{ booking.status }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </main>
     </div>
 </body>
