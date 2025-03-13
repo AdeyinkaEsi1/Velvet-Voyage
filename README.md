@@ -3,7 +3,8 @@
 i have exported the db with command - mysqldump -u root -p ht_booking > backup.sql; from terminal
 
 
-1:  Import the Database
+1:  Import the Database;
+
         Login to MySQL (Using the credentials set during installation):
         mysql login command ---->   mysql -u <your_username> -p 
         
