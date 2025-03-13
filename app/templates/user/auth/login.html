@@ -35,7 +35,7 @@
             <h2>Log in to HT Travels</h2>
             <form id="login-form">
                 <div class="input-group">
-                    <label>Email/ Username/ Membership No.</label>
+                    <label>Email</label>
                     <input type="text" id="email" name="email" required>
                 </div>
                 <div class="input-group">
@@ -46,7 +46,7 @@
                     <input type="checkbox" id="captcha">
                     <label for="captcha">I am human</label>
                 </div>
-                <a href="#" class="forgot-password">Forgot password?</a>
+                <a href="{{ url_for('auth.password_reset_page') }}" class="forgot-password">Forgot password?</a>
                 <button type="submit" class="login-btn">Continue</button>
             </form>
             <div id="error-message" class="error-message"></div>

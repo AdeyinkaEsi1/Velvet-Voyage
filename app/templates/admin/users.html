@@ -8,6 +8,55 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
 </head>
 
+<style>
+    /* Style the select dropdown */
+    select {
+        background: #333;
+        /* Dark gray background */
+        color: gold;
+        /* Gold text */
+        border: 2px solid gold;
+        padding: 8px 12px;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    select:focus {
+        outline: none;
+        border-color: #ffcc00;
+        /* Brighter gold on focus */
+    }
+
+    /* Style the save button */
+    button {
+        background: gold;
+        color: black;
+        border: none;
+        padding: 10px 18px;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.2s;
+    }
+
+    #del-btn {
+        background-color: rgba(255, 0, 0, 0.71);
+        color: black;
+    }
+
+    button:hover {
+        background: #ffcc00;
+        transform: scale(1.05);
+    }
+
+    button:active {
+        background: #e6b800;
+        transform: scale(1);
+    }
+</style>
+
 <body>
     <div class="admin-dashboard">
         <!-- Sidebar -->
@@ -17,12 +66,14 @@
             </a>
             <nav>
                 <ul>
-                    <li><a href="{{ url_for('admin.get_all_flights') }}"><i class="fas fa-plane"></i> Flight
-                    <li><a href="{{ url_for('admin.get_all_bookings') }}"><i class="fas fa-ticket-alt"></i>Booking
+                    <li><a href="{{ url_for('admin.get_all_flights') }}"><i class="fas fa-plane"></i> Flights
                             Management</a></li>
-                    <li><a href="{{ url_for('admin.get_all_users') }}"><i class="fas fa-users"></i>User
-                            Management</a></li>
-                    <li><a href="{{ url_for('admin.monthly_sales') }}"><i class="fas fa-chart-line"></i>Sales
+                    <li><a href="{{ url_for('admin.get_all_bookings') }}"><i class="fas fa-ticket-alt"></i>Bookings
+                            Management</a>
+                    </li>
+                    <li><a href="{{ url_for('admin.get_all_users') }}"><i class="fas fa-users"></i>Users Management</a>
+                    </li>
+                    <li><a href="{{ url_for('admin.sales_reports') }}"><i class="fas fa-chart-line"></i> Sales
                             Reports</a></li>
                 </ul>
             </nav>
@@ -40,40 +91,72 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>User ID</th>
-                                <th>Username</th>
+                                <th>ID</th>
+                                <th>Name</th>
                                 <th>Email</th>
+                                <th>City</th>
+                                <th>Gender</th>
+                                <th>Contact</th>
                                 <th>Role</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
+                            {% for user in users %}
                             <tr>
-                                <td>U001</td>
-                                <td>john_doe</td>
-                                <td>john@example.com</td>
-                                <td>Customer</td>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.first_name }} {{ user.last_name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.city }}</td>
+                                <td>{{ user.gender }}</td>
+                                <td>{{ user.mobile_number }}</td>
                                 <td>
-                                    <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
-                                    <button class="reset-pwd-btn"><i class="fas fa-key"></i> Reset Password</button>
+                                    <select id="role-{{ user.id }}">
+                                        <option value="user" {% if user.role=='user' %}selected{% endif %}>User</option>
+                                        <option value="admin" {% if user.role=='admin' %}selected{% endif %}>Admin
+                                        </option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button
+                                        onclick="updateUserRole('{{ user.id }}', document.getElementById('role-{{ user.id }}').value)">
+                                        <i class="fas fa-edit"></i> Update Role
+                                    </button>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>U002</td>
-                                <td>jane_smith</td>
-                                <td>jane@example.com</td>
-                                <td>Admin</td>
-                                <td>
-                                    <button class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
-                                    <button class="reset-pwd-btn"><i class="fas fa-key"></i> Reset Password</button>
-                                </td>
-                            </tr>
-                            <!-- Add more rows as needed -->
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </section>
         </main>
     </div>
+
+
+    <script>
+        async function updateUserRole(userId, newRole) {
+            try {
+                const response = await fetch(`/admin/update_user_role/${userId}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("access_token")}`
+                    },
+                    body: JSON.stringify({ role: newRole })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || "Failed to update user role");
+                }
+
+                alert("User role updated successfully!");
+                window.location.reload();
+            } catch (error) {
+                alert("Error: " + error.message);
+            }
+        }
+    </script>
 </body>
 {% endblock %}
