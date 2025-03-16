@@ -63,12 +63,7 @@
             <source src="{{ url_for('static', filename='videos/hero-vid2-3.mp4') }}" type="video/mp4">
             Your browser does not support the video tag.
         </video>
-        <h3 style="color: gold; background-color: black; font-style: italic; padding: 5px;">
-            {% if error %}
-            {{ error }}
-            <p>Kindly select another route</p>
-            {% endif %}
-        </h3>
+        <div id="customAlert" class="alert alert-error" style="display: none;"></div>
         <div class="hero-text">
             <h1>Discover the World with HT Travels</h1>
             <p>Find and book the best deals on flights, hotels, and vacation packages</p>
@@ -91,7 +86,6 @@
                             <span class="custom-radio"></span> Round Trip
                         </label>
                     </div>
-
                     <div class="form-grid">
                         <select name="departure" id="departure-location" required>
                             <option value="" disabled selected>Select Departure</option>
@@ -144,11 +138,26 @@
         <script>
             document.getElementById("bookingForm").addEventListener("submit", function (event) {
                 let departureValue = document.getElementById("departureDate").value.trim();
+                let alertBox = document.getElementById("customAlert");
+
                 if (!departureValue) {
-                    alert("Please select departure dates.");
+                    alertBox.innerHTML = `<p>Please select departure dates.</p>`;
+                    alertBox.style.display = "block";
                     event.preventDefault();
+                    setTimeout(() => alertBox.style.display = "none", 3000);
                 }
             });
+            window.onload = function () {
+                let errorMessage = "{{ error|escape }}";
+                let alertBox = document.getElementById("customAlert");
+
+                if (errorMessage.trim() !== "") {
+                    alertBox.innerHTML = `<p>${errorMessage}</p><p>Kindly select another route</p>`;
+                    alertBox.style.display = "block";
+                    setTimeout(() => alertBox.style.display = "none", 3000);
+                }
+            };
+
 
             let departurePicker = flatpickr("#departureDate", {
                 dateFormat: "Y-m-d",

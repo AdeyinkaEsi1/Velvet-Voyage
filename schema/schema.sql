@@ -52,16 +52,20 @@ INSERT INTO flight_prices (departure, destination, price) VALUES
 ('Cardiff', 'Edinburgh', 90),
 ('Bristol', 'Manchester', 80),
 ('Manchester', 'Bristol', 80),
+
+
 ('Bristol', 'London', 80),
 ('London', 'Manchester', 100),
 ('Manchester', 'Glasgow', 100),
 ('Bristol', 'Glasgow', 110),
 ('Glasgow', 'Newcastle', 100),
+
 ('Newcastle', 'Manchester', 100),
 ('Portsmouth', 'Dundee', 120),
 ('Dundee', 'Portsmouth', 120),
 ('Edinburgh', 'Cardiff', 100),
 ('Southampton', 'Manchester', 100),
+
 ('Manchester', 'Southampton', 90),
 ('Birmingham', 'Newcastle', 100),
 ('Newcastle', 'Birmingham', 100),
