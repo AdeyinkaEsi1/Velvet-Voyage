@@ -43,7 +43,7 @@ def flight_book():
         return render_template("index.html", error=error)
 
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(dictionary=True, buffered=True)
 
     # Fetch flight details
     cursor.execute("""
@@ -51,11 +51,12 @@ def flight_book():
         FROM flights WHERE departure = %s AND destination = %s
     """, (departure, destination))
     flight = cursor.fetchone()
-
+    error="Sorry, No Available Flights for the Selected Route."
     if not flight:
-        return render_template("index.html", error="Sorry, No Available Flights for the Selected Route.")
-
+        return render_template("index.html", error=error)
+    
     # Fetch flight price
+    # cursor.fetchall()
     cursor.execute("""
         SELECT price FROM flight_prices WHERE departure = %s AND destination = %s
     """, (departure, destination))
