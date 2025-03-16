@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Flights - Horizon Travels{% endblock %}
+
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <style>
+
+        h1 {
+            font-size: 50px;
+            color: #ff6b6b;
+        }
+        p {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 18px;
+            font-weight: bold;
+            transition: color 0.3s ease-in-out;
+        }
+        a:hover {
+            color: #ff6b6b;
+        }
+        .plane-container {
+            max-width: 600px;
+            margin: auto;
+            background: #222;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Airplane Animation */
+        .airplane {
+            position: absolute;
+            top: 20px;
+            left: -150px;
+            width: 120px; /* Adjust size */
+            animation: flyAcross 6s linear infinite;
+        }
+
+        @keyframes flyAcross {
+            0% {
+                left: -150px;
+                top: 30px;
+                transform: rotate(10deg);
+            }
+            50% {
+                top: 10px;
+                transform: rotate(5deg);
+            }
+            100% {
+                left: 110%;
+                top: 40px;
+                transform: rotate(15deg);
+            }
+        }
+    </style>
+</head>
+<body style="background-color: black;">
+    <div class="plane-container" style="margin-top: 30px; margin-bottom: 30px;">
+        <h1>404</h1>
+        <p>Oops! Looks like this flight took a wrong turn.</p>
+        <p>Let's get you back on track:</p>
+        <a href="{{ url_for('main.home') }}">Go to Homepage</a>
+        
+        <!-- Using a custom airplane image -->
+        <img src="{{ url_for('static', filename='images/plane.png') }}" class="airplane" alt="Flying Airplane">
+    </div>
+</body>
+
+{% endblock %}

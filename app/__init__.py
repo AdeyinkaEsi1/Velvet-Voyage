@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, redirect, url_for
+from flask import Flask, jsonify, redirect, render_template, url_for
 from flask_jwt_extended import JWTManager
 import mysql.connector
 from datetime import timedelta
@@ -10,7 +10,6 @@ def create_app():
     from config import Config
     app.config.from_object(Config)
     app.config["SECRET_KEY"] = secret_key
-    app.config["SESSION_TYPE"] = "filesystem"
     app.config["JWT_SECRET_KEY"] = jwt_key
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=3)
     
@@ -42,6 +41,9 @@ def create_app():
     def check_if_token_is_revoked(jwt_header, jwt_payload):
         return jwt_payload["jti"] in revoked_tokens
 
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template("404.html"), 404
     
     # Import Blueprints
     from app.routes.booking import bp as booking_bp

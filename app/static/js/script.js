@@ -1,3 +1,4 @@
+
 async function isLoggedIn() {
     try {
         const response = await fetch("/auth/is_authenticated", {
@@ -8,17 +9,12 @@ async function isLoggedIn() {
             }
         });
 
-        // console.log("Authentication check response:", response);
 
         if (response.status === 401) {
             console.log("Token expired or user is not authenticated.");
             window.location.href = "/auth/login?message=Session expired. Please log in again.";
             return false;
         }
-        //     <!-- <td>
-        //     <option value="male" {% if data['gender']=='male' %}selected{% endif %}>Male
-        //     </option>
-        // </td> -->
         if (response.ok) {
             const data = await response.json();
             console.log("User authenticated:", data);
@@ -40,7 +36,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     const signOutLink = document.getElementById("sign-out-link");
 
     const loggedIn = await isLoggedIn();
-    // console.log("User is logged in:", loggedIn);
 
     if (loggedIn) {
         signInLink.style.display = "none";
@@ -78,8 +73,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 });
 
-
-
 document.addEventListener("DOMContentLoaded", function () {
     const loginModal = document.getElementById("loginModal");
     const closeModalBtn = document.querySelector(".modal-close-btn");
@@ -108,3 +101,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+
+// document.addEventListener("DOMContentLoaded", function () {
+//     const navs = document.querySelectorAll('.nav-link');
+//     navs.forEach(nav => {
+//         nav.addEventListener('click', (e) => {
+//             e.preventDefault();
+//             alert(`${nav} page clicked`);
+//         });
+//     });
+// });
