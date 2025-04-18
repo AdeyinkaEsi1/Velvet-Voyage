@@ -12,14 +12,15 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"
         crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/flight-form.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/flight-form.cs') }}">
     <script>
         const flightBookUrl = "{{ url_for('flight_book.flight_book') }}";
     </script>
-
 </head>
+
 
 <main>
     <!-- Login Popup Modal -->
@@ -58,168 +59,184 @@
         </div>
     </div>
 
-    <section class="hero">
-        <video autoplay loop muted playsinline class="hero-video">
+    <section class="hero relative py-20 text-center text-white">
+        <video autoplay loop muted playsinline class="hero-video absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full object-cover z-[-1]">
             <source src="{{ url_for('static', filename='videos/hero-vid2-3.mp4') }}" type="video/mp4">
             Your browser does not support the video tag.
         </video>
-        <div id="customAlert" class="alert alert-error" style="display: none;"></div>
+        <div class="hero-overlay absolute top-0 left-0 w-full h-full bg-black bg-opacity-40 z-[-1]"></div>
         <div class="hero-text">
-            <h1>Discover the World with HT Travels</h1>
-            <p>Find and book the best deals on flights, hotels, and vacation packages</p>
+            <h1 class="font-bold text-4xl md:text-5xl mb-4">Discover the World with Velvet Voyage</h1>
+            <p class="font-semibold text-lg md:text-xl mb-6">Find and book the best deals on flights, hotels, and vacation packages</p>
         </div>
-
-        <div class="flight-container">
-            <div class="tabs">
-                <button class="tab-btn">Book a Flight</button>
+    
+        <div class="flight-container w-[70%] mx-auto p-6 rounded-lg bg-[#0b1e33] text-white shadow-md animate-[fadeSlideUp_1s_ease-in-out_forwards]">
+            <div class="tabs bg-sky-400 py-2 rounded mb-5">
+              <button class="tab-btn text-[#0b1e33] bg-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-[#0b1e33] hover:text-white border-2 border-white transition">
+                Book a Flight
+              </button>
             </div>
-
-            <div class="tab-content">
-                <form id="bookingForm" action="/flight_book" method="POST">
-                    <div class="trip-options">
-                        <label>
-                            <input id="one-way" type="radio" name="round_trip" value="false" checked>
-                            <span class="custom-radio one-way"></span> One Way
-                        </label>
-                        <label>
-                            <input id="round-trip" type="radio" name="round_trip" value="true">
-                            <span class="custom-radio"></span> Round Trip
-                        </label>
-                    </div>
-                    <div class="form-grid">
-                        <select name="departure" id="departure-location" required>
-                            <option value="" disabled selected>Select Departure</option>
-                            <option value="Newcastle">Newcastle</option>
-                            <option value="Bristol">Bristol</option>
-                            <option value="Cardiff">Cardiff</option>
-                            <option value="Edinburgh">Edinburgh</option>
-                            <option value="Manchester">Manchester</option>
-                            <option value="London">London</option>
-                            <option value="Glasgow">Glasgow</option>
-                            <option value="Portsmouth">Portsmouth</option>
-                            <option value="Dundee">Dundee</option>
-                            <option value="Southampton">Southampton</option>
-                            <option value="Birmingham">Birmingham</option>
-                            <option value="Aberdeen">Aberdeen</option>
-                        </select>
-                        <select name="destination" id="destination-location" required>
-                            <option value="" disabled selected>Select Destination</option>
-                            <option value="Newcastle">Newcastle</option>
-                            <option value="Bristol">Bristol</option>
-                            <option value="Cardiff">Cardiff</option>
-                            <option value="Edinburgh">Edinburgh</option>
-                            <option value="Manchester">Manchester</option>
-                            <option value="London">London</option>
-                            <option value="Glasgow">Glasgow</option>
-                            <option value="Portsmouth">Portsmouth</option>
-                            <option value="Dundee">Dundee</option>
-                            <option value="Southampton">Southampton</option>
-                            <option value="Birmingham">Birmingham</option>
-                            <option value="Aberdeen">Aberdeen</option>
-                        </select>
-                        <input type="date" id="departureDate" name="departure_date" placeholder="Departure Date"
-                            required>
-                        <input type="date" id="returnDate" name="return_date" placeholder="Return Date" required
-                            disabled>
-                    </div>
-                    <div class="form-grid">
-                        <input type="number" id="seats" min="1" max="130" name="seats" placeholder="Seats" required>
-                        <select name="flight_class" required>
-                            <option value="" disabled selected>Choose Flight Class</option>
-                            <option value="economy">Economy</option>
-                            <option value="business">Business</option>
-                        </select>
-                        <button id="newSearch" type="submit" class="search-btn">Search Flights</button>
-                    </div>
-                </form>
+          
+            <div class="tab-content mx-6 mt-6">
+              <form id="bookingForm" action="/flight_book" method="POST" class="space-y-6">
+                
+                <!-- Trip Options -->
+                <div class="trip-options flex justify-center gap-10 mb-6">
+                  <label class="flex items-center gap-3 cursor-pointer text-white text-lg">
+                    <input id="one-way" type="radio" name="round_trip" value="false" checked class="hidden">
+                    <span class="custom-radio relative w-5 h-5 border-2 border-sky-400 rounded-full flex items-center justify-center">
+                      <span class="dot hidden w-2 h-2 bg-white rounded-full"></span>
+                    </span>
+                    One Way
+                  </label>
+                  <label class="flex items-center gap-3 cursor-pointer text-white text-lg">
+                    <input id="round-trip" type="radio" name="round_trip" value="true" class="hidden">
+                    <span class="custom-radio relative w-5 h-5 border-2 border-sky-400 rounded-full flex items-center justify-center">
+                      <span class="dot hidden w-2 h-2 bg-white rounded-full"></span>
+                    </span>
+                    Round Trip
+                  </label>
+                </div>
+          
+                <!-- Input Fields -->
+                <div class="form-grid grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  <select name="departure" id="departure-location" required class="bg-[#0b1e33] text-white border border-sky-400 rounded p-3">
+                    <option value="" disabled selected>Select Departure</option>
+                    <!-- Cities -->
+                    <option value="Newcastle">Newcastle</option>
+                    <option value="Bristol">Bristol</option>
+                    <option value="Cardiff">Cardiff</option>
+                    <option value="Edinburgh">Edinburgh</option>
+                    <option value="Manchester">Manchester</option>
+                    <option value="London">London</option>
+                    <option value="Glasgow">Glasgow</option>
+                    <option value="Portsmouth">Portsmouth</option>
+                    <option value="Dundee">Dundee</option>
+                    <option value="Southampton">Southampton</option>
+                    <option value="Birmingham">Birmingham</option>
+                    <option value="Aberdeen">Aberdeen</option>
+                  </select>
+          
+                  <select name="destination" id="destination-location" required class="bg-[#0b1e33] text-white border border-sky-400 rounded p-3">
+                    <option value="" disabled selected>Select Destination</option>
+                    <!-- Cities -->
+                    <option value="Newcastle">Newcastle</option>
+                    <option value="Bristol">Bristol</option>
+                    <option value="Cardiff">Cardiff</option>
+                    <option value="Edinburgh">Edinburgh</option>
+                    <option value="Manchester">Manchester</option>
+                    <option value="London">London</option>
+                    <option value="Glasgow">Glasgow</option>
+                    <option value="Portsmouth">Portsmouth</option>
+                    <option value="Dundee">Dundee</option>
+                    <option value="Southampton">Southampton</option>
+                    <option value="Birmingham">Birmingham</option>
+                    <option value="Aberdeen">Aberdeen</option>
+                  </select>
+          
+                  <input type="date" id="departureDate" name="departure_date" required class="bg-[#0b1e33] text-white border border-sky-400 rounded p-3">
+                  <input type="date" id="returnDate" name="return_date" required disabled class="bg-[#0b1e33] text-white border border-sky-400 rounded p-3">
+                </div>
+          
+                <!-- Seats, Class, Button -->
+                <div class="form-grid grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  <input type="number" id="seats" name="seats" min="1" max="130" placeholder="Seats" required class="bg-[#0b1e33] text-white border border-sky-400 rounded p-3">
+                  <select name="flight_class" required class="bg-[#0b1e33] text-white border border-sky-400 rounded p-3">
+                    <option value="" disabled selected>Choose Flight Class</option>
+                    <option value="economy">Economy</option>
+                    <option value="business">Business</option>
+                  </select>
+                  <button id="newSearch" type="submit" class="bg-sky-400 text-[#0b1e33] font-semibold px-6 py-3 rounded-full hover:bg-white hover:text-[#0b1e33] border-2 border-white transition">
+                    Search Flights
+                  </button>
+                </div>
+              </form>
             </div>
-        </div>
-
-        <script>
-            document.getElementById("bookingForm").addEventListener("submit", function (event) {
-                let departureValue = document.getElementById("departureDate").value.trim();
-                let alertBox = document.getElementById("customAlert");
-
-                if (!departureValue) {
-                    alertBox.innerHTML = `<p>Please select departure dates.</p>`;
-                    alertBox.style.display = "block";
-                    event.preventDefault();
-                    setTimeout(() => alertBox.style.display = "none", 3000);
-                }
-            });
-            window.onload = function () {
-                let errorMessage = "{{ error|escape }}";
-                let alertBox = document.getElementById("customAlert");
-
-                if (errorMessage.trim() !== "") {
-                    alertBox.innerHTML = `<p>${errorMessage}</p><p>Kindly select another route</p>`;
-                    alertBox.style.display = "block";
-                    setTimeout(() => alertBox.style.display = "none", 3000);
-                }
-            };
-
-
-            let departurePicker = flatpickr("#departureDate", {
-                dateFormat: "Y-m-d",
-                minDate: "today",
-                maxDate: new Date().fp_incr(90),
-                onChange: function (selectedDates) {
-                    if (selectedDates.length > 0) {
-                        let minReturnDate = selectedDates[0];
-                        arrivalPicker.set("minDate", minReturnDate);
-                    }
-                }
-            });
-
-            let arrivalPicker = flatpickr("#returnDate", {
-                dateFormat: "Y-m-d",
-                minDate: "today",
-                maxDate: new Date().fp_incr(90)
-            });
-
-            document.getElementById("seats").addEventListener("input", function () {
-                let value = parseInt(this.value, 10);
-                if (value > 130) this.value = 130;
-                else if (value < 1) this.value = 1;
-            });
-
-            document.addEventListener("DOMContentLoaded", function () {
-                const newSearchBtn = document.getElementById("newSearch");
-
-                if (newSearchBtn) {
-                    newSearchBtn.addEventListener("click", function () {
-                        localStorage.removeItem("latestSelection");
-                    });
-                }
-            });
-
-
-
-            const oneWayRadio = document.getElementById('one-way');
-            const roundTripRadio = document.getElementById('round-trip');
-            const returnDateInput = document.getElementById('returnDate');
-
-            function toggleReturnDate() {
-                if (roundTripRadio.checked) {
-                    returnDateInput.disabled = false;
-                } else {
-                    returnDateInput.disabled = true;
-                    returnDateInput.value = "";
-                }
-            }
-            oneWayRadio.addEventListener('change', toggleReturnDate);
-            roundTripRadio.addEventListener('change', toggleReturnDate);
-
-        </script>
-
-        <style>
-            #returnDate:disabled {
-                cursor: not-allowed;
-                background-color: rgba(255, 217, 0, 0.43);
-            }
-        </style>
-
+          </div>
+          
+          
     </section>
+    
+    <script>
+        document.getElementById("bookingForm").addEventListener("submit", function (event) {
+            let departureValue = document.getElementById("departureDate").value.trim();
+            let alertBox = document.getElementById("customAlert");
+    
+            if (!departureValue) {
+                alertBox.innerHTML = `<p>Please select departure dates.</p>`;
+                alertBox.style.display = "block";
+                event.preventDefault();
+                setTimeout(() => alertBox.style.display = "none", 3000);
+            }
+        });
+        window.onload = function () {
+            let errorMessage = "{{ error|escape }}";
+            let alertBox = document.getElementById("customAlert");
+    
+            if (errorMessage.trim() !== "") {
+                alertBox.innerHTML = `<p>${errorMessage}</p><p>Kindly select another route</p>`;
+                alertBox.style.display = "block";
+                setTimeout(() => alertBox.style.display = "none", 3000);
+            }
+        };
+    
+        let departurePicker = flatpickr("#departureDate", {
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            maxDate: new Date().fp_incr(90),
+            onChange: function (selectedDates) {
+                if (selectedDates.length > 0) {
+                    let minReturnDate = selectedDates[0];
+                    arrivalPicker.set("minDate", minReturnDate);
+                }
+            }
+        });
+    
+        let arrivalPicker = flatpickr("#returnDate", {
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            maxDate: new Date().fp_incr(90)
+        });
+    
+        document.getElementById("seats").addEventListener("input", function () {
+            let value = parseInt(this.value, 10);
+            if (value > 130) this.value = 130;
+            else if (value < 1) this.value = 1;
+        });
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            const newSearchBtn = document.getElementById("newSearch");
+    
+            if (newSearchBtn) {
+                newSearchBtn.addEventListener("click", function () {
+                    localStorage.removeItem("latestSelection");
+                });
+            }
+        });
+    
+        const oneWayRadio = document.getElementById('one-way');
+        const roundTripRadio = document.getElementById('round-trip');
+        const returnDateInput = document.getElementById('returnDate');
+    
+        function toggleReturnDate() {
+            if (roundTripRadio.checked) {
+                returnDateInput.disabled = false;
+            } else {
+                returnDateInput.disabled = true;
+                returnDateInput.value = "";
+            }
+        }
+        oneWayRadio.addEventListener('change', toggleReturnDate);
+        roundTripRadio.addEventListener('change', toggleReturnDate);
+    </script>
+    
+    <style>
+        #returnDate:disabled {
+            cursor: not-allowed;
+            background-color: rgba(0, 123, 255, 0.2);
+        }
+    </style>
+    
 
 
     <!-- Features Section -->
