@@ -87,14 +87,14 @@
                   <label class="flex items-center gap-3 cursor-pointer text-white text-lg">
                     <input id="one-way" type="radio" name="round_trip" value="false" checked class="hidden">
                     <span class="custom-radio relative w-5 h-5 border-2 border-sky-400 rounded-full flex items-center justify-center">
-                      <span class="dot hidden w-2 h-2 bg-white rounded-full"></span>
+                      <span class="dot hidden w-2 h-2 rounded-full"></span>
                     </span>
                     One Way
                   </label>
                   <label class="flex items-center gap-3 cursor-pointer text-white text-lg">
                     <input id="round-trip" type="radio" name="round_trip" value="true" class="hidden">
                     <span class="custom-radio relative w-5 h-5 border-2 border-sky-400 rounded-full flex items-center justify-center">
-                      <span class="dot hidden w-2 h-2 bg-white rounded-full"></span>
+                      <span class="dot hidden w-2 h-2 rounded-full"></span>
                     </span>
                     Round Trip
                   </label>
@@ -244,129 +244,197 @@
     </style>
     
 
-
     <!-- Features Section -->
-    <section class="features-section bg-[#0b1e33]">
-        <div class="container">
-            <div class="features-header">
-                <h2>Why Choose HT Travels</h2>
+    <section class="features-section bg-[#0b1e33] pt-10 pb-6">
+        <div class="mx-14">
+            <div class="features-header text-sky-400 place-items-center mb-16 space-y-2">
+                <h2 class="text-4xl ">Why Choose HT Travels</h2>
                 <p>Experience the best travel service with our exclusive benefits and features</p>
             </div>
 
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            <div class="features-grid grid grid-cols-3 space-x-8 my-8 text-gray-300">
+                <div class="feature-card bg-gradient-to-b from-[#0b1e33] to-sky-500 p-10 place-items-center border border-sky-400 rounded-xl 
+                transition transform duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_50px_rgba(56,189,248,0.4)]">
+                    <div class="feature-icon mb-6">
+                        <svg class="text-gray-300 size-12" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path
                                 d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z">
                             </path>
                         </svg>
                     </div>
-                    <h3>Best Flight Deals</h3>
-                    <p>We partner with over 500 airlines to bring you the best prices on flights worldwide.</p>
+                    <h3 class="text-2xl mb-8">Best Flight Deals</h3>
+                    <p class="text-center">We partner with over 500 airlines to bring you the <br> best prices on <br> flights worldwide.</p>
                 </div>
 
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                <div class="feature-card bg-gradient-to-b from-[#0b1e33] to-sky-500 p-10 place-items-center border border-sky-400 rounded-xl 
+                transition transform duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_50px_rgba(56,189,248,0.4)]">
+                    <div class="feature-icon mb-6">
+                        <svg class="text-gray-300 size-12" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
                             <circle cx="12" cy="10" r="3"></circle>
                         </svg>
                     </div>
-                    <h3>UK & Beyond</h3>
-                    <p>Explore thousands of destinations across the globe with our extensive network.</p>
+                    <h3 class="text-2xl mb-8">UK & Beyond</h3>
+                    <p class="text-center">Explore thousands of destinations across <br> the globe with our extensive network.</p>
                 </div>
 
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                <div class="feature-card bg-gradient-to-b from-[#0b1e33] to-sky-500 p-10 place-items-center border border-sky-400 rounded-xl 
+                transition transform duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_50px_rgba(56,189,248,0.4)]">
+                    <div class="feature-icon mb-6">
+                        <svg class="text-gray-300 size-12" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path
                                 d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z">
                             </path>
                         </svg>
                     </div>
-                    <h3>Customer Satisfaction</h3>
-                    <p>Our dedicated support team is available 24/7 to assist you with any travel needs.</p>
+                    <h3 class="text-2xl mb-8 text-nowrap">Customer Satisfaction</h3>
+                    <p class="text-center">Our dedicated support team is available 24/7 to assist you with any travel needs.</p>
                 </div>
             </div>
         </div>
     </section>
 
+
     <!-- Popular Destinations Section -->
-    <section class="popular-destinations">
-        <div class="popularDest-container">
-            <div class="popularDestination-header">
-                <h2>Popular Destinations</h2>
+    <section class="bg-[#0b1e33]">
+        <div class="container mx-auto">
+            <div class="text-sky-400 place-items-center mb-16 mt-10 space-y-2">
+                <h2 class="text-4xl">Popular Destinations</h2>
                 <p>Explore our most booked destinations and find your next adventure</p>
             </div>
-            <div class="destinations-grid">
+            <div class="grid grid-cols-4 space-x-4 mx-10">
                 <!-- Destination Card -->
-                <div class="destination-card">
-                    <div class="destination-image">
-                        <img src="{{ url_for('static', filename='images/bristol.webp') }}" alt="New York, USA">
-                        <div class="overlay">
-                            <h3>Bristol</h3>
-                            <p>UK</p>
-                            <span class="price">&pound;100</span>
-                        </div>
+
+                <div class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
+                    shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105 h-66">
+                    <div class="relative">
+                      <img src="{{ url_for('static', filename='images/bristol.webp') }}" alt="Bristol, UK"
+                           class="w-full h-full object-cover block" />
+                      <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
+                        <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Bristol</h3>
+                        <p class="text-base text-gray-200">UK</p>
+                        <span class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;100</span>
+                      </div>
                     </div>
-                    <div class="destination-details">
-                        <span>Flights • Hotels • Activities</span>
-                        <a href="#">View Deals →</a>
+
+                    <div class="mt-4 p-4 flex justify-between items-center">
+                      <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
+                      <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
                     </div>
                 </div>
 
-                <div class="destination-card">
-                    <div class="destination-image">
-                        <img src="{{ url_for('static', filename='images/manchester2.avif') }}" alt="Paris, France">
-                        <div class="overlay">
-                            <h3>Manchester</h3>
-                            <p>UK</p>
-                            <span class="price">&pound;80</span>
+                <div class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
+                    shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105 h-66">
+                    <div class="relative">
+                      <img src="{{ url_for('static', filename='images/manchester2.avif') }}" alt="Manchester, UK"
+                           class="w-full h-full object-cover block" />
+                      <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
+                        <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Manchester</h3>
+                        <p class="text-base text-gray-200">UK</p>
+                        <span class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;100</span>
+                      </div>
+                    </div>
+
+                    <div class="mt-4 p-4 flex justify-between items-center">
+                      <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
+                      <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
+                    shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105 h-66">
+                    <div class="relative">
+                      <img src="{{ url_for('static', filename='images/glasgow2.avif') }}" alt="Bristol, UK"
+                           class="w-full h-full object-cover block" />
+                      <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
+                        <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Glasgow</h3>
+                        <p class="text-base text-gray-200">UK</p>
+                        <span class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;100</span>
+                      </div>
+                    </div>
+
+                    <div class="mt-4 p-4 flex justify-between items-center">
+                      <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
+                      <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
+                    shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105 h-66">
+                    <div class="relative">
+                      <img src="{{ url_for('static', filename='images/edinburgh.webp') }}" alt="Bristol, UK"
+                           class="w-full h-full object-cover block" />
+                      <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
+                        <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Edinburgh</h3>
+                        <p class="text-base text-gray-200">UK</p>
+                        <span class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;100</span>
+                      </div>
+                    </div>
+
+                    <div class="mt-4 p-4 flex justify-between items-center">
+                      <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
+                      <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
+                    </div>
+                </div>
+                  
+
+                <!-- <div class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
+                        shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105 h-66">
+                    <div class="relative">
+                        <img src="{{ url_for('static', filename='images/manchester2.avif') }}" alt="Manchester, UK"
+                            class="w-full h-full object-cover block" />
+                        <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
+                        <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Manchester</h3>
+                        <p class="text-base text-gray-200">UK</p>
+                        <span class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;80</span>
                         </div>
                     </div>
-                    <div class="destination-details">
-                        <span>Flights • Hotels • Activities</span>
-                        <a href="#">View Deals →</a>
+                
+                    <div class="mt-4 p-4 flex justify-between items-center">
+                        <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
+                        <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
                     </div>
                 </div>
 
-                <div class="destination-card">
-                    <div class="destination-image">
-                        <img src="{{ url_for('static', filename='images/glasgow2.avif') }}" alt="Tokyo, Japan">
-                        <div class="overlay">
-                            <h3>Glasgow</h3>
-                            <p>UK</p>
-                            <span class="price">&pound;110</span>
+
+                <div class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
+                shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105 h-66">
+                    <div class="relative">
+                        <img src="{{ url_for('static', filename='images/glasgow2.avif') }}" alt="Glasgow, UK"
+                        class="w-full h-full object-cover block">
+                        <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
+                            <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Glasgow</h3>
+                            <p class="text-base text-gray-200">UK</p>
+                            <span class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;110</span>
                         </div>
                     </div>
-                    <div class="destination-details">
-                        <span>Flights • Hotels • Activities</span>
-                        <a href="#">View Deals →</a>
+                    <div class="mt-4 p-4 flex justify-between items-center">
+                        <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
+                        <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
                     </div>
                 </div>
 
-                <div class="destination-card">
-                    <div class="destination-image">
-                        <img src="{{ url_for('static', filename='images/edinburgh.webp') }}" alt="Dubai, UAE">
-                        <div class="overlay">
-                            <h3>Edinburgh</h3>
-                            <p>UK</p>
-                            <span class="price">&pound;100</span>
+                <div class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
+                    shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105 h-66">
+                    <div class="relative">
+                        <img src="{{ url_for('static', filename='images/edinburgh.webp') }}" alt="Edinburgh, UK"
+                        class="w-full h-full object-cover block">
+                        <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
+                            <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Edinburgh</h3>
+                            <p class="text-base text-gray-200">UK</p>
+                            <span class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;100</span>
                         </div>
                     </div>
-                    <div class="destination-details">
-                        <span>Flights • Hotels • Activities</span>
-                        <a href="#">View Deals →</a>
-                    </div>
-                </div>
-            </div>
+                    <div class="mt-4 p-4 flex justify-between items-center">
+                        <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
+                        <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
+                      </div>
+                </div> -->
+            </div> 
 
-            <div class="view-all">
-                <a href="#" class="viewAll-btn">View All Destinations</a>
+            <div class="my-10 text-center hover:scale-105 transition-transform ease-in-out duration-300">
+                <a href="#" class="p-3 text-gray-200 bg-sky-600 rounded-2xl">View All Destinations</a>
             </div>
         </div>
     </section>
