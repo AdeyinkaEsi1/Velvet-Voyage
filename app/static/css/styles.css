@@ -10,11 +10,11 @@ h3 {
 
 /* Lora for body text */
 body,
-p {
+/* p {
   font-family: 'Lora', serif;
   font-size: 1rem;
   color: gold;
-}
+} */
 
 /* Poppins for buttons, menus, and UI elements */
 button,
