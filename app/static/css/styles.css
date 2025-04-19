@@ -94,10 +94,11 @@ main {
 }
 
 /* FEATURES SECTION */
-.features-section {
+/* .features-section {
   padding: 4rem ;
   background-color: black;
-}
+} */
+
 .features-header {
   text-align: center;
   margin-bottom: 3rem;
