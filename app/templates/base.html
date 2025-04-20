@@ -46,7 +46,8 @@
       </nav>
   
       <!-- Auth Buttons -->
-      <div class="flex items-center gap-4 opacity-0 animate-[fadeSlideUp_1s_ease-in-out_forwards] [animation-delay:0.8s]">
+       <div>
+      <div class="hidden md:flex items-center gap-4 opacity-0 animate-[fadeSlideUp_1s_ease-in-out_forwards] [animation-delay:0.8s]">
         <a href="{{ url_for('auth.login_page') }}"
            id="sign-in-link"
            class="hidden md:inline-block border border-sky-400 text-white px-4 py-2 text-sm rounded-full hover:bg-sky-500 transition">
@@ -73,18 +74,20 @@
           Sign Out
         </a>
   
-        <!-- Menu toggle for mobile -->
-        <button class="block md:hidden text-sky-400 text-xl">
-          <i class="fa fa-bars"></i>
-        </button>
       </div>
+      <!-- Menu toggle for mobile -->
+      <button class="block md:hidden text-sky-400 text-xl cursor-pointer">
+        <i class="fa fa-bars"></i>
+      </button>
+    </div>
+
   
     </div>
   </header>
   
 
 
-<body class="bg-[#0b1e33] mx-auto">
+<body class="bg-[#0b1e33] mx-auto w-screen max-w-screen">
 
     <main>
         {% block content %}{% endblock %}
