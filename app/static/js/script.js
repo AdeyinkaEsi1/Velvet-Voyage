@@ -1,4 +1,5 @@
 
+
 async function isLoggedIn() {
     try {
         const response = await fetch("/auth/is_authenticated", {
@@ -38,15 +39,15 @@ document.addEventListener("DOMContentLoaded", async function () {
     const loggedIn = await isLoggedIn();
 
     if (loggedIn) {
-        signInLink.style.display = "none";
-        registerLink.style.display = "none";
-        dashboardLink.style.display = "inline-block";
-        signOutLink.style.display = "inline-block";
+        signInLink.classList.add('hidden')
+        registerLink.classList.add('hidden')
+        dashboardLink.classList.remove('hidden')
+        signOutLink.classList.remove('hidden')
     } else {
-        signInLink.style.display = "inline-block";
-        registerLink.style.display = "inline-block";
-        dashboardLink.style.display = "none";
-        signOutLink.style.display = "none";
+        dashboardLink.classList.add('hidden')
+        signOutLink.classList.add('hidden')
+        signInLink.classList.remove('hidden')
+        registerLink.classList.remove('hidden')
     }
 
     signOutLink.addEventListener("click", async function (e) {
@@ -101,13 +102,51 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// document.addEventListener('DOMContentLoaded', () => {
+//     const bars = document.querySelector('.fa-bars')
+//     const nav = document.querySelector('.nav')
 
-// document.addEventListener("DOMContentLoaded", function () {
-//     const navs = document.querySelectorAll('.nav-link');
-//     navs.forEach(nav => {
-//         nav.addEventListener('click', (e) => {
-//             e.preventDefault();
-//             alert(`${nav} page clicked`);
-//         });
-//     });
-// });
+//     if (nav && bars) {
+//         console.log('bars and nav are present')
+//         bars.addEventListener('click', () => {
+//             console.log('clicked')
+//             nav.classList.toggle('translate-x-full')
+//             document.addEventListener('click', event => {
+//                 if (
+//                     !bars.contains(event.target) &&
+//                     !nav.classList.contains('translate-x-full')
+//                 ) {
+//                     nav.classList.add('translate-x-full')
+//                 }
+//             })
+//         })
+//     } else {
+//         console.log('bars or nav not found on this page')
+//     }
+// })
+
+
+// function menuBar() {
+//     alert('hi')
+//     const bars = document.querySelector('.fa-bars');
+//     const nav = document.querySelector('.nav');
+
+//     if (nav && bars) {
+//         console.log('bars and nav are present')
+//         bars.addEventListener('click', () => {
+//             console.log('clicked')
+//             nav.classList.toggle('translate-x-full')
+//             document.addEventListener('click', event => {
+//                 if (
+//                     !bars.contains(event.target) &&
+//                     !nav.classList.contains('translate-x-full')
+//                 ) {
+//                     nav.classList.add('translate-x-full')
+//                 }
+//             })
+//         })
+//     } else {
+//         console.log('bars or nav not found on this page')
+//     }
+// };
+// menuBar();

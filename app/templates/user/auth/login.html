@@ -1,112 +1,117 @@
-{% extends "base.html" %}
-
-{% block title %}Flight - Horizon Travels{% endblock %}
-
+{% extends "base.html" %} {% block title %}Flights - Velvet Voyage{% endblock %}
 {% block content %}
 
 <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/auth.css') }}"
+  />
 </head>
 
 <style>
-    .error-message {
-        color: red;
-        font-size: 14px;
-        margin-top: 10px;
-        display: none;
-        /* Hidden by default */
-    }
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+    display: none;
+    /* Hidden by default */
+  }
 </style>
 
 <main>
 
-    <div class="alert-container">
-        {% if message %}
-        <div class="alert-login alert-warning">
-            {{ message }}
+  <div class="alert-container">
+    {% if message %}
+    <div class="alert-login alert-warning">
+      {{ message }}
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="login-container">
+    <!-- Left: Login Form -->
+    <div class="login-form">
+      <h2>Log in to HT Travels</h2>
+      <form id="login-form">
+        <div class="input-group">
+          <label>Email</label>
+          <input type="text" id="email" name="email" required />
         </div>
-        {% endif %}
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="password" name="password" required />
+        </div>
+        <div class="captcha">
+          <input type="checkbox" id="captcha" />
+          <label for="captcha">I am human</label>
+        </div>
+        <a
+          href="{{ url_for('auth.password_reset_page') }}"
+          class="forgot-password"
+          >Forgot password?</a
+        >
+        <button type="submit" class="login-btn">Continue</button>
+      </form>
+      <div id="error-message" class="error-message"></div>
     </div>
 
-
-    <div class="login-container">
-        <!-- Left: Login Form -->
-        <div class="login-form">
-            <h2>Log in to HT Travels</h2>
-            <form id="login-form">
-                <div class="input-group">
-                    <label>Email</label>
-                    <input type="text" id="email" name="email" required>
-                </div>
-                <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <div class="captcha">
-                    <input type="checkbox" id="captcha">
-                    <label for="captcha">I am human</label>
-                </div>
-                <a href="{{ url_for('auth.password_reset_page') }}" class="forgot-password">Forgot password?</a>
-                <button type="submit" class="login-btn">Continue</button>
-            </form>
-            <div id="error-message" class="error-message"></div>
-        </div>
-
-        <!-- Right: Promotional Section -->
-        <div class="promo">
-            <h3>Welcome to HT Travels!</h3>
-            <p>Unlock exclusive deals, faster bookings, and personalized recommendations.</p>
-            <a href="{{ url_for('auth.register_page') }}" class="sign-up">Join Now</a>
-        </div>
+    <!-- Right: Promotional Section -->
+    <div class="promo">
+      <h3>Welcome to HT Travels!</h3>
+      <p>
+        Unlock exclusive deals, faster bookings, and personalized
+        recommendations.
+      </p>
+      <a href="{{ url_for('auth.register_page') }}" class="sign-up">Join Now</a>
     </div>
+  </div>
+ 
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const loginForm = document.getElementById('login-form')
+      const errorMessage = document.getElementById('error-message')
 
+      loginForm.addEventListener('submit', async function (e) {
+        e.preventDefault()
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const loginForm = document.getElementById("login-form");
-            const errorMessage = document.getElementById("error-message");
+        const email = document.getElementById('email').value.trim()
+        const password = document.getElementById('password').value.trim()
 
-            loginForm.addEventListener("submit", async function (e) {
-                e.preventDefault();
+        if (!email || !password) {
+          showError('Email and password are required.')
+          return
+        }
 
-                const email = document.getElementById("email").value.trim();
-                const password = document.getElementById("password").value.trim();
+        try {
+          const response = await fetch('http://127.0.0.1:5000/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+          })
 
-                if (!email || !password) {
-                    showError("Email and password are required.");
-                    return;
-                }
+          const data = await response.json()
 
-                try {
-                    const response = await fetch("http://127.0.0.1:5000/auth/login", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ email, password })
-                    });
+          if (!response.ok) {
+            throw new Error(data.error || 'Login failed. Please try again.')
+          }
 
-                    const data = await response.json();
+          localStorage.setItem('access_token_cookie', data.access_token_cookie)
 
-                    if (!response.ok) {
-                        throw new Error(data.error || "Login failed. Please try again.");
-                    }
+          window.location.href = '/'
+        } catch (error) {
+          showError(error.message)
+        }
+      })
 
-                    localStorage.setItem("access_token_cookie", data.access_token_cookie);
-
-                    window.location.href = "/";
-                } catch (error) {
-                    showError(error.message);
-                }
-            });
-
-            function showError(message) {
-                errorMessage.textContent = message;
-                errorMessage.style.display = "block";
-            }
-        });
-    </script>
+      function showError(message) {
+        errorMessage.textContent = message
+        errorMessage.style.display = 'block'
+      }
+    })
+  </script>
 </main>
-
+<script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 
 {% endblock %}
