@@ -517,6 +517,9 @@
   .w-34 {
     width: calc(var(--spacing) * 34);
   }
+  .w-40 {
+    width: calc(var(--spacing) * 40);
+  }
   .w-\[70\%\] {
     width: 70%;
   }
@@ -920,6 +923,9 @@
   .py-4 {
     padding-block: calc(var(--spacing) * 4);
   }
+  .py-5 {
+    padding-block: calc(var(--spacing) * 5);
+  }
   .py-12 {
     padding-block: calc(var(--spacing) * 12);
   }
@@ -1008,6 +1014,9 @@
   }
   .text-sky-500 {
     color: var(--color-sky-500);
+  }
+  .text-sky-600 {
+    color: var(--color-sky-600);
   }
   .text-sky-700 {
     color: var(--color-sky-700);
