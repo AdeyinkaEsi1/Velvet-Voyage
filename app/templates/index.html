@@ -317,12 +317,16 @@
             <h2 class="text-4xl font-bold">Popular Destinations</h2>
             <p class="text-xl">Explore our most booked destinations and find your next adventure</p>
         </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-4">
+            <!-- Card 1 - Bristol -->
             <div
                 class="flex flex-col space-y-3 bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600
-                            rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105">
-                <div class="relative">
-                    <img src="{{ url_for('static', filename='images/bristol.webp') }}" alt="Bristol, UK" class="" />
+                     rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105">
+
+                <div class="relative aspect-[4/3]">
+                    <img src="{{ url_for('static', filename='images/bristol.webp') }}" alt="Bristol, UK"
+                        class="w-full h-full object-cover" />
                     <div class="absolute bottom-1/4 left-2">
                         <h3 class="text-2xl font-bold text-gray-200">Bristol</h3>
                         <p class="text-base ml-2 text-gray-200">UK</p>
@@ -330,7 +334,8 @@
                             class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;100</span>
                     </div>
                 </div>
-                <div class="flex justify-center space-x-5 items-center">
+
+                <div class="flex justify-center space-x-5 items-center px-2 pb-3">
                     <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
                     <a href="#"><button
                             class="bg-[#0f3259] rounded p-1 text-gray-200 font-bold hover:underline text-sm cursor-pointer">
@@ -338,67 +343,79 @@
                 </div>
             </div>
 
-
+            <!-- Card 2 - Manchester -->
             <div
-                class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
-                    shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105 h-66">
-                <div class="relative">
-                    <img src="{{ url_for('static', filename='images/manchester2.avif') }}" alt="Manchester, UK"
-                        class="w-full h-full object-cover block" />
-                    <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
-                        <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Manchester</h3>
-                        <p class="text-base text-gray-200">UK</p>
+                class="flex flex-col space-y-3 bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600
+                     rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105">
+
+                <div class="relative aspect-[4/3]">
+                    <img src="{{ url_for('static', filename='images/manchester.webp') }}" alt="Manchester, UK"
+                        class="w-full h-full object-cover" />
+                    <div class="absolute bottom-1/4 left-2">
+                        <h3 class="text-2xl font-bold text-gray-200">Manchester</h3>
+                        <p class="text-base ml-2 text-gray-200">UK</p>
                         <span
                             class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;100</span>
                     </div>
                 </div>
 
-                <div class="mt-4 p-4 flex justify-between items-center">
+                <div class="flex justify-center space-x-5 items-center px-2 pb-3">
                     <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
-                    <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
+                    <a href="#"><button
+                            class="bg-[#0f3259] rounded p-1 text-gray-200 font-bold hover:underline text-sm cursor-pointer">
+                            View Deals →</button></a>
                 </div>
             </div>
+
+            <!-- Card 3 - Glasgow -->
             <div
-                class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
-                    shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105 h-66">
-                <div class="relative">
-                    <img src="{{ url_for('static', filename='images/glasgow2.avif') }}" alt="Bristol, UK"
-                        class="w-full h-full object-cover block" />
-                    <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
-                        <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Glasgow</h3>
-                        <p class="text-base text-gray-200">UK</p>
+                class="flex flex-col space-y-3 bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600
+                     rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105">
+
+                <div class="relative aspect-[4/3]">
+                    <img src="{{ url_for('static', filename='images/glasgow2.avif') }}" alt="Glasgow, UK"
+                        class="w-full h-full object-cover" />
+                    <div class="absolute bottom-1/4 left-2">
+                        <h3 class="text-2xl font-bold text-gray-200">Glasgow</h3>
+                        <p class="text-base ml-2 text-gray-200">UK</p>
                         <span
                             class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;100</span>
                     </div>
                 </div>
 
-                <div class="mt-4 p-4 flex justify-between items-center">
+                <div class="flex justify-center space-x-5 items-center px-2 pb-3">
                     <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
-                    <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
+                    <a href="#"><button
+                            class="bg-[#0f3259] rounded p-1 text-gray-200 font-bold hover:underline text-sm cursor-pointer">
+                            View Deals →</button></a>
                 </div>
             </div>
+
+            <!-- Card 4 - Edinburgh -->
             <div
-                class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
-                    shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105 h-66">
-                <div class="relative">
-                    <img src="{{ url_for('static', filename='images/edinburgh.webp') }}" alt="Bristol, UK"
-                        class="w-full h-full object-cover block" />
-                    <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
-                        <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Edinburgh</h3>
-                        <p class="text-base text-gray-200">UK</p>
+                class="flex flex-col space-y-3 bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600
+                     rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105">
+
+                <div class="relative aspect-[4/3]">
+                    <img src="{{ url_for('static', filename='images/edinburgh.webp') }}" alt="Edinburgh, UK"
+                        class="w-full h-full object-cover" />
+                    <div class="absolute bottom-1/4 left-2">
+                        <h3 class="text-2xl font-bold text-gray-200">Edinburgh</h3>
+                        <p class="text-base ml-2 text-gray-200">UK</p>
                         <span
                             class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;100</span>
                     </div>
                 </div>
 
-                <div class="mt-4 p-4 flex justify-between items-center">
+                <div class="flex justify-center space-x-5 items-center px-2 pb-3">
                     <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
-                    <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
+                    <a href="#"><button
+                            class="bg-[#0f3259] rounded p-1 text-gray-200 font-bold hover:underline text-sm cursor-pointer">
+                            View Deals →</button></a>
                 </div>
             </div>
-
-
         </div>
+
 
         <div class="my-10 text-center hover:scale-105 transition-transform ease-in-out duration-300">
             <a href="#" class="p-3 text-gray-200 bg-sky-600 rounded-2xl">View All Destinations</a>
