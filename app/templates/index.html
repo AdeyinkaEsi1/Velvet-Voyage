@@ -248,14 +248,15 @@
 
 
     <!-- Features Section -->
-    <section class="features-section bg-[#0b1e33] pt-5 pb-6">
-        <div class="mx-14">
+    <section class="bg-[#0b1e33] p-5 font-serif">
+        <div class="">
             <div class="features-header text-sky-400 place-items-center mb-16 space-y-2">
-                <h2 class="text-4xl ">Why Choose HT Travels</h2>
-                <p>Experience the best travel service with our exclusive benefits and features</p>
+                <h2 class="text-4xl font-bold text-center">Why Choose HT Travels</h2>
+                <p class="text-xl text-center">Experience the best travel service with our exclusive
+                    benefits and features</p>
             </div>
 
-            <div class="features-grid grid grid-cols-3 space-x-8 my-8 text-gray-300">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 my-8 text-center text-gray-300">
                 <div
                     class="feature-card bg-gradient-to-b from-[#0b1e33] to-sky-500 p-10 place-items-center border border-sky-400 rounded-xl 
                 transition transform duration-300 ease-in-out hover:scale-105 hover:shadow-[0_0_50px_rgba(56,189,248,0.4)]">
@@ -269,7 +270,7 @@
                         </svg>
                     </div>
                     <h3 class="text-2xl mb-8">Best Flight Deals</h3>
-                    <p class="text-center">We partner with over 500 airlines to bring you the <br> best prices on <br>
+                    <p class="text-center">We partner with over 500 airlines to bring you the best prices on
                         flights worldwide.</p>
                 </div>
 
@@ -311,151 +312,94 @@
 
 
     <!-- Popular Destinations Section -->
-    <section class="bg-[#0b1e33]">
-        <div class="container mx-auto">
-            <div class="text-sky-400 place-items-center mb-16 mt-10 space-y-2">
-                <h2 class="text-4xl">Popular Destinations</h2>
-                <p>Explore our most booked destinations and find your next adventure</p>
+    <section class="bg-[#0b1e33] p-5 font-serif">
+        <div class="text-sky-400 place-items-center mb-8 mt-10 space-y-2 text-center">
+            <h2 class="text-4xl font-bold">Popular Destinations</h2>
+            <p class="text-xl">Explore our most booked destinations and find your next adventure</p>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-4">
+            <div
+                class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
+                    shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105 h-66">
+                <div class="relative">
+                    <img src="{{ url_for('static', filename='images/bristol.webp') }}" alt="Bristol, UK"
+                        class="w-full h-full object-cover block" />
+                    <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
+                        <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Bristol</h3>
+                        <p class="text-base text-gray-200">UK</p>
+                        <span
+                            class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;100</span>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-4 flex justify-between items-center">
+                    <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
+                    <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
+                </div>
             </div>
-            <div class="grid grid-cols-4 space-x-4 mx-10">
-                <!-- Destination Card -->
-
-                <div
-                    class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
+            <div
+                class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
                     shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105 h-66">
-                    <div class="relative">
-                        <img src="{{ url_for('static', filename='images/bristol.webp') }}" alt="Bristol, UK"
-                            class="w-full h-full object-cover block" />
-                        <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
-                            <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Bristol</h3>
-                            <p class="text-base text-gray-200">UK</p>
-                            <span
-                                class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;100</span>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 p-4 flex justify-between items-center">
-                        <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
-                        <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
-                    </div>
-                </div>
-
-                <div
-                    class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
-                    shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105 h-66">
-                    <div class="relative">
-                        <img src="{{ url_for('static', filename='images/manchester2.avif') }}" alt="Manchester, UK"
-                            class="w-full h-full object-cover block" />
-                        <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
-                            <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Manchester</h3>
-                            <p class="text-base text-gray-200">UK</p>
-                            <span
-                                class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;100</span>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 p-4 flex justify-between items-center">
-                        <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
-                        <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
-                    </div>
-                </div>
-                <div
-                    class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
-                    shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105 h-66">
-                    <div class="relative">
-                        <img src="{{ url_for('static', filename='images/glasgow2.avif') }}" alt="Bristol, UK"
-                            class="w-full h-full object-cover block" />
-                        <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
-                            <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Glasgow</h3>
-                            <p class="text-base text-gray-200">UK</p>
-                            <span
-                                class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;100</span>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 p-4 flex justify-between items-center">
-                        <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
-                        <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
-                    </div>
-                </div>
-                <div
-                    class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
-                    shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105 h-66">
-                    <div class="relative">
-                        <img src="{{ url_for('static', filename='images/edinburgh.webp') }}" alt="Bristol, UK"
-                            class="w-full h-full object-cover block" />
-                        <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
-                            <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Edinburgh</h3>
-                            <p class="text-base text-gray-200">UK</p>
-                            <span
-                                class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;100</span>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 p-4 flex justify-between items-center">
-                        <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
-                        <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
-                    </div>
-                </div>
-
-
-                <!-- <div class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
-                        shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105 h-66">
-                    <div class="relative">
-                        <img src="{{ url_for('static', filename='images/manchester2.avif') }}" alt="Manchester, UK"
-                            class="w-full h-full object-cover block" />
-                        <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
+                <div class="relative">
+                    <img src="{{ url_for('static', filename='images/manchester2.avif') }}" alt="Manchester, UK"
+                        class="w-full h-full object-cover block" />
+                    <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
                         <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Manchester</h3>
                         <p class="text-base text-gray-200">UK</p>
-                        <span class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;80</span>
-                        </div>
-                    </div>
-                
-                    <div class="mt-4 p-4 flex justify-between items-center">
-                        <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
-                        <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
+                        <span
+                            class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;100</span>
                     </div>
                 </div>
 
-
-                <div class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
-                shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105 h-66">
-                    <div class="relative">
-                        <img src="{{ url_for('static', filename='images/glasgow2.avif') }}" alt="Glasgow, UK"
-                        class="w-full h-full object-cover block">
-                        <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
-                            <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Glasgow</h3>
-                            <p class="text-base text-gray-200">UK</p>
-                            <span class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;110</span>
-                        </div>
-                    </div>
-                    <div class="mt-4 p-4 flex justify-between items-center">
-                        <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
-                        <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
-                    </div>
+                <div class="mt-4 p-4 flex justify-between items-center">
+                    <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
+                    <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
                 </div>
-
-                <div class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
+            </div>
+            <div
+                class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
                     shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105 h-66">
-                    <div class="relative">
-                        <img src="{{ url_for('static', filename='images/edinburgh.webp') }}" alt="Edinburgh, UK"
-                        class="w-full h-full object-cover block">
-                        <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
-                            <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Edinburgh</h3>
-                            <p class="text-base text-gray-200">UK</p>
-                            <span class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;100</span>
-                        </div>
+                <div class="relative">
+                    <img src="{{ url_for('static', filename='images/glasgow2.avif') }}" alt="Bristol, UK"
+                        class="w-full h-full object-cover block" />
+                    <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
+                        <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Glasgow</h3>
+                        <p class="text-base text-gray-200">UK</p>
+                        <span
+                            class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;100</span>
                     </div>
-                    <div class="mt-4 p-4 flex justify-between items-center">
-                        <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
-                        <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
-                      </div>
-                </div> -->
+                </div>
+
+                <div class="mt-4 p-4 flex justify-between items-center">
+                    <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
+                    <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
+                </div>
+            </div>
+            <div
+                class="bg-gradient-to-br from-[#0b1e33] to-sky-500 border-2 border-sky-600 rounded-[10px] overflow-hidden 
+                    shadow-[0_0_50px_rgba(56,189,248,0.4)] transition-transform duration-500 ease-in-out hover:scale-105 h-66">
+                <div class="relative">
+                    <img src="{{ url_for('static', filename='images/edinburgh.webp') }}" alt="Bristol, UK"
+                        class="w-full h-full object-cover block" />
+                    <div class="absolute bottom-0 left-0 right-0 p-2 text-left overlay">
+                        <h3 class="m-0 text-[1.5rem] font-bold text-gray-200">Edinburgh</h3>
+                        <p class="text-base text-gray-200">UK</p>
+                        <span
+                            class="font-bold bg-sky-600 text-gray-200 px-3 py-1 rounded-full inline-block mt-1">&pound;100</span>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-4 flex justify-between items-center">
+                    <span class="text-gray-200 text-sm">Flights • Hotels • Activities</span>
+                    <a href="#" class="text-gray-200 font-bold hover:underline text-sm">View Deals →</a>
+                </div>
             </div>
 
-            <div class="my-10 text-center hover:scale-105 transition-transform ease-in-out duration-300">
-                <a href="#" class="p-3 text-gray-200 bg-sky-600 rounded-2xl">View All Destinations</a>
-            </div>
+
+        </div>
+
+        <div class="my-10 text-center hover:scale-105 transition-transform ease-in-out duration-300">
+            <a href="#" class="p-3 text-gray-200 bg-sky-600 rounded-2xl">View All Destinations</a>
         </div>
     </section>
 
