@@ -1,300 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}Velvet Voyage{% endblock %}</title>
-    <link
-      rel="shortcut icon"
-      href="{{ url_for('static', filename='images/brand-logo.webp') }}"
-      type="image/x-icon"
-    />
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/output.css') }}"
-    />
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.cs') }}" /> -->
-    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.cs') }}" /> -->
-  </head>
 
-  <style>
-    @keyframes fadeSlideUp {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Velvet Voyage{% endblock %}</title>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='images/brand-logo.webp') }}" type="image/x-icon" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/output.css') }}" />
+  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.cs') }}" /> -->
+  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.cs') }}" /> -->
+</head>
 
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
+<style>
+  @keyframes fadeSlideUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
     }
-  </style>
 
-  <body class="">
-    <header
-      class="bg-[#0b1e33] px-4 md:px-8 py-4 text-sky-400 flex items-center justify-between"
-    >
-      <div>
-        <h1 class="text-2xl font-bold cursor-pointer">
-          <a href="/">Velvet Voyage</a>
-        </h1>
-      </div>
-      <div class="hidden md:flex items-center space-x-4">
-        <span class="font-semibold text-lg"><a href="#">Home</a></span>
-        <span class="font-semibold text-lg"><a href="#">About Us</a></span>
-        <span class="font-semibold text-lg"><a href="#">Contact</a></span>
-      </div>
-      <div class="hidden md:flex space-x-4">
-        <a id="sign-in-link" href="{{ url_for('auth.login_page') }}"
-          ><button
-            class="border border-sky-500 rounded-full p-2 font-bold text-gray-200 hover:bg-sky-400 cursor-pointer transition duration-700"
-          >
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<body class="">
+  <header class="bg-[#0b1e33] px-4 md:px-8 py-4 text-sky-400 flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold cursor-pointer">
+        <a href="/">Velvet Voyage</a>
+      </h1>
+    </div>
+    <div class="hidden md:flex items-center space-x-4">
+      <span class="font-semibold text-lg"><a href="#">Home</a></span>
+      <span class="font-semibold text-lg"><a href="#">About Us</a></span>
+      <span class="font-semibold text-lg"><a href="#">Contact</a></span>
+    </div>
+    <div class="hidden md:flex space-x-4">
+      <a id="sign-in-link" href="{{ url_for('auth.login_page') }}"><button
+          class="border border-sky-500 rounded-full p-2 font-bold text-gray-200 hover:bg-sky-400 cursor-pointer transition duration-700">
+          SIGN IN
+        </button></a>
+      <a id="register-link" href="{{ url_for('auth.register_page') }}"><button
+          class="border border-sky-500 rounded-full p-2 font-bold text-gray-200 hover:bg-sky-400 cursor-pointer transition duration-700">
+          Register
+        </button></a>
+      <a id="dashboard-link" href="{{ url_for('dashboard.user_profile') }}"
+        class="border border-sky-500 rounded-full p-2 font-bold text-gray-200 hover:bg-sky-400 cursor-pointer transition duration-700 hidden">Dashboard</a>
+      <a id="sign-out-link" href="#"
+        class="border border-sky-500 rounded-full p-2 font-bold text-gray-200 hover:bg-sky-400 cursor-pointer transition duration-700 hidden">SIGN
+        OUT</a>
+    </div>
+    <div class="flex md:hidden">
+      <i class="fa fa-bars cursor-pointer text-2xl"></i>bars
+      <div
+        class="nav flex flex-col translate-x-full fixed top-12 transform transition-transform z-50 duration-500 text-nowrap bg-[#0b1e33] right-0 w-32 rounded-l-2xl">
+        <a href="#"><button
+            class="p-2 font-bold text-gray-200 cursor-pointer hover:text-sky-400 hover:scale-125 transition px-3">
+            Home
+          </button></a>
+        <a href="#"><button
+            class="p-2 font-bold text-gray-200 cursor-pointer hover:text-sky-400 hover:scale-125 transition px-3">
+            About Us
+          </button></a>
+        <a href="#"><button
+            class="p-2 font-bold text-gray-200 cursor-pointer hover:text-sky-400 hover:scale-125 transition px-3">
+            Contact
+          </button></a>
+        <a id="sign-in-lin" href="{{ url_for('auth.login_page') }}"><button
+            class="p-2 font-bold text-gray-200 cursor-pointer hover:text-sky-400 hover:scale-125 transition px-3">
             SIGN IN
-          </button></a
-        >
-        <a id="register-link" href="{{ url_for('auth.register_page') }}"
-          ><button
-            class="border border-sky-500 rounded-full p-2 font-bold text-gray-200 hover:bg-sky-400 cursor-pointer transition duration-700"
-          >
-            Register
-          </button></a
-        >
-        <a
-          id="dashboard-link"
-          href="{{ url_for('dashboard.user_profile') }}"
-          class="border border-sky-500 rounded-full p-2 font-bold text-gray-200 hover:bg-sky-400 cursor-pointer transition duration-700 hidden"
-          >Dashboard</a
-        >
-        <a
-          id="sign-out-link"
-          href="#"
-          class="border border-sky-500 rounded-full p-2 font-bold text-gray-200 hover:bg-sky-400 cursor-pointer transition duration-700 hidden"
-          >SIGN OUT</a
-        >
+          </button></a>
+        <a id="register-lin" href="{{ url_for('auth.register_page') }}"><button
+            class="p-2 font-bold text-gray-200 cursor-pointer hover:text-sky-400 hover:scale-125 transition px-3">
+            SIGN OUT
+          </button></a>
+        <a id="dashboard-lin" href="{{ url_for('dashboard.user_profile') }}"><button
+            class="p-2 font-bold text-gray-200 cursor-pointer hover:text-sky-400 hover:scale-125 transition px-3">
+            Dashboard
+          </button></a>
       </div>
-      <div class="flex md:hidden">
-        <i class="fa fa-bars cursor-pointer text-2xl"></i>bars
-        <div
-          class="nav flex flex-col translate-x-full fixed top-12 transform transition-transform z-50 duration-500 text-nowrap bg-[#0b1e33] right-0 w-32 rounded-l-2xl"
-        >
-          <a href="#"
-            ><button
-              class="p-2 font-bold text-gray-200 cursor-pointer hover:text-sky-400 hover:scale-125 transition px-3"
-            >
-              Home
-            </button></a
-          >
-          <a href="#"
-            ><button
-              class="p-2 font-bold text-gray-200 cursor-pointer hover:text-sky-400 hover:scale-125 transition px-3"
-            >
-              About Us
-            </button></a
-          >
-          <a href="#"
-            ><button
-              class="p-2 font-bold text-gray-200 cursor-pointer hover:text-sky-400 hover:scale-125 transition px-3"
-            >
-              Contact
-            </button></a
-          >
-          <a id="sign-in-lin" href="{{ url_for('auth.login_page') }}"
-            ><button
-              class="p-2 font-bold text-gray-200 cursor-pointer hover:text-sky-400 hover:scale-125 transition px-3"
-            >
-              SIGN IN
-            </button></a
-          >
-          <a id="register-lin" href="{{ url_for('auth.register_page') }}"
-            ><button
-              class="p-2 font-bold text-gray-200 cursor-pointer hover:text-sky-400 hover:scale-125 transition px-3"
-            >
-              SIGN OUT
-            </button></a
-          >
-          <a id="dashboard-lin" href="{{ url_for('dashboard.user_profile') }}"
-            ><button
-              class="p-2 font-bold text-gray-200 cursor-pointer hover:text-sky-400 hover:scale-125 transition px-3"
-            >
-              Dashboard
-            </button></a
-          >
-        </div>
-      </div>
-    </header>
+    </div>
+  </header>
 
-    <main class="overflow-hidden">{% block content %}{% endblock %}</main>
+  <main class="overflow-hidden">{% block content %}{% endblock %}</main>
 
-    <!-- Footer Section -->
-    <footer class="bg-blue-900 text-white py-12 border-t-2 border-sky-500">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Grid Layout -->
-        <div
-          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-8"
-        >
-          <!-- Logo & Description -->
-          <div>
-            <div
-              class="flex items-center gap-3 text-xl font-bold text-sky-400 mb-4"
-            >
-              <img
-                src="{{ url_for('static', filename='images/brand-logo.webp') }}"
-                alt="Velvet Voyage Logo"
-                class="w-10 brightness-125"
-              />
-              <span>Velvet Voyage</span>
-            </div>
-            <p class="text-gray-300">
-              Your trusted partner for flights, hotels, and vacation packages
-              worldwide.
-            </p>
-
-            <!-- Social Icons -->
-            <div class="flex gap-4 mt-4 text-xl">
-              <a
-                href="#"
-                class="hover:text-[#1877f2] transition transform hover:scale-110"
-                ><i class="fa-brands fa-facebook"></i
-              ></a>
-              <a
-                href="#"
-                class="hover:text-[#e4405f] transition transform hover:scale-110"
-                ><i class="fa-brands fa-instagram"></i
-              ></a>
-              <a
-                href="#"
-                class="hover:text-[#1da1f2] transition transform hover:scale-110"
-                ><i class="fa-brands fa-twitter"></i
-              ></a>
-              <a
-                href="#"
-                class="hover:text-[#0077b5] transition transform hover:scale-110"
-                ><i class="fa-brands fa-linkedin"></i
-              ></a>
-            </div>
+  <!-- Footer Section -->
+  <footer class="bg-blue-900 text-white py-12 border-t-2 border-sky-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Grid Layout -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-8">
+        <!-- Logo & Description -->
+        <div>
+          <div class="flex items-center gap-3 text-xl font-bold text-sky-400 mb-4">
+            <img src="{{ url_for('static', filename='images/brand-logo.webp') }}" alt="Velvet Voyage Logo"
+              class="w-10 brightness-125" />
+            <span>Velvet Voyage</span>
           </div>
+          <p class="text-gray-300">
+            Your trusted partner for flights, hotels, and vacation packages
+            worldwide.
+          </p>
 
-          <!-- Quick Links -->
-          <div>
-            <h3 class="text-white font-semibold uppercase mb-3 text-base">
-              Quick Links
-            </h3>
-            <ul class="space-y-2 text-gray-300">
-              <li><a href="#" class="hover:text-white transition">Home</a></li>
-              <li>
-                <a href="#" class="hover:text-white transition">About Us</a>
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition">Flights</a>
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition">Hotels</a>
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition"
-                  >Vacation Packages</a
-                >
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition"
-                  >Travel Insurance</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <!-- Support -->
-          <div>
-            <h3 class="text-white font-semibold uppercase mb-3 text-base">
-              Support
-            </h3>
-            <ul class="space-y-2 text-gray-300">
-              <li><a href="#" class="hover:text-white transition">FAQs</a></li>
-              <li>
-                <a href="#" class="hover:text-white transition">Contact Us</a>
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition"
-                  >Booking Terms</a
-                >
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition"
-                  >Privacy Policy</a
-                >
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition"
-                  >Refund Policy</a
-                >
-              </li>
-              <li>
-                <a href="#" class="hover:text-white transition"
-                  >COVID-19 Travel Info</a
-                >
-              </li>
-            </ul>
-          </div>
-
-          <!-- Contact Info -->
-          <div>
-            <h3 class="text-white font-semibold uppercase mb-3 text-base">
-              Contact Us
-            </h3>
-            <p class="text-gray-300 mb-2">
-              123 Horizon Street,<br />
-              London, UK
-            </p>
-            <p class="text-gray-300 mb-2">Phone: +44 1234 567 890</p>
-            <p class="text-gray-300">Email: support@horizontravels.com</p>
+          <!-- Social Icons -->
+          <div class="flex gap-4 mt-4 text-xl">
+            <a href="#" class="hover:text-[#1877f2] transition transform hover:scale-110"><i
+                class="fa-brands fa-facebook"></i></a>
+            <a href="#" class="hover:text-[#e4405f] transition transform hover:scale-110"><i
+                class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="hover:text-[#1da1f2] transition transform hover:scale-110"><i
+                class="fa-brands fa-twitter"></i></a>
+            <a href="#" class="hover:text-[#0077b5] transition transform hover:scale-110"><i
+                class="fa-brands fa-linkedin"></i></a>
           </div>
         </div>
 
-        <!-- Bottom -->
-        <div
-          class="pt-6 border-t border-sky-600 text-sm text-gray-400 text-center"
-        >
-          © 2025 Velvet Voyage. All rights reserved.
+        <!-- Quick Links -->
+        <div>
+          <h3 class="text-white font-semibold uppercase mb-3 text-base">
+            Quick Links
+          </h3>
+          <ul class="space-y-2 text-gray-300">
+            <li><a href="#" class="hover:text-white transition">Home</a></li>
+            <li>
+              <a href="#" class="hover:text-white transition">About Us</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-white transition">Flights</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-white transition">Hotels</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-white transition">Vacation Packages</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-white transition">Travel Insurance</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Support -->
+        <div>
+          <h3 class="text-white font-semibold uppercase mb-3 text-base">
+            Support
+          </h3>
+          <ul class="space-y-2 text-gray-300">
+            <li><a href="#" class="hover:text-white transition">FAQs</a></li>
+            <li>
+              <a href="#" class="hover:text-white transition">Contact Us</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-white transition">Booking Terms</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-white transition">Privacy Policy</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-white transition">Refund Policy</a>
+            </li>
+            <li>
+              <a href="#" class="hover:text-white transition">COVID-19 Travel Info</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Contact Info -->
+        <div>
+          <h3 class="text-white font-semibold uppercase mb-3 text-base">
+            Contact Us
+          </h3>
+          <p class="text-gray-300 mb-2">
+            123 Horizon Street,<br />
+            London, UK
+          </p>
+          <p class="text-gray-300 mb-2">Phone: +44 1234 567 890</p>
+          <p class="text-gray-300">Email: support@horizontravels.com</p>
         </div>
       </div>
-    </footer>
-   
-    
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const bars = document.querySelector('.fa-bars')
-        const nav = document.querySelector('.nav')
 
-        if (nav && bars) {
-          console.log('bars and nav are present')
-          bars.addEventListener('click', () => {
-            console.log('clicked')
-            nav.classList.toggle('translate-x-full')
-            document.addEventListener('click', event => {
-              if (
-                !bars.contains(event.target) &&
-                !nav.classList.contains('translate-x-full')
-              ) {
-                nav.classList.add('translate-x-full')
-              }
-            })
+      <!-- Bottom -->
+      <div class="pt-6 border-t border-sky-600 text-sm text-gray-400 text-center">
+        © 2025 Velvet Voyage. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const bars = document.querySelector('.fa-bars')
+      const nav = document.querySelector('.nav')
+
+      if (nav && bars) {
+        console.log('bars and nav are present')
+        bars.addEventListener('click', () => {
+          console.log('clicked')
+          nav.classList.toggle('translate-x-full')
+          document.addEventListener('click', event => {
+            if (
+              !bars.contains(event.target) &&
+              !nav.classList.contains('translate-x-full')
+            ) {
+              nav.classList.add('translate-x-full')
+            }
           })
-        } else {
-          console.log('bars or nav not found on this page')
-        }
-      })
-    </script>
+        })
+      } else {
+        console.log('bars or nav not found on this page')
+      }
+    })
+  </script>
 
 
-    <script
-      src="{{ url_for('static', filename='js/script.js') }}"
-      defer
-    ></script>
-    
-  </body>
+  <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+
+</body>
+
 </html>
