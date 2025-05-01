@@ -28,5 +28,3 @@ i have exported the db with command - mysqldump -u root -p ht_booking > backup.s
         SHOW TABLES;
 
 
-
-
