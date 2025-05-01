@@ -4,6 +4,7 @@
   "description": "flight booking application",
   "main": "index.js",
   "scripts": {
+    "dev": "npx @tailwindcss/cli -i ./app/static/css/input.css -o ./app/static/css/output.css --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Hamid",
